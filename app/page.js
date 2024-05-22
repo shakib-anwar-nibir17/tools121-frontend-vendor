@@ -1,3 +1,9 @@
+import Sidebar from "@/components/common/Sidebar";
+
 export default function Home() {
-  return <main>Hello</main>;
+  return (
+    <main>
+      <Sidebar />
+    </main>
+  );
 }

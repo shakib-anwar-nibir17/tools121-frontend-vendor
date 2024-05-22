@@ -1,4 +1,4 @@
-import { VendorProfileSVG } from "@/components/Icons/Icons";
+import { VendorProfileSVG } from "@/components/icons/icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileTabs from "@/components/vendor/ProfileTabs";
 import { vendorProfile } from "@/lib/tabOptions";
