@@ -1,4 +1,5 @@
 import Header from "@/components/common/Header";
+import Sidebar from "@/components/common/Sidebar";
 import { Lato } from "next/font/google";
 import "./globals.css";
 
@@ -23,7 +24,10 @@ export default function Layout({ children }) {
         data-theme="main"
       >
         <Header />
-        {children}
+        <main className="flex">
+          <Sidebar />
+          {children}
+        </main>
       </body>
     </html>
   );

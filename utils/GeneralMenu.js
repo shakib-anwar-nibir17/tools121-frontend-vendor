@@ -10,45 +10,71 @@ const GeneralMenu = [
     menu: "Dashboard",
     icons: PiSquaresFour,
     submenu: [],
+    route: "dashboard",
   },
   {
     menu: "Quotation Request",
     icons: GrDocumentText,
     submenu: [],
+    route: "quotation-request",
   },
   {
     menu: "Orders",
     icons: BsCart3,
     submenu: [],
+    route: "orders",
   },
   {
     menu: "Inventory",
     icons: BsBoxes,
-    submenu: [],
+    submenu: [
+      {
+        name: "Product List",
+        subRoute: "productList",
+        value: "productList",
+      },
+      {
+        name: "Product Request Form",
+        subRoute: "product-form",
+        value: "product-form",
+      },
+      {
+        name: "Product Request List",
+        subRoute: "product-request-list",
+        value: "product-request-list",
+      },
+    ],
+    route: "inventory",
   },
   {
     menu: "CRM",
     icons: PiUsersThreeLight,
     submenu: [],
+    route: "crm",
   },
   {
     menu: "Traffic Analytics",
     icons: GrDocumentPerformance,
+    route: "traffic-analytics",
+    value: "traffic-analytics",
   },
   {
     menu: "Advertising",
     icons: LiaUserTieSolid,
     value: "advertising",
+    route: "advertisement",
   },
   {
     menu: "Subscription",
     icons: TbReportSearch,
     value: "subscription",
+    route: "subscription",
   },
   {
     menu: "Support",
     icons: IoHeadsetOutline,
     value: "support",
+    route: "support",
   },
 ];
 
