@@ -1,3 +1,4 @@
+import Header from "@/components/common/Header";
 import { Lato } from "next/font/google";
 import "./globals.css";
 
@@ -21,7 +22,8 @@ export default function Layout({ children }) {
         suppressHydrationWarning={true}
         data-theme="main"
       >
-        <main>{children}</main>
+        <Header />
+        {children}
       </body>
     </html>
   );

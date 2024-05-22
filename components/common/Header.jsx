@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 "use client";
 import { UserOutlinedIcon, UserProfileIcon } from "@/components/icons/Icons";
 import {
@@ -9,12 +10,15 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { GrLogout } from "react-icons/gr";
+import { MdArrowDropDown } from "react-icons/md";
+import { PiSquaresFour } from "react-icons/pi";
 
 const Header = () => {
   const [authToken, setAuthToken] = useState(true);
   return (
     <nav className="xl:border-b  border-primary-200 pb-6 mt-6">
-      <div className="sm:px-8 container mx-auto px-4">
+      <div className="sm:px-8 px-12">
         <div className="hidden xl:flex justify-between">
           <Link href={"/"}>
             <Image
@@ -22,30 +26,45 @@ const Header = () => {
               src="/logo.png"
               alt="logo"
               priority={false}
-              width={219}
-              height={54}
+              width={180}
+              height={44}
             />
           </Link>
           {/* sign in button */}
           <div className="flex space-x-6">
             {authToken ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="group inline-flex justify-center text-sm font-medium text-gray-900 hover:text-primary-950">
-                  <UserProfileIcon className="h-12 w-12 text-gray-300 border rounded-full hover:ring-2" />
+                <DropdownMenuTrigger className="group inline-flex justify-center items-center text-sm font-medium text-gray-900 hover:text-primary-950">
+                  <UserProfileIcon className="h-12 w-12 text-gray-300 border rounded-full hover:ring-2" />{" "}
+                  <span className="ml-2 text-lg mr-2 font-medium">Hi,</span>
+                  <span className="text-lg font-bold mr-3">Test User</span>
+                  <MdArrowDropDown size={20} className="mt-1" />
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent className="bg-white" align="end">
+                <DropdownMenuContent
+                  className="bg-white w-[300px] h-[216px]"
+                  align="end"
+                >
+                  <div className="p-6 flex items-center gap-2 border-b-2 border-slate-200">
+                    <div className="w-12 h-12 rounded-full bg-slate-500 flex items-center justify-center text-white">
+                      <p>TY</p>
+                    </div>
+                    <div>
+                      <h2 className="font-bold text-black">Test User</h2>
+                      <p className="text-sm">General Account</p>
+                    </div>
+                  </div>
                   <DropdownMenuItem>
                     <Link
-                      href={"/profile"}
-                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+                      href={"/eshop-application"}
+                      className="px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left flex items-center gap-6 text-medium text-lg"
                     >
-                      Profile
+                      <PiSquaresFour size={24} /> Apply as a Seller
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left cursor-pointer">
-                      Logout
+                    <div className="flex items-center text-lg text-medium gap-6 px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left cursor-pointer">
+                      <GrLogout size={20} /> Logout
                     </div>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
