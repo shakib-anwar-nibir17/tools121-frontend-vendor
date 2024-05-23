@@ -1,5 +1,7 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import Image from "next/image";
+import Link from "next/link";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { BusinessBagSVG, EmailSVG, PhoneSVG, StarSVG } from "../icons/icons";
 
@@ -7,14 +9,17 @@ const profileOptions = [
   {
     key: "Profile",
     value: "profile",
+    route: "store-settings/profile-settings/profile",
   },
   {
     key: "Verify Shops",
     value: "verify_shops",
+    route: "store-settings/profile-settings/verify-shops",
   },
   {
     key: "Reviews",
     value: "reviews",
+    route: "store-settings/profile-settings/reviews",
   },
 ];
 
@@ -67,13 +72,14 @@ const ShopInfo = () => {
       <Tabs defaultValue="profile">
         <TabsList className="gap-12 mt-[60px] font-bold text-primary-950 p-0">
           {profileOptions.map((option) => (
-            <TabsTrigger
-              key={option.value}
-              className="text-lg pb-0 data-[state=active]:bg-white data-[state=active]:text-primary-950 data-[state=active]:border-b-4 data-[state=active]:border-primary-900 hover:border-b-4 hover:border-primary-900 w-[132px]"
-              value={option.value}
-            >
-              <span className="py-4">{option.key}</span>
-            </TabsTrigger>
+            <Link key={option.value} href={`/${option.route}`}>
+              <TabsTrigger
+                className="text-lg pb-0 data-[state=active]:bg-white data-[state=active]:text-primary-950 data-[state=active]:border-b-4 data-[state=active]:border-primary-900 hover:border-b-4 hover:border-primary-900 w-[132px]"
+                value={option.value}
+              >
+                <span className="py-4">{option.key}</span>
+              </TabsTrigger>
+            </Link>
           ))}
         </TabsList>
       </Tabs>
