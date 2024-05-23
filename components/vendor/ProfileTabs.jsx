@@ -1,7 +1,25 @@
+import ProfileContent from "@/components/Dashboard/Profile/ProfileContent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import VendorProfile from "@/components/vendor/VendorProfile";
-import ProfileContent from "@/components/vendor/contents/ProfileContent";
-import { profileOptions } from "@/lib/tabOptions";
+
+export const profileOptions = [
+  {
+    key: "Overview",
+    value: "overview",
+  },
+  {
+    key: "Profile",
+    value: "profile",
+  },
+  {
+    key: "Verify Shops",
+    value: "verify_shops",
+  },
+  {
+    key: "Reviews",
+    value: "reviews",
+  },
+];
 
 const ProfileTabs = () => {
   console.log(profileOptions);

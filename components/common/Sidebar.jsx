@@ -22,7 +22,7 @@ const Sidebar = async () => {
       orientation="horizontal"
       className="flex"
     >
-      <div className="xl:min-w-[368px] pl-12 pr-4 border-r-2 border-slate-200">
+      <div className="xl:max-w-[368px] pl-12 pr-4 border-r-2 border-slate-200">
         <TabsList className="flex flex-col h-full">
           {combinedMenuArray.map((menuSection) => (
             <>
