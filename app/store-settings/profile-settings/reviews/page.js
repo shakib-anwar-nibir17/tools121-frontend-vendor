@@ -1,9 +1,11 @@
-const ReviewsPage = () => {
+import CustomerRating from "@/components/Dashboard/Reviews/CustomerRating";
+
+const ProfileReviewsPage = () => {
   return (
-    <div>
-      <h1>Reviews</h1>
-    </div>
+    <>
+      <CustomerRating />
+    </>
   );
 };
 
-export default ReviewsPage;
+export default ProfileReviewsPage;

@@ -3,7 +3,7 @@ import UpdateLogoBanner from "@/components/Dashboard/Profile/UpdateLogoBanner";
 
 const Profile = () => {
   return (
-    <div>
+    <div className="max-w-[988px]">
       <UpdateLogoBanner />
       <ShopInfoForm />
     </div>

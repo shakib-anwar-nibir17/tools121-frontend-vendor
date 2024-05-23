@@ -25,7 +25,7 @@ const profileOptions = [
 
 const ShopInfo = () => {
   return (
-    <div className="mb-8">
+    <div className="mb-8 max-w-[988px]">
       <div className="px-8 py-10 bg-primary-50 rounded-xl flex gap-8">
         <div className="h-44 w-44 rounded-lg">
           <Image
