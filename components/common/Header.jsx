@@ -34,7 +34,7 @@ const Header = () => {
           <div className="flex space-x-6">
             {authToken ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="group inline-flex justify-center items-center text-sm font-medium text-gray-900 hover:text-primary-950">
+                <DropdownMenuTrigger className="group inline-flex justify-center items-center text-sm font-medium text-gray-900 hover:text-primary-950 outline-none">
                   <UserProfileIcon className="h-12 w-12 text-gray-300 border rounded-full hover:ring-2" />{" "}
                   <span className="ml-2 text-lg mr-2 font-medium">Hi,</span>
                   <span className="text-lg font-bold mr-3">Test User</span>

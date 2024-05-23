@@ -10,7 +10,7 @@ const GeneralMenu = [
     menu: "Dashboard",
     icons: PiSquaresFour,
     submenu: [],
-    route: "dashboard",
+    route: "/",
   },
   {
     menu: "Quotation Request",

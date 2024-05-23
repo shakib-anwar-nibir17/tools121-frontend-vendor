@@ -26,7 +26,7 @@ export default function Layout({ children }) {
         <Header />
         <main className="flex">
           <Sidebar />
-          {children}
+          <div className="mt-10 ml-6">{children}</div>
         </main>
       </body>
     </html>

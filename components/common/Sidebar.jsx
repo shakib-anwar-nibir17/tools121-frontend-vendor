@@ -17,7 +17,11 @@ const Sidebar = async () => {
   ];
 
   return (
-    <Tabs defaultValue="support" orientation="horizontal" className="flex">
+    <Tabs
+      defaultValue="profile-settings"
+      orientation="horizontal"
+      className="flex"
+    >
       <div className="xl:min-w-[368px] pl-12 pr-4 border-r-2 border-slate-200">
         <TabsList className="flex flex-col h-full">
           {combinedMenuArray.map((menuSection) => (
@@ -31,6 +35,7 @@ const Sidebar = async () => {
                     type="single"
                     collapsible
                     className="w-full"
+                    defaultValue="Store Settings"
                     key={menu.menu}
                   >
                     <AccordionItem value={menu.menu}>
@@ -47,7 +52,11 @@ const Sidebar = async () => {
                             value={submenu.value}
                             className="ml-10 px-6 group border-none text-left font-medium text-primary-950 flex items-center gap-3 justify-start h-12 2xl:h-14 mb-3 hover:bg-primary-50 data-[state=active]:bg-primary-50 data-[state=active]:text-primary-950 rounded-lg w-[264px]"
                           >
-                            <span className="font-medium">{submenu.name}</span>
+                            <Link href={`/${submenu.subRoute}`}>
+                              <span className="font-medium">
+                                {submenu.name}
+                              </span>
+                            </Link>
                           </TabsTrigger>
                         ))}
                       </AccordionContent>

@@ -10,7 +10,8 @@ const SettingsMenu = [
     submenu: [
       {
         name: "Profile-Settings",
-        subRoute: "store-settings/profile-setting",
+        subRoute: "store-settings/profile-settings",
+        value: "profile-settings",
       },
     ],
     route: "store-settings",

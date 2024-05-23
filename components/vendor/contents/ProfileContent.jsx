@@ -10,7 +10,7 @@ const ProfileContent = () => {
   const bannerRef = useRef(null);
   return (
     <>
-      <div className="h-[418px] border border-slate-200 w-full mt-14 rounded-xl shadow-md">
+      <div className="h-[418px] border border-slate-200 w-full rounded-xl shadow-md">
         <h1 className="flex items-center px-6 py-6 gap-3 border-b border-b-slate-200">
           <ShopSVG />
           <span className="text-lg text-primary-950 font-bold">

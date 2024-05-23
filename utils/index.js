@@ -6,7 +6,6 @@ const dashboardMenu = {
 
 export const loadDashboardMenu = async () => {
   const menus = await dashboardMenu.menus();
-  console.log(menus);
   return menus;
 };
 
@@ -16,6 +15,5 @@ const settingsMenu = {
 
 export const loadSettingsMenu = async () => {
   const menus = await settingsMenu.menus();
-  console.log(menus);
   return menus;
 };
