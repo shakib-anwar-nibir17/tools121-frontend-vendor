@@ -1,9 +1,14 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import {
+  BusinessBagSVG,
+  EmailSVG,
+  PhoneSVG,
+  StarSVG,
+} from "@/components/icons/icons";
 import Image from "next/image";
 import Link from "next/link";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { BusinessBagSVG, EmailSVG, PhoneSVG, StarSVG } from "../icons/icons";
 
 const profileOptions = [
   {
@@ -13,7 +18,7 @@ const profileOptions = [
   },
   {
     key: "Verify Shops",
-    value: "verify_shops",
+    value: "verify-shops",
     route: "store-settings/profile-settings/verify-shops",
   },
   {
@@ -23,7 +28,7 @@ const profileOptions = [
   },
 ];
 
-const ShopInfo = () => {
+const ShopInfo = ({ value }) => {
   return (
     <div className="mb-8 max-w-[988px]">
       <div className="px-8 py-10 bg-primary-50 rounded-xl flex gap-8">
@@ -69,7 +74,7 @@ const ShopInfo = () => {
           </div>
         </div>
       </div>
-      <Tabs defaultValue="profile">
+      <Tabs defaultValue={value}>
         <TabsList className="gap-12 mt-[60px] font-bold text-primary-950 p-0">
           {profileOptions.map((option) => (
             <Link key={option.value} href={`/${option.route}`}>
