@@ -30,7 +30,7 @@ const GeneralMenu = [
     submenu: [
       {
         name: "Product List",
-        subRoute: "productList",
+        subRoute: "inventory/product-list",
         value: "productList",
       },
       {

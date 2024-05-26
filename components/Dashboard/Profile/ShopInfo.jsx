@@ -42,7 +42,7 @@ const ShopInfo = ({ value }) => {
           />
         </div>
         <div>
-          <div className="flex justify-center gap-3 mb-4">
+          <div className="flex justify-start gap-3 mb-4">
             <p className="text-primary-900 text-[22] font-medium">
               Toyota Car Technology Ltd.
             </p>

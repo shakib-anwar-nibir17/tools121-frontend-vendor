@@ -5,33 +5,15 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { usePathname } from "next/navigation";
+import React from "react";
 import { FaCaretRight } from "react-icons/fa";
-import ShopInfo from "../Dashboard/Profile/ShopInfo";
 
-const convertRoute = (route) => {
-  return route
-    .split("/")
-    .filter((part) => part)
-    .map((part) =>
-      part
-        .split("-")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")
-    );
-};
-
-const PageHeader = () => {
-  const pathname = usePathname();
-  const values = pathname.split("/").filter(Boolean);
-  const paths = convertRoute(pathname);
-
+const PageHeader = ({ paths }) => {
   return (
     <>
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h1 className="text-[22px] font-medium text-black pb-2">{paths[2]}</h1>
         <Breadcrumb>
           <BreadcrumbList>
@@ -50,12 +32,36 @@ const PageHeader = () => {
               <FaCaretRight size={2} />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbPage>{paths[2]}</BreadcrumbPage>
+              <BreadcrumbLink>{paths[2]}</BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+      </div> */}
+      <div className="mb-6">
+        <h1 className="text-[22px] font-medium text-black pb-2">
+          {paths[paths.length - 1]}
+        </h1>
+        <Breadcrumb>
+          <BreadcrumbList>
+            {paths.map((path, index) => (
+              <React.Fragment key={index}>
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    className={index === 0 ? "text-[#3250FF] text-sm" : ""}
+                  >
+                    {path}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                {index < paths.length - 1 && (
+                  <BreadcrumbSeparator>
+                    <FaCaretRight size={2} />
+                  </BreadcrumbSeparator>
+                )}
+              </React.Fragment>
+            ))}
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
-      <ShopInfo value={values[2]} />
     </>
   );
 };
