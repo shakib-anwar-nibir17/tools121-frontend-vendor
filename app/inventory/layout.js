@@ -10,8 +10,10 @@ export default function InventoryLayout({ children }) {
 
   return (
     <>
-      <HeaderLinks paths={paths} />
-      {children}
+      <main>
+        <HeaderLinks paths={paths} />
+        {children}
+      </main>
     </>
   );
 }

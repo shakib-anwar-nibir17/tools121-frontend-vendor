@@ -671,3 +671,76 @@ export const CustomerReviewSVG = (props) => (
     />
   </svg>
 );
+
+export const NoProductSVG = (props) => (
+  <svg
+    width={140}
+    height={140}
+    viewBox="0 0 140 140"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip3210_14812">
+        <rect
+          id="iconContainer"
+          rx={69.5}
+          width={139}
+          height={139}
+          transform="translate(0.500000 0.500000)"
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="iconContainer"
+      rx={69.5}
+      width={139}
+      height={139}
+      transform="translate(0.500000 0.500000)"
+      fill="#EFF6FF"
+      fillOpacity={1}
+    />
+    <g clipPath="url(#clip3210_14812)">
+      <rect
+        id="Iconly/Bulk/Bag"
+        width={60}
+        height={60}
+        transform="translate(40.000000 40.000000)"
+        fill="#FFFFFF"
+        fillOpacity={0}
+      />
+      <path
+        id="Combined Shape"
+        d="M90.3613 65.3008L92.2832 80.7871C93.6973 90.8848 88.0186 95 80.3965 95L59.6709 95C52.0264 95 46.1719 92.1582 47.7627 80.7871L49.707 65.3008C50.7012 59.6152 54.126 57.5 57.3291 57.5L82.7158 57.5C85.876 57.5 89.1895 59.7734 90.3613 65.3008ZM62.7422 70.3711C61.5225 70.3711 60.5332 69.3516 60.5332 68.0957C60.5332 66.8398 61.5225 65.8223 62.7422 65.8223C63.9629 65.8223 64.9521 66.8398 64.9521 68.0957C64.9521 69.3516 63.9629 70.3711 62.7422 70.3711ZM75.0049 68.0957C75.0049 69.3516 75.9941 70.3711 77.2148 70.3711C78.4346 70.3711 79.4238 69.3516 79.4238 68.0957C79.4238 66.8398 78.4346 65.8223 77.2148 65.8223C75.9941 65.8223 75.0049 66.8398 75.0049 68.0957Z"
+        clipRule="evenodd"
+        fill="#BEC0CA"
+        fillOpacity={1}
+        fillRule="evenodd"
+      />
+      <g opacity={0.4}>
+        <path
+          id="Path_34167"
+          d="M82.43 56.93C82.44 57.12 82.4 57.32 82.32 57.5L78.73 57.5C78.66 57.32 78.62 57.12 78.62 56.93C78.62 52.14 74.72 48.25 69.91 48.25C65.1 48.25 61.2 52.14 61.2 56.93C61.23 57.12 61.23 57.31 61.2 57.5L57.52 57.5C57.49 57.31 57.49 57.12 57.52 56.93C57.8 50.26 63.31 45 70.01 45C76.71 45 82.22 50.26 82.5 56.93L82.43 56.93Z"
+          fill="#BEC0CA"
+          fillOpacity={1}
+          fillRule="nonzero"
+        />
+      </g>
+    </g>
+    <rect
+      id="iconContainer"
+      rx={69.5}
+      width={139}
+      height={139}
+      transform="translate(0.500000 0.500000)"
+      stroke="#E1E2E9"
+      strokeOpacity={1}
+      strokeWidth={1}
+    />
+  </svg>
+);
