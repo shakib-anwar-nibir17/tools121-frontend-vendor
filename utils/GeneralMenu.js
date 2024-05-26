@@ -35,7 +35,7 @@ const GeneralMenu = [
       },
       {
         name: "Product Request Form",
-        subRoute: "product-form",
+        subRoute: "inventory/product-form",
         value: "product-form",
       },
       {

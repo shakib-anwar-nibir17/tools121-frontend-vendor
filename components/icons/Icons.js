@@ -744,3 +744,80 @@ export const NoProductSVG = (props) => (
     />
   </svg>
 );
+
+export const NewUploadSVGIcon = (props) => (
+  <svg
+    width={36}
+    height={36}
+    viewBox="0 0 36 36"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip33_12426">
+        <rect
+          id="fi-sr-picture"
+          width={16}
+          height={16}
+          transform="translate(10.000000 10.000000)"
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+      <clipPath id="clip3210_15182">
+        <rect
+          id="Circle Icon Bagde"
+          rx={18}
+          width={36}
+          height={36}
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="Circle Icon Bagde"
+      rx={18}
+      width={36}
+      height={36}
+      fill="#EBEEFF"
+      fillOpacity={1}
+    />
+    <g clipPath="url(#clip3210_15182)">
+      <rect
+        id="fi-sr-picture"
+        width={16}
+        height={16}
+        transform="translate(10.000000 10.000000)"
+        fill="#FFFFFF"
+        fillOpacity={0}
+      />
+      <g clipPath="url(#clip33_12426)">
+        <path
+          id="Vector"
+          d="M17.41 18.35C17.22 18.17 17 18.02 16.76 17.92C16.52 17.82 16.26 17.77 16 17.77C15.73 17.77 15.47 17.82 15.23 17.92C14.99 18.02 14.77 18.17 14.58 18.35L10.02 22.91C10.08 23.75 10.46 24.53 11.07 25.1C11.68 25.67 12.49 25.99 13.33 26L22.66 26C23.32 26 23.95 25.8 24.5 25.44L17.41 18.35Z"
+          fill="#883DCF"
+          fillOpacity={1}
+          fillRule="nonzero"
+        />
+        <path
+          id="Vector"
+          d="M23.33 14C23.33 14.73 22.73 15.33 21.99 15.33C21.26 15.33 20.66 14.73 20.66 14C20.66 13.26 21.26 12.66 21.99 12.66C22.73 12.66 23.33 13.26 23.33 14Z"
+          fill="#883DCF"
+          fillOpacity={1}
+          fillRule="evenodd"
+        />
+        <path
+          id="Vector"
+          d="M22.66 10L13.33 10C12.44 10 11.6 10.35 10.97 10.97C10.35 11.6 10 12.44 10 13.33L10 21.05L13.64 17.41C13.95 17.1 14.31 16.85 14.72 16.69C15.12 16.52 15.56 16.43 16 16.43C16.43 16.43 16.87 16.52 17.27 16.69C17.68 16.85 18.04 17.1 18.35 17.41L25.44 24.5C25.8 23.95 26 23.32 26 22.66L26 13.33C25.99 12.44 25.64 11.6 25.02 10.97C24.39 10.35 23.55 10 22.66 10L22.66 10ZM22 16.66C21.47 16.66 20.95 16.5 20.51 16.21C20.08 15.92 19.73 15.5 19.53 15.01C19.33 14.53 19.28 13.99 19.38 13.48C19.48 12.96 19.74 12.48 20.11 12.11C20.48 11.74 20.96 11.48 21.47 11.38C21.99 11.28 22.53 11.33 23.02 11.53C23.5 11.73 23.92 12.08 24.21 12.51C24.51 12.95 24.66 13.47 24.66 14C24.66 14.7 24.38 15.38 23.88 15.88C23.38 16.38 22.7 16.66 22 16.66Z"
+          fill="#374957"
+          fillOpacity={1}
+          fillRule="nonzero"
+        />
+      </g>
+    </g>
+  </svg>
+);

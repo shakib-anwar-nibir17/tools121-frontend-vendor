@@ -93,6 +93,32 @@ const AddProductsForm = ({ setShowForm }) => {
           </select>
         </div>
       </div>
+      <div className="gap-5 flex mb-6">
+        <div className="w-full">
+          <label className="font-bold">Regular Price</label>
+          <input
+            className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
+            type="text"
+            placeholder="Regular Price"
+          />
+        </div>
+        <div className="w-full">
+          <label className="font-bold">New Price</label>
+          <input
+            className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
+            type="text"
+            placeholder="....."
+          />
+        </div>
+        <div className="w-full">
+          <label className="font-bold">Stock</label>
+          <input
+            className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
+            type="number"
+            placeholder="...."
+          />
+        </div>
+      </div>
       <div className="flex gap-5">
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">Delivery Note*</label>
