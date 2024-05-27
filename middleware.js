@@ -9,9 +9,7 @@ export function middleware(req) {
     redirectPattern.test(pathname) ||
     pathname === "/store-settings/profile-settings"
   ) {
-    return NextResponse.redirect(
-      new URL("/store-settings/profile-settings/profile", req.url)
-    );
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
   // Allow the request to proceed

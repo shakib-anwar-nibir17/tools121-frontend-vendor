@@ -9,8 +9,8 @@ const GeneralMenu = [
   {
     menu: "Dashboard",
     icons: PiSquaresFour,
-    submenu: [],
-    route: "/",
+    route: "dashboard",
+    value: "dashboard",
   },
   {
     menu: "Quotation Request",

@@ -10,6 +10,7 @@ export default function ProfileSettingsLayout({ children }) {
   const pathname = usePathname();
   const values = pathname.split("/").filter(Boolean);
   const paths = convertRoute(pathname);
+  console.log(paths);
   return (
     <>
       <HeaderLinks paths={paths} />

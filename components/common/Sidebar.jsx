@@ -18,11 +18,7 @@ const Sidebar = async () => {
 
   return (
     <aside>
-      <Tabs
-        defaultValue="profile-settings"
-        orientation="horizontal"
-        className="flex"
-      >
+      <Tabs defaultValue="dashboard" orientation="horizontal" className="flex">
         <div className="xl:min-w-[368px] pl-12 pr-4 border-r-2 border-slate-200">
           <TabsList className="flex flex-col h-full">
             {combinedMenuArray.map((menuSection) => (
@@ -36,7 +32,7 @@ const Sidebar = async () => {
                       type="single"
                       collapsible
                       className="w-full"
-                      defaultValue="Store Settings"
+                      defaultValue=""
                       key={menu.menu}
                     >
                       <AccordionItem value={menu.menu}>
