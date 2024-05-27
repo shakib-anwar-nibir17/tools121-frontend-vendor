@@ -9,6 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        "custom-shadow": "0px 3px 8px 0px rgba(230, 230, 231, 0.2)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
