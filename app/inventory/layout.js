@@ -1,17 +1,10 @@
-"use client";
-import HeaderLinks from "@/components/common/HeaderLinks";
-import { convertRoute } from "@/lib/utils";
-
-import { usePathname } from "next/navigation";
+import HeaderLinkWrapper from "@/components/common/HeaderLinkWrapper";
 
 export default function InventoryLayout({ children }) {
-  const pathname = usePathname();
-  const paths = convertRoute(pathname);
-
   return (
     <>
       <main>
-        <HeaderLinks paths={paths} />
+        <HeaderLinkWrapper />
         {children}
       </main>
     </>
