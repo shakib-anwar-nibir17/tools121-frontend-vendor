@@ -116,7 +116,7 @@ const TodaysQuotation = () => {
             <TableHead className="text-center">Product Quantity</TableHead>
             <TableHead>Request Note</TableHead>
             <TableHead>Customer Name</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead className="text-center">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="border-b-2 border-slate-200">
@@ -140,17 +140,18 @@ const TodaysQuotation = () => {
               </TableCell>
               <TableCell className="">
                 <div className="flex items-center justify-center gap-2">
-                  <RiDeleteBin5Fill
-                    className="cursor-pointer"
-                    size={20}
-                    color="#7B7C80"
-                  />
+                  <IoEye className="cursor-pointer" size={20} color="#7B7C80" />
+
                   <MdModeEditOutline
                     className="cursor-pointer"
                     size={20}
                     color="#7B7C80"
                   />
-                  <IoEye className="cursor-pointer" size={20} color="#7B7C80" />
+                  <RiDeleteBin5Fill
+                    className="cursor-pointer"
+                    size={20}
+                    color="#7B7C80"
+                  />
                 </div>
               </TableCell>
             </TableRow>

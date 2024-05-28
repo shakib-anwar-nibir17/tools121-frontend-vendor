@@ -15,7 +15,13 @@ const GeneralMenu = [
   {
     menu: "Quotation Request",
     icons: GrDocumentText,
-    submenu: [],
+    submenu: [
+      {
+        name: "All Request",
+        subRoute: "quotation-request/all-request",
+        value: "all-request",
+      },
+    ],
     route: "quotation-request",
   },
   {
@@ -35,7 +41,7 @@ const GeneralMenu = [
       },
       {
         name: "Product Request Form",
-        subRoute: "inventory/product-form",
+        subRoute: "inventory/product-request-form",
         value: "product-form",
       },
       {

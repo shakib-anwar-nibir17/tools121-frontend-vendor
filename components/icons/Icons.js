@@ -934,3 +934,172 @@ export const TopTrendingSVG = (props) => (
     </g>
   </svg>
 );
+
+export const OnlineOrderSVG = (props) => (
+  <svg
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip3379_23167">
+        <rect
+          id="online-order"
+          width={24}
+          height={24}
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="online-order"
+      width={24}
+      height={24}
+      fill="#FFFFFF"
+      fillOpacity={0}
+    />
+    <g clipPath="url(#clip3379_23167)">
+      <path
+        id="Vector"
+        d="M1.37 5.31L1.37 3.27C1.38 3.2 1.41 3.13 1.47 3.08C1.52 3.03 1.59 3 1.67 3L23.04 3C23.12 3 23.19 3.03 23.25 3.08C23.3 3.14 23.33 3.21 23.33 3.29L23.33 5.31L1.37 5.31ZM1.67 21.75C1.59 21.74 1.52 21.71 1.46 21.66C1.41 21.6 1.38 21.53 1.37 21.45L1.37 6.39L23.33 6.39L23.33 21.44C23.33 21.51 23.3 21.59 23.25 21.64C23.19 21.7 23.12 21.73 23.04 21.73L1.67 21.75Z"
+        fill="#CDF6F9"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+      <path
+        id="Vector"
+        d="M3.22 8.26L21.48 8.26L21.48 19.86L3.22 19.86L3.22 8.26Z"
+        fill="#FFFFFF"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+      <path
+        id="Vector"
+        d="M23.52 5.49L0.48 5.49L0.48 2.91C0.48 2.69 0.56 2.48 0.72 2.32C0.88 2.17 1.09 2.08 1.31 2.08L22.68 2.08C22.9 2.08 23.12 2.17 23.27 2.32C23.43 2.48 23.52 2.69 23.52 2.91L23.52 5.49Z"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+        strokeDasharray="9.12 1.44 50.88 1.92"
+      />
+      <path
+        id="Vector"
+        d="M23.52 21.08C23.52 21.3 23.43 21.51 23.27 21.66C23.12 21.82 22.9 21.91 22.68 21.91L1.31 21.91C1.09 21.91 0.88 21.82 0.72 21.66C0.56 21.51 0.48 21.3 0.48 21.08L0.48 5.49L23.52 5.49L23.52 21.08Z"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+      />
+      <path
+        id="Vector"
+        d="M21.66 7.36L21.66 20.04L2.32 20.04L2.32 7.36L21.66 7.36ZM20.49 3.78L11.81 3.78"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <path
+        id="Vector"
+        d="M6.08 3.96C5.98 3.96 5.9 3.88 5.9 3.78C5.9 3.68 5.98 3.6 6.08 3.6C6.18 3.6 6.26 3.68 6.26 3.78C6.26 3.88 6.18 3.96 6.08 3.96Z"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+      />
+      <path
+        id="Vector"
+        d="M3.68 3.96C3.58 3.96 3.5 3.88 3.5 3.78C3.5 3.68 3.58 3.6 3.68 3.6C3.78 3.6 3.86 3.68 3.86 3.78C3.86 3.88 3.78 3.96 3.68 3.96Z"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+      />
+      <path
+        id="Vector"
+        d="M8.49 3.96C8.39 3.96 8.31 3.88 8.31 3.78C8.31 3.68 8.39 3.6 8.49 3.6C8.58 3.6 8.67 3.68 8.67 3.78C8.67 3.88 8.58 3.96 8.49 3.96Z"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+      />
+      <path
+        id="Vector"
+        d="M13.34 9.52L18.4 9.52"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <path
+        id="Vector"
+        d="M13.34 11.3L17.05 11.3"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <path
+        id="Vector"
+        d="M13.34 13.08L19.37 13.08M17.25 18.33L15.47 16.55M15.52 17.96L15.47 16.55L16.88 16.6"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+      />
+      <path
+        id="Vector"
+        d="M5.33 9.8L9.6 9.8L9.6 13.53L5.33 13.53L5.33 9.8ZM5.33 17.26L9.6 17.26L9.6 18.33L5.33 18.33L5.33 17.26Z"
+        fill="#CDF6F9"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+      <path
+        id="Vector"
+        d="M9.6 16.54L9.6 18.32L4.62 18.32L4.62 16.54L9.6 16.54Z"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+      />
+      <path
+        id="Vector"
+        d="M7.98 10.71L7.11 10.25L6.24 10.71L6.24 9.08L7.98 9.08L7.98 10.71Z"
+        fill="#CDF6F9"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+      <path
+        id="Vector"
+        d="M7.32 10.06L6.81 10.33L6.81 9.65L7.83 9.65L7.83 10.33L7.32 10.06Z"
+        fill="#FFFFFF"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+      <path
+        id="Vector"
+        d="M9.38 9.08C9.5 9.08 9.6 9.18 9.6 9.3L9.6 13.3C9.6 13.42 9.5 13.52 9.38 13.52L4.84 13.52C4.72 13.52 4.62 13.42 4.62 13.3L4.62 9.3C4.62 9.18 4.72 9.08 4.84 9.08L9.38 9.08Z"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+      />
+      <path
+        id="Vector"
+        d="M7.11 10.25L6.24 10.71L6.24 9.08L7.98 9.08L7.98 10.71L7.11 10.25Z"
+        stroke="#1A83A8"
+        strokeOpacity={1}
+        strokeWidth={0.96}
+        strokeLinejoin="round"
+      />
+    </g>
+  </svg>
+);
