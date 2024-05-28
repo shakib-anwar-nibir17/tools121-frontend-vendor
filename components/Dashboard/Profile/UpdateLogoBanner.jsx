@@ -1,5 +1,5 @@
 import UploadBox from "@/components/common/UploadBox";
-import { CrossSVG, UploadLogoSVG } from "@/components/icons/icons";
+import { CrossSVG, UploadLogoSVG } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 

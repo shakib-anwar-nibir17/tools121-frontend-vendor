@@ -1,4 +1,4 @@
-import { FlameSVG } from "@/components/icons/icons";
+import { FlameSVG } from "@/components/icons/Icons";
 import {
   Table,
   TableBody,

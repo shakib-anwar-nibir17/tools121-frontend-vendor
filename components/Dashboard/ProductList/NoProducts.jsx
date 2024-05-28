@@ -1,4 +1,4 @@
-import { NoProductSVG } from "@/components/icons/icons";
+import { NoProductSVG } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 import { FiPlus } from "react-icons/fi";
 

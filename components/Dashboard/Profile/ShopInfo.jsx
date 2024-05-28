@@ -5,7 +5,7 @@ import {
   EmailSVG,
   PhoneSVG,
   StarSVG,
-} from "@/components/icons/icons";
+} from "@/components/icons/Icons";
 import Image from "next/image";
 import Link from "next/link";
 import { RiVerifiedBadgeFill } from "react-icons/ri";

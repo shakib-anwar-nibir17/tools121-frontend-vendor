@@ -1,5 +1,5 @@
 "use client";
-import { NewUploadSVGIcon } from "@/components/icons/icons";
+import { NewUploadSVGIcon } from "@/components/icons/Icons";
 import { useRef } from "react";
 const MediaInfo = () => {
   const fileRef = useRef();

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client";
-import { UserOutlinedIcon, UserProfileIcon } from "@/components/icons/icons";
+import { UserOutlinedIcon, UserProfileIcon } from "@/components/icons/Icons";
 import {
   DropdownMenu,
   DropdownMenuContent,

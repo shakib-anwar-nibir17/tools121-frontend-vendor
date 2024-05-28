@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { UploadIconSVG } from "../icons/icons";
+import { UploadIconSVG } from "../icons/Icons";
 
 const UploadBox = ({ text }) => {
   const fileRef = useRef();

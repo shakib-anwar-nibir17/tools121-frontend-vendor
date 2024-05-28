@@ -2,7 +2,7 @@ import FeatureRatedProducts from "@/components/Dashboard/Reviews/FeatureRatedPro
 import StarProgress from "@/components/Dashboard/Reviews/StarProgress";
 import RatingComponent from "@/components/common/RatingComponent";
 import SearchInput from "@/components/common/SearchInput";
-import { ReviewSVG } from "@/components/icons/icons";
+import { ReviewSVG } from "@/components/icons/Icons";
 import { BsChevronDown } from "react-icons/bs";
 
 const CustomerRating = () => {

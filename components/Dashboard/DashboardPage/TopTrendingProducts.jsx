@@ -1,5 +1,5 @@
 import TrendingItemCard from "@/components/common/TrendingItemCard";
-import { TopTrendingSVG } from "@/components/icons/icons";
+import { TopTrendingSVG } from "@/components/icons/Icons";
 
 const TopTrendingProducts = () => {
   return (

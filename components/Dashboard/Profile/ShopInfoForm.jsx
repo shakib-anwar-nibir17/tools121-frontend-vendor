@@ -1,4 +1,4 @@
-import { ShopSVG } from "@/components/icons/icons";
+import { ShopSVG } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
 
 const ShopInfoForm = () => {

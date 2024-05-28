@@ -1,6 +1,6 @@
 import CustomerReviewBox from "@/components/common/CustomerReviewBox";
 import Select from "@/components/common/Select";
-import { CustomerReviewSVG } from "@/components/icons/icons";
+import { CustomerReviewSVG } from "@/components/icons/Icons";
 import { BsChevronDown } from "react-icons/bs";
 
 const CustomerReview = () => {
