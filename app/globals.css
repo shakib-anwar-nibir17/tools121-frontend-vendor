@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-select {
+  @apply w-[71px] relative;
+}
+.custom-select select {
+  @apply appearance-none w-full text-[16px] py-[8px] pr-[16px] pl-[10px] bg-white border border-[#caced1] rounded-[6px] text-black cursor-pointer;
+}
+.custom-select::before,
+.custom-select::after {
+  --size: 0.3rem;
+  content: "";
+  @apply absolute right-[1rem];
+  pointer-events: none;
+}
+.custom-select::before {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-bottom: var(--size) solid black;
+  top: 40%;
+}
+.custom-select::after {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-top: var(--size) solid black;
+  top: 55%;
+}
+* {
+  @apply box-border;
+}
+body {
+  @apply min-h-screen grid place-items-center;
+}
