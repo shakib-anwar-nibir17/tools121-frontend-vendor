@@ -90,7 +90,7 @@ const ProductList = [
 
 const TodaysQuotation = () => {
   return (
-    <div className="max-w-[1189px] mt-10">
+    <div className="max-w-[1189px] mt-10 mb-20">
       <div className="flex items-center justify-between">
         <div className="text-lg font-medium border-b-[3px] py-3 border-primary-900 px-4">
           <h1 className="text-black">
@@ -103,7 +103,7 @@ const TodaysQuotation = () => {
           <PaginationComponent />
         </div>
       </div>
-      <Table className="mt-6 mb-20">
+      <Table className="mt-6">
         <TableHeader>
           <TableRow className="bg-primary-50 font-bold text-black rounded-l-lg">
             <TableHead>
@@ -157,6 +157,9 @@ const TodaysQuotation = () => {
           ))}
         </TableBody>
       </Table>
+      <div className="flex justify-end mt-6">
+        <PaginationComponent />
+      </div>
     </div>
   );
 };

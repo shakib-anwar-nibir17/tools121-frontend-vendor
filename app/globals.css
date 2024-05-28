@@ -27,9 +27,3 @@
   border-top: var(--size) solid black;
   top: 55%;
 }
-* {
-  @apply box-border;
-}
-body {
-  @apply min-h-screen grid place-items-center;
-}
