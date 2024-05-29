@@ -1,7 +1,7 @@
 import Notice from "@/components/common/Notice";
 
-const SupportPage = () => {
+const SubscriptionPage = () => {
   return <Notice />;
 };
 
-export default SupportPage;
+export default SubscriptionPage;

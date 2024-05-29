@@ -68,7 +68,7 @@ const GeneralMenu = [
     menu: "Advertising",
     icons: LiaUserTieSolid,
     value: "advertising",
-    route: "advertisement",
+    route: "advertising",
   },
   {
     menu: "Subscription",
