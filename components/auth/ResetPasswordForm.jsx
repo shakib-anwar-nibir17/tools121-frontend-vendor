@@ -1,80 +1,23 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useResetPasswordMutation } from "@/features/api/auth";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
-
-const schema = yup
-  .object({
-    new_password: yup
-      .string()
-      .required("New Password is required")
-      .min(6, "Password must be at least 6 characters long"),
-    // .matches(
-    //   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-    //   "Password must contain at least one letter and one number"
-    // ),
-    confirm_password: yup
-      .string()
-      .oneOf([yup.ref("new_password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
-  })
-  .required();
 
 export default function ResetPasswordForm() {
-  const router = useRouter();
-  const params = useSearchParams();
-  const { executeRecaptcha } = useGoogleReCaptcha();
   const [showPassword, setShowPassword] = useState(false);
-  const [resetPassword, { isLoading, isSuccess, error, isError }] =
-    useResetPasswordMutation();
+
   const {
     register,
-    handleSubmit,
+
     formState: { errors },
-    reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = useForm();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  async function onSubmit(data) {
-    const token = await executeRecaptcha("resend_otp");
-
-    const updated_data = {
-      login_name: params.get("_u"),
-      recaptcha_token: token,
-      ...data,
-    };
-
-    console.log("token----", updated_data);
-    try {
-      const res = await resetPassword(updated_data);
-      console.log(res);
-
-      if (res?.data) {
-        reset();
-        console.log("Successfully updated user info!");
-        router.push("/signin");
-      }
-      if (res?.error) {
-        console.log("Failed to updated user info");
-      }
-    } catch (error) {
-      console.log("Account updated failed");
-    }
-  }
-
   return (
-    <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-      {console.log("params", params.get("_u"))}
+    <form className="w-full">
       <div className="grid grid-cols-1 gap-x-8 w-full">
         <div className="mb-5">
           <label
@@ -136,6 +79,14 @@ export default function ResetPasswordForm() {
                 </svg>
               )}
             </span>
+          </div>
+          <div className="mt-2.5 font-bold flex items-center gap-3 justify-end">
+            <p>Password Strength</p>
+            <div className="w-[120px] h-3 rounded-xl flex">
+              <div className="bg-red-500 w-full h-full rounded-l-xl"></div>
+              <div className="bg-orange-500  w-full h-full"></div>
+              <div className="bg-green-500  w-full h-full rounded-r-xl"></div>
+            </div>
           </div>
           {errors.new_password && (
             <div className="text-red-500">{errors.new_password.message}</div>
@@ -210,7 +161,7 @@ export default function ResetPasswordForm() {
           )}
         </div>
       </div>
-      <Button type="submit" className="py-3 w-full rounded-xl mb-6">
+      <Button type="submit" className="h-16 text-xl w-full rounded-xl mb-6">
         Reset Password
       </Button>
     </form>

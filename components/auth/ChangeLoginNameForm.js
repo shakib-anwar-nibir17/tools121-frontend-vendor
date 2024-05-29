@@ -1,115 +1,70 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useUpdateUserMutation } from "@/features/api/auth";
-import { COOKIE_EXPIRE_MIN } from "@/lib/constants";
-import { yupResolver } from "@hookform/resolvers/yup";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
-
-const schema = yup
-  .object({
-    login_name: yup
-      .string()
-      .required("Login Name is required")
-      // .matches(
-      //   /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/,
-      //   "Login name can only contain Aa-Zz,0-9,-_ . _ or - cannot be at the start or end and should be used only once in a row."
-      // )
-      .min(6, "Login name must be at least 6 characters long"),
-  })
-  .required();
 
 export default function ChangeLoginNameForm() {
-  const router = useRouter();
-  const [updateUser, { isLoading, isSuccess, error, isError }] =
-    useUpdateUserMutation();
   const {
     register,
-    handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  async function onSubmit(data) {
-    try {
-      const res = await updateUser(data);
-      console.log(res);
-
-      if (res?.data) {
-        localStorage.setItem(
-          "user_info",
-          JSON.stringify({ login_name: data?.login_name })
-        );
-        const inExpireMin = new Date(
-          new Date().getTime() + COOKIE_EXPIRE_MIN * 60 * 1000
-        );
-        Cookies.set("authToken", res.data.token, {
-          expires: inExpireMin,
-        });
-        reset();
-        console.log("Successfully updated user info!");
-        router.refresh();
-      }
-      if (res?.error) {
-        console.log("Failed to updated user info");
-      }
-    } catch (error) {
-      console.log("Account updated failed");
-    }
-  }
+  } = useForm();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-2 gap-x-8 max-w-2xl">
-        <div className="mb-5 w-full">
-          <label
-            htmlFor="name"
-            className="text-primary-950 inline-block mb-1.5 font-normal"
-          >
-            Login Name
-          </label>
-          <div
-            className={`relative w-full overflow-hidden flex items-center rounded-xl border ${
-              errors.login_name?.message ? "border-red-400" : ""
-            } overflow-hidden`}
-          >
-            <input
-              {...register("login_name")}
-              className="py-2.5 px-4 w-full focus:outline-none"
-              id="login_name"
-              type="text"
-              placeholder="Enter Login Name"
-            />
+    <form className="text-black">
+      <div className="mb-2">
+        <label
+          htmlFor="mobile_number"
+          className="text-black inline-block mb-1.5 font-normal"
+        >
+          Mobile Number*
+        </label>
+        <div
+          className={`relative flex items-center border h-12 rounded-tl-xl rounded-r-xl overflow-hidden ${
+            errors.phone?.message ? "border-red-400" : ""
+          }`}
+        >
+          <div className="relative bg-[#E6E6E7] rounded-br-xl  focus:outline-none h-full w-28">
+            <select className="bg-[#E6E6E7] focus:outline-none h-full w-28 px-4 rounded-br-xl appearance-none">
+              <option value="" selected>
+                +88
+              </option>
+            </select>
+            <span className="absolute right-2 top-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                />
+              </svg>
+            </span>
           </div>
+          <input
+            {...register("phone")}
+            className="h-[51px] p-4 w-full focus:outline-none"
+            id="mobile_number"
+            type="text"
+            placeholder="Enter mobile number"
+          />
         </div>
-        {/* <div className="mb-5 w-full">
-          <label
-            htmlFor="name"
-            className="text-primary-950 inline-block mb-1.5 font-normal"
-          >
-            Last Name
-          </label>
-          <div
-            className={`relative w-full overflow-hidden flex items-center rounded-xl border`}
-          >
-            <input
-              className="py-2.5 px-4 w-full focus:outline-none"
-              id="name"
-              type="text"
-              placeholder="Last Name"
-            />
-          </div>
-        </div> */}
+        <div className="mt-2.5 font-bold flex items-center gap-3 justify-start">
+          <p>Require OTP Verification</p>
+        </div>
+        {errors.phone && (
+          <div className="text-red-500">{errors.phone.message}</div>
+        )}
       </div>
       <Button
         type="submit"
-        className="py-3 px-12 hover:text-white bg-[#ECF3FF] rounded-lg text-gray-800 mb-6"
+        className="h-16 text-lg rounded-lg  mb-6 w-full mt-5"
       >
-        Save
+        Send Verification Code
       </Button>
     </form>
   );

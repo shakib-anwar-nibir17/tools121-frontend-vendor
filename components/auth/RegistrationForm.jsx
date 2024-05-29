@@ -147,7 +147,7 @@ export default function RegistrationForm() {
           )}
         </div>
 
-        <div className="mb-2">
+        <div className="mb-5">
           <label
             htmlFor="password"
             className="text-black inline-block mb-1.5 font-normal"
@@ -207,6 +207,15 @@ export default function RegistrationForm() {
                 </svg>
               )}
             </span>
+          </div>
+
+          <div className="mt-2.5 font-bold flex items-center gap-3 justify-end">
+            <p>Password Strength</p>
+            <div className="w-[120px] h-3 rounded-xl flex">
+              <div className="bg-red-500 w-full h-full rounded-l-xl"></div>
+              <div className="bg-orange-500  w-full h-full"></div>
+              <div className="bg-green-500  w-full h-full rounded-r-xl"></div>
+            </div>
           </div>
           {errors.password && (
             <div className="text-red-500">{errors.password.message}</div>

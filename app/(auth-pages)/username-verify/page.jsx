@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -6,7 +5,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 
-export default function Verify() {
+const UserNameVerifyPage = () => {
   return (
     <>
       <div className="pb-11 text-center lg:text-left">
@@ -34,4 +33,6 @@ export default function Verify() {
       </p>
     </>
   );
-}
+};
+
+export default UserNameVerifyPage;

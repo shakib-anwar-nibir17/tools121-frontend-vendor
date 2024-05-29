@@ -1,332 +1,31 @@
 "use client";
-import { FacebookSVG, GoogleSVG } from "@/components/icons/icons";
-import { Spinner } from "@/components/ui/Spinner";
-import { Button } from "@/components/ui/button";
-import {
-  useLoginUserMutation,
-  useVerifyFTokenQuery,
-  useVerifyGTokenQuery,
-} from "@/features/api/auth";
-import { COOKIE_EXPIRE_MIN } from "@/lib/constants";
-import { yupResolver } from "@hookform/resolvers/yup";
-import Cookies from "js-cookie";
-import { signIn, signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import * as yup from "yup";
 
-const secret = process.env.NEXTAUTH_SECRET;
-const schema = yup
-  .object({
-    login_name: yup
-      .string()
-      .required("Login name is required")
-      .matches(
-        /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/,
-        "Login name can only contain Aa-Zz,0-9,-_ . _ or - cannot be at the start or end and should be used only once in a row."
-      )
-      .min(6, "Login name must be at least 6 characters long"),
-    password: yup
-      .string()
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters long"),
-  })
-  .required();
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
-  const [recaptchaValue, setRecaptchaValue] = useState(null);
-  const { executeRecaptcha } = useGoogleReCaptcha();
-  const router = useRouter();
   const {
     register,
-    handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const [isAuthChecking, setIsAuthChecking] = useState(false);
-  const [gAuthData, setGAuthData] = useState("");
-  const [fAuthData, setFAuthData] = useState({
-    access_token: "",
-    user_email: "",
-  });
-  const [isCall, setIsCall] = useState(true);
-  const [isFCall, setIsFCall] = useState(true);
-
-  const {
-    data,
-    isLoading: isLoading_g,
-    isSuccess: isSuccess_g,
-    isFetching,
-    isError: isError_g,
-  } = useVerifyGTokenQuery({ access_token: gAuthData }, { skip: isCall });
-  const {
-    data: data_f,
-    isLoading: isLoading_f,
-    isSuccess: isSuccess_f,
-    isFetching: isFetching_f,
-    isError: isError_f,
-  } = useVerifyFTokenQuery({ ...fAuthData }, { skip: isFCall });
-  const [loginUser, { isLoading, isSuccess }] = useLoginUserMutation();
-  const { data: session, loading, status } = useSession();
-
-  useEffect(() => {
-    // console.log("session", session);
-    if (session) {
-      let activeProvider = localStorage.getItem("active_provider");
-      let auth_token = session.user?.accessToken;
-      let user_email = session.user?.email;
-      if (activeProvider == "google") {
-        setGAuthData(auth_token);
-        setIsCall(false);
-      }
-      if (activeProvider == "facebook") {
-        setFAuthData({
-          access_token: auth_token,
-          user_email: user_email,
-        });
-        setIsFCall(false);
-      }
-    }
-  }, [session]);
-
-  useEffect(() => {
-    if (isSuccess_g) {
-      // console.log('data for token', data);
-      if (data?.status_code === 200) {
-        localStorage.setItem(
-          "user_info",
-          JSON.stringify({ login_name: data?.name })
-        );
-        const inExpireMin = new Date(
-          new Date().getTime() + COOKIE_EXPIRE_MIN * 60 * 1000
-        );
-        Cookies.set("authToken", data.access_token, {
-          expires: inExpireMin,
-        });
-
-        Cookies.set("tokenType", data.token_type, {
-          expires: inExpireMin,
-        });
-
-        setIsAuthChecking(false);
-        return router.push(`/profile`);
-      } else {
-        setIsAuthChecking(false);
-        signOut("google");
-      }
-    }
-  }, [isSuccess_g]);
-
-  useEffect(() => {
-    if (isSuccess_f) {
-      // console.log('data for token', data);
-      if (data?.status_code === 200) {
-        localStorage.setItem(
-          "user_info",
-          JSON.stringify({ login_name: data?.name })
-        );
-        const inExpireMin = new Date(
-          new Date().getTime() + COOKIE_EXPIRE_MIN * 60 * 1000
-        );
-        Cookies.set("authToken", data.access_token, {
-          expires: inExpireMin,
-        });
-
-        Cookies.set("tokenType", data.token_type, {
-          expires: inExpireMin,
-        });
-
-        setIsAuthChecking(false);
-        return router.push(`/profile`);
-      } else {
-        setIsAuthChecking(false);
-        signOut("facebook");
-      }
-    }
-  }, [isSuccess_f]);
-
-  useEffect(() => {
-    if (isError_g) {
-      toast.error("Something went wrong. Please try again!");
-    }
-  }, [isError_g]);
-
-  useEffect(() => {
-    if (isError_f) {
-      toast.error("Something went wrong. Please try again!");
-    }
-  }, [isError_f]);
-
-  // function backendapi(auth_token, providerName) {
-  //   try {
-  //     fetch(`https://testapireal.tools121.com/auth/${providerName}?token=${auth_token}`, {
-  //       method: "get",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }).then((data) => data.json())
-  //       .then((res) => {
-  //         if(res?.status_code === 200){
-  //           localStorage.setItem(
-  //             "user_info",
-  //             JSON.stringify({ login_name: res?.name })
-  //           );
-  //           const inExpireMin = new Date(
-  //             new Date().getTime() + COOKIE_EXPIRE_MIN * 60 * 1000
-  //           );
-  //           Cookies.set("authToken", res.access_token, {
-  //             expires: inExpireMin,
-  //           });
-  //           Cookies.set("tokenType", res.token_type, {
-  //             expires: inExpireMin,
-  //           });
-  //           return router.push(`/profile`);
-  //         }else{
-  //           signOut(providerName);
-  //         }
-  //       })
-  //   } catch (error) {
-  //     signOut(providerName);
-  //   }
-  // }
-  // function backendapi2(auth_token, providerName, user_email) {
-  //   try {
-  //     fetch(`https://testapireal.tools121.com/auth/${providerName}?token=${auth_token}&email=${user_email}`, {
-  //       method: "get",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }).then((data) => data.json())
-  //       .then((res) => {
-  //         // console.log('response', res);
-  //         if(res?.status_code === 200){
-  //           localStorage.setItem(
-  //             "user_info",
-  //             JSON.stringify({ login_name: res?.name })
-  //           );
-  //           const inExpireMin = new Date(
-  //             new Date().getTime() + COOKIE_EXPIRE_MIN * 60 * 1000
-  //           );
-  //           Cookies.set("authToken", res.access_token, {
-  //             expires: inExpireMin,
-  //           });
-  //           Cookies.set("tokenType", res.token_type, {
-  //             expires: inExpireMin,
-  //           });
-  //           return router.push(`/profile`);
-  //         }else{
-  //           signOut(providerName);
-  //         }
-  //       })
-  //   } catch (error) {
-  //     signOut(providerName);
-  //   }
-  // }
+  } = useForm();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const hangleSocialLogin = (provider) => {
-    setIsAuthChecking(true);
-    localStorage.setItem("active_provider", provider);
-    signIn(provider, { callbackUrl: "/profile" });
-  };
-
-  async function onSubmit(data) {
-    // console.log("called submit", recaptchaValue);
-    const token = await executeRecaptcha("login");
-    const updated_data = {
-      ...data,
-      recaptcha_token: token,
-    };
-
-    try {
-      const res = await loginUser(updated_data);
-
-      if (res?.data) {
-        localStorage.setItem(
-          "user_info",
-          JSON.stringify({ login_name: data?.login_name })
-        );
-        const inExpireMin = new Date(
-          new Date().getTime() + COOKIE_EXPIRE_MIN * 60 * 1000
-        );
-        Cookies.set("authToken", res.data.access_token, {
-          expires: inExpireMin,
-        });
-        Cookies.set("tokenType", res.data.token_type, {
-          expires: inExpireMin,
-        });
-        console.log("Successfully Logged In!");
-        router.push(`/profile`);
-      }
-      if (res?.error) {
-        console.log("Failed to logged in the user");
-      }
-    } catch (error) {
-      console.log("Login failed");
-    }
-  }
   return (
     <>
-      {isAuthChecking && (
-        <div className="">
-          <Spinner />
-        </div>
-      )}
-
       <div className="text-center lg:text-left mt-16 md:mt-10 mb-6">
-        <h1 className=" text-2xl sm:text-3xl lg:text-4xl text-main-950 font-bold pb-3 pt-3">
+        <h1 className=" text-2xl sm:text-3xl lg:text-4xl text-black font-bold pb-3 pt-3">
           Sign In
         </h1>
-        {/* <p>Start your 30 day free trial, cancel anytime</p> */}
+        <p>Log in to your account form here.</p>
       </div>
 
-      <div className="text-center lg:text-left space-y-4 mb-5">
-        {/* <Link
-              href={"https://testapireal.tools121.com/glogin"}
-              target="_blank"
-            >
-            </Link> */}
-        <button
-          onClick={() => hangleSocialLogin("google")}
-          className="border border-[#E6E6E7] mx-auto lg:ml-0 transition duration-500 bg-white hover:bg-slate-50 hover:border-blue-600 hover:text-blue-600 text-[#01060D] flex items-center justify-center space-x-4 rounded-xl w-full py-2.5 px-4"
-        >
-          <span>
-            <GoogleSVG />
-          </span>
-          <span>Continue with Google</span>
-        </button>
-
-        <button
-          onClick={() => hangleSocialLogin("facebook")}
-          className="border border-[#E6E6E7] mx-auto lg:ml-0 transition duration-500 bg-white hover:bg-slate-50 hover:border-blue-600 hover:text-blue-600 text-[#01060D] flex items-center justify-center space-x-4 rounded-xl w-full py-2.5 px-4"
-        >
-          <span>
-            <FacebookSVG />
-          </span>
-          <span>Continue with Facebook</span>
-        </button>
-      </div>
-
-      <div className="relative mb-4 hidden lg:block">
-        <div className="absolute inset-0 flex items-center" aria-hidden="true">
-          <div className="w-full border-t border-gray-200"></div>
-        </div>
-        <div className="relative flex justify-center text-sm font-medium leading-6">
-          <span className="bg-white px-6 text-gray-900">Or</span>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <div className="mb-5">
           <label
             htmlFor="login_name"
@@ -413,16 +112,9 @@ export default function SignIn() {
               Forgot Password?
             </Link>
           </div>
-          {/* <div className="my-5">
-                <ReCAPTCHA
-                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY_V2}
-                  onChange={(value) => setRecaptchaValue(value)}
-                />
-              </div> */}
         </div>
 
-        <Button type="submit" className="py-3 w-full  rounded-xl mb-6">
-          {" "}
+        <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-6">
           Sign In
         </Button>
       </form>
