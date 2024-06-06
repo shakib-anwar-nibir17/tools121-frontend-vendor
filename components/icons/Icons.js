@@ -1143,3 +1143,505 @@ export const MainLogoSVG = (props) => (
     />
   </svg>
 );
+
+export const DeleteSVG = (props) => (
+  <svg
+    width={15}
+    height={18}
+    viewBox="0 0 15 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs />
+    <path
+      id="Vector"
+      d="M14.25 3L11.92 3C11.56 1.25 10.03 0 8.25 0L6.75 0C4.96 0 3.43 1.25 3.07 3L0.75 3C0.33 3 0 3.33 0 3.75C0 4.16 0.33 4.5 0.75 4.5L1.5 4.5L1.5 14.25C1.5 16.32 3.17 17.99 5.25 18L9.75 18C11.82 17.99 13.49 16.32 13.5 14.25L13.5 4.5L14.25 4.5C14.66 4.5 15 4.16 15 3.75C15 3.33 14.66 3 14.25 3ZM6.75 12.75C6.75 13.16 6.41 13.5 6 13.5C5.58 13.5 5.25 13.16 5.25 12.75L5.25 8.25C5.25 7.83 5.58 7.5 6 7.5C6.41 7.5 6.75 7.83 6.75 8.25L6.75 12.75L6.75 12.75ZM9.75 12.75C9.75 13.16 9.41 13.5 9 13.5C8.58 13.5 8.25 13.16 8.25 12.75L8.25 8.25C8.25 7.83 8.58 7.5 9 7.5C9.41 7.5 9.75 7.83 9.75 8.25L9.75 12.75ZM4.62 3C4.94 2.1 5.79 1.5 6.75 1.5L8.25 1.5C9.2 1.5 10.05 2.1 10.37 3L4.62 3Z"
+      fill="#7B7C80"
+      fillOpacity={1}
+      fillRule="nonzero"
+    />
+  </svg>
+);
+
+export const DateIconSVG = (props) => (
+  <svg
+    width={19.5}
+    height={21.5}
+    viewBox="0 0 19.5 21.5"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs />
+    <path
+      id="Line_200"
+      d="M0.84 8.15L18.66 8.15"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+    <path
+      id="Line_201"
+      d="M14.19 12.05L14.2 12.05"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+    <path
+      id="Line_202"
+      d="M9.75 12.05L9.76 12.05"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+    <path
+      id="Line_203"
+      d="M5.3 12.05L5.31 12.05"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+    <path
+      id="Line_204"
+      d="M14.19 15.94L14.2 15.94"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+    <path
+      id="Line_205"
+      d="M9.75 15.94L9.76 15.94"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+    <path
+      id="Line_206"
+      d="M5.3 15.94L5.31 15.94"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+    <path
+      id="Line_207"
+      d="M13.79 0.75L13.79 4.04"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+    <path
+      id="Line_208"
+      d="M5.71 0.75L5.71 4.04"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+    <path
+      id="Path"
+      d="M5.52 2.33C2.58 2.33 0.75 3.96 0.75 6.97L0.75 16.02C0.75 19.07 2.58 20.75 5.52 20.75L13.97 20.75C16.92 20.75 18.75 19.1 18.75 16.09L18.75 6.97C18.75 3.96 16.93 2.33 13.98 2.33L5.52 2.33Z"
+      stroke="#A8B7D4"
+      strokeOpacity={1}
+      strokeWidth={1.5}
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const InvoiceSVG = (props) => (
+  <svg
+    width={36}
+    height={36}
+    viewBox="0 0 36 36"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip3379_24970">
+        <rect
+          id="fi-sr-info"
+          width={16}
+          height={16}
+          transform="translate(10.000000 10.000000)"
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+      <clipPath id="clip3379_24969">
+        <rect
+          id="Circle Icon Bagde"
+          rx={18}
+          width={36}
+          height={36}
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="Circle Icon Bagde"
+      rx={18}
+      width={36}
+      height={36}
+      fill="#EBEEFF"
+      fillOpacity={1}
+    />
+    <g clipPath="url(#clip3379_24969)">
+      <rect
+        id="fi-sr-info"
+        width={16}
+        height={16}
+        transform="translate(10.000000 10.000000)"
+        fill="#FFFFFF"
+        fillOpacity={0}
+      />
+      <g clipPath="url(#clip3379_24970)">
+        <path
+          id="Vector"
+          d="M18 26C19.58 26 21.12 25.53 22.44 24.65C23.75 23.77 24.78 22.52 25.39 21.06C25.99 19.59 26.15 17.99 25.84 16.43C25.53 14.88 24.77 13.46 23.65 12.34C22.53 11.22 21.11 10.46 19.56 10.15C18 9.84 16.4 10 14.93 10.6C13.47 11.21 12.22 12.24 11.34 13.55C10.46 14.87 10 16.41 10 18C10 20.12 10.84 22.15 12.34 23.65C13.84 25.15 15.87 25.99 18 26ZM18 13.33C18.19 13.33 18.39 13.39 18.55 13.5C18.71 13.61 18.84 13.76 18.92 13.95C19 14.13 19.01 14.33 18.98 14.52C18.94 14.72 18.84 14.9 18.7 15.04C18.56 15.17 18.38 15.27 18.19 15.31C18 15.35 17.79 15.33 17.61 15.25C17.43 15.18 17.27 15.05 17.16 14.88C17.05 14.72 17 14.53 17 14.33C17 14.06 17.1 13.81 17.29 13.62C17.48 13.43 17.73 13.33 18 13.33ZM17.33 16.66L18 16.66C18.35 16.66 18.69 16.8 18.94 17.05C19.19 17.3 19.33 17.64 19.33 18L19.33 22C19.33 22.17 19.26 22.34 19.13 22.47C19.01 22.59 18.84 22.66 18.66 22.66C18.49 22.66 18.32 22.59 18.19 22.47C18.07 22.34 18 22.17 18 22L18 18L17.33 18C17.15 18 16.98 17.92 16.86 17.8C16.73 17.67 16.66 17.5 16.66 17.33C16.66 17.15 16.73 16.98 16.86 16.86C16.98 16.73 17.15 16.66 17.33 16.66Z"
+          fill="#883DCF"
+          fillOpacity={1}
+          fillRule="nonzero"
+        />
+      </g>
+    </g>
+  </svg>
+);
+
+export const ShippingSVG = (props) => (
+  <svg
+    width={36}
+    height={36}
+    viewBox="0 0 36 36"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip3379_25010">
+        <rect
+          id="fi-sr-truck-side"
+          width={16}
+          height={16}
+          transform="translate(10.000000 10.000000)"
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+      <clipPath id="clip3379_25009">
+        <rect
+          id="Circle Icon Bagde"
+          rx={18}
+          width={36}
+          height={36}
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="Circle Icon Bagde"
+      rx={18}
+      width={36}
+      height={36}
+      fill="#EBEEFF"
+      fillOpacity={1}
+    />
+    <g clipPath="url(#clip3379_25009)">
+      <rect
+        id="fi-sr-truck-side"
+        width={16}
+        height={16}
+        transform="translate(10.000000 10.000000)"
+        fill="#FFFFFF"
+        fillOpacity={0}
+      />
+      <g clipPath="url(#clip3379_25010)">
+        <path
+          id="Vector"
+          d="M20 22L12.66 22C11.95 22 11.28 21.71 10.78 21.21C10.28 20.71 10 20.03 10 19.33L10 14C10 13.11 10.35 12.26 10.97 11.64C11.6 11.01 12.44 10.66 13.33 10.66L16.66 10.66C17.1 10.66 17.53 10.75 17.94 10.91C18.34 11.08 18.71 11.33 19.02 11.64C19.33 11.95 19.57 12.31 19.74 12.72C19.91 13.12 20 13.56 20 14L20 22ZM26 17.33L26 16.66C26 16.22 25.91 15.79 25.74 15.39C25.57 14.98 25.33 14.61 25.02 14.3C24.71 14 24.34 13.75 23.94 13.58C23.53 13.41 23.1 13.33 22.66 13.33L21.33 13.33L21.33 17.33L26 17.33ZM21.33 18.66L21.33 22L23.33 22C24.04 22 24.71 21.71 25.21 21.21C25.71 20.71 26 20.03 26 19.33L26 18.66L21.33 18.66ZM12.7 23.33C12.68 23.44 12.66 23.55 12.66 23.66C12.66 24.1 12.84 24.53 13.15 24.84C13.46 25.15 13.89 25.33 14.33 25.33C14.77 25.33 15.19 25.15 15.51 24.84C15.82 24.53 16 24.1 16 23.66C15.99 23.55 15.98 23.44 15.96 23.33L12.7 23.33ZM20.03 23.33C20.01 23.44 20 23.55 20 23.66C20 24.1 20.17 24.53 20.48 24.84C20.8 25.15 21.22 25.33 21.66 25.33C22.1 25.33 22.53 25.15 22.84 24.84C23.15 24.53 23.33 24.1 23.33 23.66C23.33 23.55 23.31 23.44 23.29 23.33L20.03 23.33Z"
+          fill="#883DCF"
+          fillOpacity={1}
+          fillRule="nonzero"
+        />
+      </g>
+    </g>
+  </svg>
+);
+
+export const ShippingSVG2 = (props) => (
+  <svg
+    width={18}
+    height={18}
+    viewBox="0 0 18 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip3379_25030">
+        <rect
+          id="fi-sr-truck-side"
+          width={18}
+          height={18}
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="fi-sr-truck-side"
+      width={18}
+      height={18}
+      fill="#FFFFFF"
+      fillOpacity={0}
+    />
+    <g clipPath="url(#clip3379_25030)">
+      <path
+        id="Vector"
+        d="M11.25 13.5L3 13.5C2.2 13.5 1.44 13.18 0.87 12.62C0.31 12.05 0 11.29 0 10.5L0 4.5C0 3.5 0.39 2.55 1.09 1.84C1.8 1.14 2.75 0.75 3.75 0.75L7.5 0.75C7.99 0.75 8.48 0.84 8.93 1.03C9.38 1.22 9.8 1.5 10.15 1.84C10.5 2.19 10.77 2.6 10.96 3.06C11.15 3.51 11.25 4 11.25 4.5L11.25 13.5ZM18 8.25L18 7.5C18 7 17.9 6.51 17.71 6.06C17.52 5.6 17.25 5.19 16.9 4.84C16.55 4.5 16.13 4.22 15.68 4.03C15.23 3.84 14.74 3.75 14.25 3.75L12.75 3.75L12.75 8.25L18 8.25ZM12.75 9.75L12.75 13.5L15 13.5C15.79 13.5 16.55 13.18 17.12 12.62C17.68 12.05 18 11.29 18 10.5L18 9.75L12.75 9.75ZM3.04 15C3.01 15.12 3 15.24 3 15.37C3 15.87 3.19 16.34 3.54 16.7C3.9 17.05 4.37 17.25 4.87 17.25C5.37 17.25 5.84 17.05 6.2 16.7C6.55 16.34 6.75 15.87 6.75 15.37C6.74 15.24 6.73 15.12 6.7 15L3.04 15ZM11.29 15C11.26 15.12 11.25 15.24 11.25 15.37C11.25 15.87 11.44 16.34 11.79 16.7C12.15 17.05 12.62 17.25 13.12 17.25C13.62 17.25 14.09 17.05 14.45 16.7C14.8 16.34 15 15.87 15 15.37C14.99 15.24 14.98 15.12 14.95 15L11.29 15Z"
+        fill="#C2C6CE"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+    </g>
+  </svg>
+);
+
+export const ShippingAddressSVG = (props) => (
+  <svg
+    width={18}
+    height={18}
+    viewBox="0 0 18 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip3379_25015">
+        <rect
+          id="fi-sr-receipt"
+          width={18}
+          height={18}
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="fi-sr-receipt"
+      width={18}
+      height={18}
+      fill="#FFFFFF"
+      fillOpacity={0}
+    />
+    <g clipPath="url(#clip3379_25015)">
+      <path
+        id="Vector"
+        d="M6 0C5 0 4.05 0.39 3.34 1.09C2.64 1.8 2.25 2.75 2.25 3.75L2.25 17.25C2.25 17.38 2.28 17.51 2.35 17.63C2.42 17.75 2.52 17.84 2.65 17.91C2.77 17.97 2.9 18 3.04 17.99C3.17 17.99 3.31 17.94 3.42 17.86L5 16.78L6.58 17.86C6.7 17.95 6.85 18 7 18C7.15 18 7.3 17.95 7.42 17.86L9 16.78L10.57 17.86C10.7 17.95 10.85 18 11 18C11.15 18 11.3 17.95 11.42 17.86L13 16.79L14.57 17.86C14.69 17.94 14.82 17.99 14.95 17.99C15.09 18 15.22 17.97 15.34 17.91C15.47 17.84 15.57 17.75 15.64 17.63C15.71 17.51 15.75 17.38 15.75 17.25L15.75 3.75C15.74 2.75 15.35 1.8 14.65 1.09C13.94 0.39 12.99 0 12 0L6 0ZM10.5 10.5L6 10.5C5.8 10.5 5.61 10.42 5.46 10.28C5.32 10.14 5.25 9.94 5.25 9.75C5.25 9.55 5.32 9.35 5.46 9.21C5.61 9.07 5.8 9 6 9L10.5 9C10.69 9 10.88 9.07 11.03 9.21C11.17 9.35 11.25 9.55 11.25 9.75C11.25 9.94 11.17 10.14 11.03 10.28C10.88 10.42 10.69 10.5 10.5 10.5ZM12.75 6.75C12.75 6.94 12.67 7.14 12.53 7.28C12.38 7.42 12.19 7.5 12 7.5L6 7.5C5.8 7.5 5.61 7.42 5.46 7.28C5.32 7.14 5.25 6.94 5.25 6.75C5.25 6.55 5.32 6.35 5.46 6.21C5.61 6.07 5.8 6 6 6L12 6C12.19 6 12.38 6.07 12.53 6.21C12.67 6.35 12.75 6.55 12.75 6.75Z"
+        fill="#C2C6CE"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+    </g>
+  </svg>
+);
+
+export const CustomerSVG = (props) => (
+  <svg
+    width={13.5}
+    height={18}
+    viewBox="0 0 13.5 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs />
+    <path
+      id="Vector"
+      d="M11.25 4.5C11.25 6.98 9.23 9 6.75 9C4.26 9 2.25 6.98 2.25 4.5C2.25 2.01 4.26 0 6.75 0C9.23 0 11.25 2.01 11.25 4.5Z"
+      fill="#C2C6CE"
+      fillOpacity={1}
+      fillRule="evenodd"
+    />
+    <path
+      id="Vector"
+      d="M6.75 10.5C3.02 10.5 0 13.52 0 17.25C0 17.66 0.33 18 0.75 18L12.75 18C13.16 18 13.5 17.66 13.5 17.25C13.49 13.52 10.47 10.5 6.75 10.5Z"
+      fill="#C2C6CE"
+      fillOpacity={1}
+      fillRule="nonzero"
+    />
+  </svg>
+);
+
+export const EmailSVG2 = (props) => (
+  <svg
+    width={18}
+    height={18}
+    viewBox="0 0 18 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip3379_24988">
+        <rect
+          id="fi-sr-envelope"
+          width={18}
+          height={18}
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="fi-sr-envelope"
+      width={18}
+      height={18}
+      fill="#FFFFFF"
+      fillOpacity={0}
+    />
+    <g clipPath="url(#clip3379_24988)">
+      <path
+        id="Vector"
+        d="M17.96 4.15L11.65 10.47C10.94 11.17 9.99 11.56 9 11.56C8 11.56 7.05 11.17 6.34 10.47L0.03 4.15C0.02 4.27 0 4.38 0 4.5L0 13.5C0 14.49 0.39 15.44 1.09 16.15C1.8 16.85 2.75 17.24 3.75 17.25L14.25 17.25C15.24 17.24 16.19 16.85 16.9 16.15C17.6 15.44 17.99 14.49 18 13.5L18 4.5C18 4.38 17.97 4.27 17.96 4.15Z"
+        fill="#C2C6CE"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+      <path
+        id="Vector"
+        d="M10.59 9.41L17.44 2.55C17.1 2 16.64 1.55 16.08 1.23C15.52 0.91 14.89 0.75 14.25 0.75L3.75 0.75C3.1 0.75 2.47 0.91 1.91 1.23C1.35 1.55 0.88 2 0.55 2.55L7.4 9.41C7.83 9.83 8.4 10.06 9 10.06C9.59 10.06 10.16 9.83 10.59 9.41Z"
+        fill="#C2C6CE"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+    </g>
+  </svg>
+);
+
+export const PhoneSVG2 = (props) => (
+  <svg
+    width={18}
+    height={18}
+    viewBox="0 0 18 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip3379_24998">
+        <rect
+          id="fi-sr-smartphone"
+          width={18}
+          height={18}
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="fi-sr-smartphone"
+      width={18}
+      height={18}
+      fill="#FFFFFF"
+      fillOpacity={0}
+    />
+    <g clipPath="url(#clip3379_24998)">
+      <path
+        id="Vector"
+        d="M11.25 0L6.75 0C5.75 0 4.8 0.39 4.09 1.09C3.39 1.8 3 2.75 3 3.75L3 12L15 12L15 3.75C14.99 2.75 14.6 1.8 13.9 1.09C13.19 0.39 12.24 0 11.25 0L11.25 0Z"
+        fill="#C2C6CE"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+      <path
+        id="Vector"
+        d="M3 14.25C3 15.24 3.39 16.19 4.09 16.9C4.8 17.6 5.75 17.99 6.75 18L11.25 18C12.24 17.99 13.19 17.6 13.9 16.9C14.6 16.19 14.99 15.24 15 14.25L15 13.5L3 13.5L3 14.25ZM9 15C9.14 15 9.29 15.04 9.41 15.12C9.54 15.2 9.63 15.32 9.69 15.46C9.75 15.59 9.76 15.75 9.73 15.89C9.7 16.04 9.63 16.17 9.53 16.28C9.42 16.38 9.29 16.45 9.14 16.48C9 16.51 8.84 16.5 8.71 16.44C8.57 16.38 8.45 16.28 8.37 16.16C8.29 16.04 8.25 15.89 8.25 15.75C8.25 15.55 8.32 15.35 8.46 15.21C8.61 15.07 8.8 15 9 15Z"
+        fill="#C2C6CE"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+    </g>
+  </svg>
+);
+
+export const CopySVG = (props) => (
+  <svg
+    width={18}
+    height={18}
+    viewBox="0 0 18 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    {...props}
+  >
+    <desc>{"\n\t\t\tCreated with Pixso.\n\t"}</desc>
+    <defs>
+      <clipPath id="clip3379_24996">
+        <rect
+          id="fi-sr-copy"
+          width={16}
+          height={16}
+          transform="translate(1.000000 1.000000)"
+          fill="white"
+          fillOpacity={0}
+        />
+      </clipPath>
+    </defs>
+    <rect
+      id="fi-sr-copy"
+      width={16}
+      height={16}
+      transform="translate(1.000000 1.000000)"
+      fill="#FFFFFF"
+      fillOpacity={0}
+    />
+    <g clipPath="url(#clip3379_24996)">
+      <path
+        id="Vector"
+        d="M11 14.33L4.33 14.33C3.44 14.33 2.6 13.98 1.97 13.35C1.35 12.73 1 11.88 1 11L1 4.33C1 3.44 1.35 2.6 1.97 1.97C2.6 1.35 3.44 1 4.33 1L11 1C11.88 1 12.73 1.35 13.35 1.97C13.98 2.6 14.33 3.44 14.33 4.33L14.33 11C14.33 11.88 13.98 12.73 13.35 13.35C12.73 13.98 11.88 14.33 11 14.33ZM17 13.66L17 5C17 4.82 16.92 4.65 16.8 4.52C16.67 4.4 16.5 4.33 16.33 4.33C16.15 4.33 15.98 4.4 15.86 4.52C15.73 4.65 15.66 4.82 15.66 5L15.66 13.66C15.66 14.19 15.45 14.7 15.08 15.08C14.7 15.45 14.19 15.66 13.66 15.66L5 15.66C4.82 15.66 4.65 15.73 4.52 15.86C4.4 15.98 4.33 16.15 4.33 16.33C4.33 16.5 4.4 16.67 4.52 16.8C4.65 16.92 4.82 17 5 17L13.66 17C14.55 16.99 15.39 16.64 16.02 16.02C16.64 15.39 16.99 14.55 17 13.66Z"
+        fill="#374957"
+        fillOpacity={1}
+        fillRule="nonzero"
+      />
+    </g>
+  </svg>
+);

@@ -27,7 +27,18 @@ const GeneralMenu = [
   {
     menu: "Orders",
     icons: BsCart3,
-    submenu: [],
+    submenu: [
+      {
+        name: "Create New Order",
+        subRoute: "orders/create-new-orders",
+        value: "createNewOrder",
+      },
+      {
+        name: "Invoice List",
+        subRoute: "orders/invoice-list",
+        value: "invoiceList",
+      },
+    ],
     route: "orders",
   },
   {
