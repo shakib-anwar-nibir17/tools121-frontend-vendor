@@ -2,7 +2,7 @@ import { BsBoxes, BsCart3 } from "react-icons/bs";
 import { GrDocumentPerformance, GrDocumentText } from "react-icons/gr";
 import { IoHeadsetOutline } from "react-icons/io5";
 import { LiaUserTieSolid } from "react-icons/lia";
-import { PiSquaresFour, PiUsersThreeLight } from "react-icons/pi";
+import { PiSquaresFour } from "react-icons/pi";
 import { TbReportSearch } from "react-icons/tb";
 
 const GeneralMenu = [
@@ -62,12 +62,6 @@ const GeneralMenu = [
       },
     ],
     route: "inventory",
-  },
-  {
-    menu: "CRM",
-    icons: PiUsersThreeLight,
-    submenu: [],
-    route: "crm",
   },
   {
     menu: "Traffic Analytics",
