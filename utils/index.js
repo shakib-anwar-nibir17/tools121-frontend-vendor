@@ -17,3 +17,12 @@ export const loadSettingsMenu = async () => {
   const menus = await settingsMenu.menus();
   return menus;
 };
+
+const shopCategories = {
+  menus: () => import("./ShopCategories.js").then((module) => module.default),
+};
+
+export const loadShopCategories = async () => {
+  const menus = await shopCategories.menus();
+  return menus;
+};
