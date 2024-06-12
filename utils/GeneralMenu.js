@@ -63,7 +63,7 @@ const GeneralMenu = [
       },
       {
         name: "Product Request List",
-        subRoute: "product-request-list",
+        subRoute: "inventory/product-request-list",
         value: "product-request-list",
       },
     ],
