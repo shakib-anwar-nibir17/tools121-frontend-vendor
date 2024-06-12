@@ -10,27 +10,22 @@ const CustomerReviewBox = () => {
   return (
     <div className="mb-6">
       <div className="grid grid-cols-12 w-full gap-14">
-        {/* user name & email */}
-        <div className=" col-span-2">
-          <div className="flex gap-2">
-            <Checkbox className="w-4 h-4 border border-black rounded-md" />
+        <div className=" col-span-4 flex gap-3">
+          <Checkbox className="w-4 h-4 border border-black rounded-md" />
+          <div className="w-12 h-12">
             <Image
-              width={40}
-              height={40}
+              width={48}
+              height={48}
               alt="user_avatar"
-              src={"/avatar.png"}
+              src={"/item-pic2.png"}
             />
-            <div>
-              <p className="text-black">Bryane Crape</p>
-              <p className="text-[14px] text-primary-900">
-                branecrape@gmail.com
-              </p>
-            </div>
           </div>
+          <p className="text-black font-bold">
+            RIG-BS-6025RF Research Upright Metallurgical Microscope
+          </p>
         </div>
-
         {/* user review and reply options */}
-        <div className=" col-span-5 pl-6">
+        <div className=" col-span-4 pl-6">
           <p>
             Very Good Products!...Their service is marked by efficiency and
             punctuality. They’ve helped us stay ahead of the curve in our
@@ -74,13 +69,25 @@ const CustomerReviewBox = () => {
             </div>
           )}
         </div>
-        <div className=" col-span-3">
-          <p className="text-black font-bold">
-            RIG-BS-6025RF Research Upright Metallurgical Microscope
-          </p>
-        </div>
-        <div className=" col-span-2 flex justify-end">
-          <p>05/19/2024 at 3.50 pm</p>
+        {/* user name & email */}
+        <div className=" col-span-4">
+          <div className="flex gap-2">
+            <div className="w-10 h-10 rounded-full">
+              <Image
+                width={40}
+                height={40}
+                className="rounded-full"
+                alt="user_avatar"
+                src={"/avatar.png"}
+              />
+            </div>
+            <div>
+              <p className="text-black">Bryane Crape</p>
+              <p className="text-[14px] text-primary-900">
+                branecrape@gmail.com
+              </p>
+            </div>
+          </div>
         </div>
       </div>
       <hr className="border-[2px] border-slate-200 px-6 mt-8" />

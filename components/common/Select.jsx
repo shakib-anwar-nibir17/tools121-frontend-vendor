@@ -7,13 +7,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const SelectOptions = () => {
+const SelectOptions = ({ placeholder }) => {
   return (
     <Select>
-      <SelectTrigger className="bg-primary-50">
-        <SelectValue placeholder="Type or select product category" />
+      <SelectTrigger className="bg-white">
+        <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent className="bg-primary-50">
+      <SelectContent className="bg-white">
         <SelectGroup>
           <SelectItem value="apple">Apple</SelectItem>
           <SelectItem value="banana">Banana</SelectItem>

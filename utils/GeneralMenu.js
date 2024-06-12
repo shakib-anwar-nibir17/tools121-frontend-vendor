@@ -1,4 +1,4 @@
-import { BsBoxes, BsCart3 } from "react-icons/bs";
+import { BsBoxes, BsCart3, BsChatSquareText } from "react-icons/bs";
 import { GrDocumentPerformance, GrDocumentText } from "react-icons/gr";
 import { IoHeadsetOutline } from "react-icons/io5";
 import { LiaUserTieSolid } from "react-icons/lia";
@@ -11,6 +11,12 @@ const GeneralMenu = [
     icons: PiSquaresFour,
     route: "dashboard",
     value: "dashboard",
+  },
+  {
+    menu: "Reviews",
+    icons: BsChatSquareText,
+    route: "reviews",
+    value: "reviews",
   },
   {
     menu: "Quotation Request",

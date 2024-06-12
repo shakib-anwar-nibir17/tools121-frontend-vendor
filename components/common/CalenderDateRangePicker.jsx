@@ -25,8 +25,8 @@ export function CalendarDateRangePicker({ className }) {
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[260px] justify-start text-left font-normal",
-              !date && "text-black border-2 border-slate-300"
+              "w-[260px] flex-row-reverse gap-4 justify-start text-left font-bold text-black",
+              !date && "text-black border-2 border-slate-300 font-bold"
             )}
           >
             <SlCalender className="mr-2 h-4 w-4 text-black" />
@@ -44,7 +44,7 @@ export function CalendarDateRangePicker({ className }) {
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="end">
+        <PopoverContent className="w-auto p-0 bg-white" align="end">
           <Calendar
             initialFocus
             mode="range"
@@ -53,6 +53,14 @@ export function CalendarDateRangePicker({ className }) {
             onSelect={setDate}
             numberOfMonths={2}
           />
+          <div className="mt-10 mb-5 flex justify-end gap-4 px-4 items-center">
+            <div className="text-black">
+              <p className="text-[14px]">1 May 2024 - 22 May 2024</p>
+              <p className="text-[12px]">Dhaka Time</p>
+            </div>
+            <Button className="bg-slate-200 text-black">Cancel</Button>
+            <Button>Update</Button>
+          </div>
         </PopoverContent>
       </Popover>
     </div>

@@ -1,4 +1,4 @@
-import DataTable from "@/components/common/DataTable";
+import DataTable from "./DataTable";
 
 const AllRequestDataTable = () => {
   return (

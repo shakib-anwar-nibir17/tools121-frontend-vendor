@@ -10,8 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { IoEye } from "react-icons/io5";
-import { MdModeEditOutline } from "react-icons/md";
-import { RiDeleteBin5Fill } from "react-icons/ri";
+import { RiDeleteBin5Fill, RiPushpinFill } from "react-icons/ri";
 
 const ProductList = [
   {
@@ -142,7 +141,7 @@ const TodaysQuotation = () => {
                 <div className="flex items-center justify-center gap-2">
                   <IoEye className="cursor-pointer" size={20} color="#7B7C80" />
 
-                  <MdModeEditOutline
+                  <RiPushpinFill
                     className="cursor-pointer"
                     size={20}
                     color="#7B7C80"

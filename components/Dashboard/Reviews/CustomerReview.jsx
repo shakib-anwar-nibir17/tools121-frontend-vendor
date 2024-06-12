@@ -13,18 +13,28 @@ const CustomerReview = () => {
       </div>
       <div className="flex items-center gap-4 px-6 py-6">
         <div>
+          <p className="text-sm font-bold text-black mb-1">All Action</p>
+          <Select
+            options={[]}
+            defaultValue="Most Recent"
+            placeholder="All Mark"
+          />
+        </div>
+        <div>
           <p className="text-sm font-bold text-black mb-1">Sort By</p>
-          <Select options={[]} defaultValue="Most Recent" />
+          <Select
+            options={[]}
+            defaultValue="All reviewers"
+            placeholder="Most Recent"
+          />
         </div>
         <div>
           <p className="text-sm font-bold text-black mb-1">Filter By</p>
-          <Select options={[]} defaultValue="All reviewers" />
-        </div>
-        <div className="mt-6">
-          <Select options={[]} defaultValue="All stars" />
-        </div>
-        <div className="mt-6">
-          <Select options={[]} defaultValue="All Text, Image, Video" />
+          <Select
+            options={[]}
+            defaultValue="All reviewers"
+            placeholder="Approved"
+          />
         </div>
       </div>
       <div className="px-6">

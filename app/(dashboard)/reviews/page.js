@@ -1,10 +1,11 @@
-import CustomerRating from "@/components/Dashboard/Reviews/CustomerRating";
 import CustomerReview from "@/components/Dashboard/Reviews/CustomerReview";
+import HeaderLinks from "@/components/common/HeaderLinks";
 
 const ProfileReviewsPage = () => {
+  const paths = ["Reviews", "Reviews"];
   return (
     <>
-      <CustomerRating />
+      <HeaderLinks paths={paths} />
       <CustomerReview />
     </>
   );

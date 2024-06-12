@@ -7,7 +7,9 @@ export default function MainDashboardLayout({ children }) {
       <Header />
       <main className="flex">
         <Sidebar />
-        <div className="mt-10 mx-6 w-full">{children}</div>
+        <div className="w-full relative">
+          <div className="mt-10 mx-6">{children}</div>
+        </div>
       </main>
     </>
   );
