@@ -1,3 +1,4 @@
+"use client"
 import MainHeader from "@/components/Dashboard/DashboardPage/MainHeader";
 import TodaysQuotation from "@/components/Dashboard/DashboardPage/TodaysQuotation";
 import TopSellingItems from "@/components/Dashboard/DashboardPage/TopSellingItems";
@@ -5,8 +6,14 @@ import TopTrendingProducts from "@/components/Dashboard/DashboardPage/TopTrendin
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
 import HeaderLinks from "@/components/common/HeaderLinks";
 import SearchInput from "@/components/common/SearchInput";
+import { useUserDataQuery } from "@/app/redux/features/authApi";
+
 const DashboradPage = () => {
   const paths = ["Dashboard", "Dashboard"];
+	const {data: userProfile, refetch} = useUserDataQuery( {
+		refetchOnMountOrArgChange: true,
+	  });
+console.log("Users ======>>", userProfile)
   return (
     <div>
       <HeaderLinks paths={paths} />

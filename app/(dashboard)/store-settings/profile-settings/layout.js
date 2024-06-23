@@ -2,7 +2,7 @@
 
 import ShopInfo from "@/components/Dashboard/Profile/ShopInfo";
 import HeaderLinks from "@/components/common/HeaderLinks";
-import { convertRoute } from "@/lib/utils";
+import { convertRoute } from "/lib/utils";
 
 import { usePathname } from "next/navigation";
 
