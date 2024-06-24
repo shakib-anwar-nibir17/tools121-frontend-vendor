@@ -1,3 +1,4 @@
+import OTPTimer from "@/components/common/OTPTimer";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -28,8 +29,7 @@ export default function Verify() {
 
       <Button className="h-16 w-full mt-10 rounded-2xl text-xl">Verify</Button>
       <p className="pt-4 text-black text-lg text-center">
-        Haven’t received it? Resend it after -{" "}
-        <span className="font-bold">56s</span>
+        Haven’t received it? Resend it after - <OTPTimer />
       </p>
     </>
   );
