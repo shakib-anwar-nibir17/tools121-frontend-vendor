@@ -1,12 +1,32 @@
 "use client";
+import { useRegisterOtpVerifyMutation } from "@/app/redux/features/authApi";
+import OTPTimer from "@/components/common/OTPTimer";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 export default function Verify() {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const registerdata = useSelector((state) => state.authStore.registerdata)
+  const [verifyRegOtp, { }] = useRegisterOtpVerifyMutation();
+  
+  const variFicationHandler = async () => {
+    const token = await executeRecaptcha("verify_otp");
+    const request_Obj = {
+      login_name: registerdata?.login_name,
+      recaptcha_token: token,
+      otp: "571877"
+    }
+    const verifyRes = await verifyRegOtp(request_Obj)
+
+    console.log("VerifyRes ===>", verifyRes)
+  }
   return (
     <>
       <div className="pb-11 text-center lg:text-left">
@@ -26,11 +46,12 @@ export default function Verify() {
       <p className="pt-2 text-black text-lg">
         Enter the code sent to your mobile.
       </p>
+      <button onClick={variFicationHandler}  className="text-white h-16 w-full mt-10 rounded-2xl text-xl bg-primary-900">Verify</button>
 
-      <Button className="h-16 w-full mt-10 rounded-2xl text-xl">Verify</Button>
+      {/* <Button  className="h-16 w-full mt-10 rounded-2xl text-xl">Verify</Button> */}
+
       <p className="pt-4 text-black text-lg text-center">
-        Haven’t received it? Resend it after -{" "}
-        <span className="font-bold">56s</span>
+        Haven’t received it? Resend it after - <OTPTimer  />
       </p>
     </>
   );

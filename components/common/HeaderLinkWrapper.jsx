@@ -1,5 +1,5 @@
 "use client";
-import { convertRoute } from "/lib/utils";
+import { convertRoute } from "@/utils/utils";
 
 import HeaderLinks from "@/components/common/HeaderLinks";
 import { usePathname } from "next/navigation";

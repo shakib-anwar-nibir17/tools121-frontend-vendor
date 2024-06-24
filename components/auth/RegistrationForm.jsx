@@ -1,19 +1,124 @@
 "use client";
 import { Button } from "@/components/ui/button";
-
+import { useRouter } from 'next/navigation';
+import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import PasswordMeter from "./PasswordMeter";
+import { useSignUpMutation } from "@/app/redux/features/authApi";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setRegisterData } from "@/app/redux/slices/authSlice";
+
 export default function RegistrationForm() {
+  const [signUpHandler, { }] = useSignUpMutation();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const dispatch = useDispatch()
+
+  // schema for validation
+  const schema = yup
+    .object({
+      full_name: yup
+        .string()
+        .required("Name is required")
+        .min(5, "Name must be at least 5 characters long"),
+      login_name: yup
+        .string()
+        .required("Login Name is required")
+        .matches(
+          /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/,
+          "Login name can only contain Aa-Zz,0-9,-_ . _ or - cannot be at the start or end and should be used only once in a row."
+        )
+        .min(6, "Login name must be at least 6 characters long"),
+      email: yup
+        .string()
+        .email("Invalid email address")
+        .required("Email is required")
+        .matches(
+          /\S+@\S+\.\S+/,
+          ('Invalid email .!')
+        ),
+      phone: yup
+        .string()
+        .required("Phone number is required")
+        .matches(
+          /^01\d{9}$/,
+          'Invalid phone number (must start with "01" and be 11 digits)'
+        ),
+      password: yup
+        .string()
+        .min(8, "Password must be at least 8 characters long")
+        .matches(
+          /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
+          "Password must contain both letters and digits"
+        )
+        .required("Password is required"),
+
+      confirmPassword: yup
+        .string()
+        .oneOf([yup.ref("password"), null], "Passwords must match")
+        .required("Confirm Password is required"),
+    })
+    .required();
+
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const [showPassword, setShowPassword] = useState(false);
+  const [pass, setPass] = useState();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const registerHandler = async (data) => {
+    const token = await executeRecaptcha("register");
+
+    const request_Obj = {...data,   recaptcha_token: token,}
+    const registerRes = await signUpHandler(request_Obj)
+    if(registerRes?.data?.message == "OTP sent for verification"){
+      router.push('/registration-verify'); 
+      dispatch(setRegisterData(request_Obj))
+      setLoading(false)
+      
+    }
+    else{
+      setLoading(false)
+
+      toast.error('Signed-up failed try again', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        onOpen: () => {
+           setLoading(false)
+        },
+        onClose: () => {
+           setLoading(false)
+
+        },
+        });
+    }
+    console.log('Register Response =====>', registerRes)
+  }
+  async function onSubmit(data) {
+    setLoading(true)
+    console.log("Register Data ===>", data);
+    registerHandler(data)
+  }
 
   return (
     <div className="max-w-[400px] text-black">
@@ -23,7 +128,8 @@ export default function RegistrationForm() {
         </h1>
         <p>Create your Seller account form here.</p>
       </div>
-      <form className="w-full">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+        {/* your full name */}
         <div className="mb-2">
           <label
             htmlFor="full_name"
@@ -48,7 +154,7 @@ export default function RegistrationForm() {
             <div className="text-red-500">{errors.full_name.message}</div>
           )}
         </div>
-
+        {/* login name */}
         <div className="mb-2">
           <label
             htmlFor="login_name"
@@ -73,7 +179,7 @@ export default function RegistrationForm() {
             <div className="text-red-500">{errors.login_name.message}</div>
           )}
         </div>
-
+        {/* mobile number */}
         <div className="mb-2">
           <label
             htmlFor="mobile_number"
@@ -121,7 +227,7 @@ export default function RegistrationForm() {
             <div className="text-red-500">{errors.phone.message}</div>
           )}
         </div>
-
+        {/* email */}
         <div className="mb-2">
           <label
             htmlFor="email"
@@ -146,7 +252,7 @@ export default function RegistrationForm() {
             <div className="text-red-500">{errors.email.message}</div>
           )}
         </div>
-
+        {/* password */}
         <div className="mb-5">
           <label
             htmlFor="password"
@@ -164,6 +270,7 @@ export default function RegistrationForm() {
               className="h-[51px] p-4 w-full focus:outline-none"
               id="password"
               type={showPassword ? "text" : "password"}
+              onChange={(e) => setPass(e.target.value)}
               placeholder="Create a password"
             />
             <span
@@ -212,16 +319,14 @@ export default function RegistrationForm() {
           <div className="mt-2.5 font-bold flex items-center gap-3 justify-end">
             <p>Password Strength</p>
             <div className="w-[120px] h-3 rounded-xl flex">
-              <div className="bg-red-500 w-full h-full rounded-l-xl"></div>
-              <div className="bg-orange-500  w-full h-full"></div>
-              <div className="bg-green-500  w-full h-full rounded-r-xl"></div>
+              <PasswordMeter password={pass} />
             </div>
           </div>
           {errors.password && (
             <div className="text-red-500">{errors.password.message}</div>
           )}
         </div>
-
+        {/* confirm password */}
         <div className="mb-10">
           <label
             htmlFor="confirmPassword"
@@ -288,9 +393,13 @@ export default function RegistrationForm() {
           )}
         </div>
 
-        <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-3">
+        {
+          loading ? <Button className="h-16 w-full text-xl  rounded-xl mb-3">
+          Loading...
+        </Button> : <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-3">
           Create Account
         </Button>
+        }
       </form>
       <p className=" flex justify-center text-black mt-4">
         Already have an account?{" "}

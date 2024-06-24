@@ -1,20 +1,46 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
 export default function SignIn() {
+  const schema = yup
+    .object({
+      login_name: yup
+        .string()
+        .required("Login name is required")
+        .matches(
+          /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/,
+          "Login name can only contain Aa-Zz,0-9,-_ . _ or - cannot be at the start or end and should be used only once in a row."
+        )
+        .min(6, "Login name must be at least 6 characters long"),
+      password: yup
+        .string()
+        .required("Password is required")
+        .min(6, "Password must be at least 6 characters long"),
+    })
+    .required();
+
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  async function onSubmit(data) {
+    console.log(data);
+  }
 
   return (
     <>
@@ -25,7 +51,7 @@ export default function SignIn() {
         <p>Log in to your account form here.</p>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-5">
           <label
             htmlFor="login_name"
