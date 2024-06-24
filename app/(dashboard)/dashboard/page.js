@@ -1,3 +1,4 @@
+"use client"
 import MainHeader from "@/components/Dashboard/DashboardPage/MainHeader";
 import TodaysQuotation from "@/components/Dashboard/DashboardPage/TodaysQuotation";
 import TopSellingItems from "@/components/Dashboard/DashboardPage/TopSellingItems";
@@ -5,8 +6,10 @@ import TopTrendingProducts from "@/components/Dashboard/DashboardPage/TopTrendin
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
 import HeaderLinks from "@/components/common/HeaderLinks";
 import SearchInput from "@/components/common/SearchInput";
+
 const DashboradPage = () => {
   const paths = ["Dashboard", "Dashboard"];
+	
   return (
     <div>
       <HeaderLinks paths={paths} />

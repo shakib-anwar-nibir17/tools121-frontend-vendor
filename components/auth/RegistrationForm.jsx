@@ -1,13 +1,25 @@
 "use client";
 import { Button } from "@/components/ui/button";
-
+import { useRouter } from 'next/navigation';
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import PasswordMeter from "./PasswordMeter";
+import { useSignUpMutation } from "@/app/redux/features/authApi";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setRegisterData } from "@/app/redux/slices/authSlice";
+
 export default function RegistrationForm() {
+  const [signUpHandler, { }] = useSignUpMutation();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const dispatch = useDispatch()
+
   // schema for validation
   const schema = yup
     .object({
@@ -26,7 +38,11 @@ export default function RegistrationForm() {
       email: yup
         .string()
         .email("Invalid email address")
-        .required("Email is required"),
+        .required("Email is required")
+        .matches(
+          /\S+@\S+\.\S+/,
+          ('Invalid email .!')
+        ),
       phone: yup
         .string()
         .required("Phone number is required")
@@ -64,8 +80,44 @@ export default function RegistrationForm() {
     setShowPassword(!showPassword);
   };
 
+  const registerHandler = async (data) => {
+    const token = await executeRecaptcha("register");
+
+    const request_Obj = {...data,   recaptcha_token: token,}
+    const registerRes = await signUpHandler(request_Obj)
+    if(registerRes?.data?.message == "OTP sent for verification"){
+      router.push('/registration-verify'); 
+      dispatch(setRegisterData(request_Obj))
+      setLoading(false)
+      
+    }
+    else{
+      setLoading(false)
+
+      toast.error('Signed-up failed try again', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        onOpen: () => {
+           setLoading(false)
+        },
+        onClose: () => {
+           setLoading(false)
+
+        },
+        });
+    }
+    console.log('Register Response =====>', registerRes)
+  }
   async function onSubmit(data) {
-    console.log(data);
+    setLoading(true)
+    console.log("Register Data ===>", data);
+    registerHandler(data)
   }
 
   return (
@@ -341,9 +393,13 @@ export default function RegistrationForm() {
           )}
         </div>
 
-        <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-3">
+        {
+          loading ? <Button className="h-16 w-full text-xl  rounded-xl mb-3">
+          Loading...
+        </Button> : <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-3">
           Create Account
         </Button>
+        }
       </form>
       <p className=" flex justify-center text-black mt-4">
         Already have an account?{" "}
