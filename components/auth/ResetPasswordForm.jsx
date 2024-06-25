@@ -1,23 +1,48 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import PasswordMeter from "./PasswordMeter";
 
 export default function ResetPasswordForm() {
+  const schema = yup
+    .object({
+      new_password: yup
+        .string()
+        .min(8, "Password must be at least 8 characters long")
+        .matches(
+          /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
+          "Password must contain both letters and digits"
+        )
+        .required("Password is required"),
+
+      confirm_password: yup
+        .string()
+        .oneOf([yup.ref("password"), null], "Passwords must match")
+        .required("Confirm Password is required"),
+    })
+    .required();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
-
+    handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const onSubmit = (data) => {
+    console.log(data);
+  };
   return (
-    <form className="w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <div className="grid grid-cols-1 gap-x-8 w-full">
         <div className="mb-5">
           <label
@@ -83,9 +108,7 @@ export default function ResetPasswordForm() {
           <div className="mt-2.5 font-bold flex items-center gap-3 justify-end">
             <p>Password Strength</p>
             <div className="w-[120px] h-3 rounded-xl flex">
-              <div className="bg-red-500 w-full h-full rounded-l-xl"></div>
-              <div className="bg-orange-500  w-full h-full"></div>
-              <div className="bg-green-500  w-full h-full rounded-r-xl"></div>
+              <PasswordMeter />
             </div>
           </div>
           {errors.new_password && (
@@ -161,7 +184,7 @@ export default function ResetPasswordForm() {
           )}
         </div>
       </div>
-      <Button type="submit" className="h-16 text-xl w-full rounded-xl mb-6">
+      <Button type="submit" className="h-12 text-xl w-full rounded-xl mb-6">
         Reset Password
       </Button>
     </form>
