@@ -85,34 +85,30 @@ export default function RegistrationForm() {
 
     const request_Obj = {...data,   recaptcha_token: token,}
     const registerRes = await signUpHandler(request_Obj)
+    
+    console.log('Register Response =====>', registerRes)
+
     if(registerRes?.data?.message == "OTP sent for verification"){
       router.push('/registration-verify'); 
       dispatch(setRegisterData(request_Obj))
       setLoading(false)
       
     }
+    else if(registerRes?.data?.message == "User with this login_name already exsist"){
+      setLoading(false)
+      toast.error('User with this login_name already exsist', {
+        position: "top-right",
+        duration: 2500,
+        });
+    }
     else{
       setLoading(false)
 
       toast.error('Signed-up failed try again', {
         position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        onOpen: () => {
-           setLoading(false)
-        },
-        onClose: () => {
-           setLoading(false)
-
-        },
+        duration: 2000,
         });
     }
-    console.log('Register Response =====>', registerRes)
   }
   async function onSubmit(data) {
     setLoading(true)
