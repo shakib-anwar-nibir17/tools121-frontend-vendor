@@ -1,13 +1,23 @@
 "use client";
 
+import { useLogInMutation } from "@/app/redux/features/authApi";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as yup from "yup";
+import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
+  const [loginHandler, { }] = useLogInMutation();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [loginErr, setLoginErr] = useState('')
+
   const schema = yup
     .object({
       login_name: yup
@@ -26,6 +36,7 @@ export default function SignIn() {
     .required();
 
   const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -39,7 +50,34 @@ export default function SignIn() {
   };
 
   async function onSubmit(data) {
-    console.log(data);
+    setLoginErr('')
+    setLoading(true)
+    const token = await executeRecaptcha("login");
+
+    const request_Obj = {
+      login_name: data?.login_name,
+      password: data?.password,
+      recaptcha_token: token
+    }
+    const loginRes = await loginHandler(request_Obj)
+    console.log('login Response =====>', loginRes?.error?.data)
+    
+    if(loginRes?.data?.access_token){
+      setLoading(false)
+      localStorage.setItem("vendorToken", loginRes?.data?.access_token)
+      router.push('/dashboard'); 
+    }
+    else if(loginRes?.error?.data?.detail == "Invalid credentials"){
+      setLoading(false)
+      setLoginErr("Please ensure that your username and password is correct")
+    }
+    else{
+      setLoading(false)
+      toast.error('Login failed try again', {
+        position: "top-right",
+        duration: 2000,
+        });
+    }
   }
 
   return (
@@ -133,16 +171,23 @@ export default function SignIn() {
           {errors.password && (
             <div className="text-red-500">{errors.password.message}</div>
           )}
+          <p className="text-red-500 font-medium ">{loginErr}</p>
+
           <div className="text-right">
             <Link href={"/forgot-password"} className=" text-primary-950">
               Forgot Password?
             </Link>
           </div>
         </div>
-
-        <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-6">
-          Sign In
-        </Button>
+        
+          {
+            loading ?  <Button className="h-16 w-full text-xl  rounded-xl mb-6">
+            Loading...
+          </Button> :
+           <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-6">
+           Sign In
+         </Button>
+          }
       </form>
 
       <p className="flex justify-center text-primary-950">

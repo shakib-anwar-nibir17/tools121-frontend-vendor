@@ -1,5 +1,6 @@
 "use client";
-import { useRegisterOtpVerifyMutation } from "@/app/redux/features/authApi";
+import { useRegisterOtpVerifyMutation, useResendOtpMutation } from "@/app/redux/features/authApi";
+import { setRegisterData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -8,16 +9,21 @@ import {
 } from "@/components/ui/input-otp";
 import { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from 'next/navigation';
+import toast from "react-hot-toast";
 
 export default function Verify() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const registerdata = useSelector((state) => state.authStore.registerdata);
   const [verifyRegOtp, {}] = useRegisterOtpVerifyMutation();
+  const [resendOtp, {}] = useResendOtpMutation();
   const [otpValue, setOtpValue] = useState(null);
   const [error, setError] = useState();
-
+  const dispatch = useDispatch()
   const [countDown, setCountDown] = useState(59);
+  const [loading, setLoading] = useState(false)
+  const router = useRouter();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -35,18 +41,45 @@ export default function Verify() {
   }, [countDown]);
 
   const variFicationHandler = async () => {
-    const token = await executeRecaptcha("verify_otp");
+    if(registerdata?.login_name){
+      const token = await executeRecaptcha("verify_otp");
+      const request_Obj = {
+        login_name: registerdata?.login_name,
+        recaptcha_token: token,
+        otp: otpValue,
+      };
+      const verifyRes = await verifyRegOtp(request_Obj);
+      
+      if(verifyRes?.data?.access_token){
+        setLoading(false)
+        toast.success('Registration Successfull', {
+          position: "top-right",
+          duration: 2000,
+          });
+        
+        localStorage.setItem("vendorToken", verifyRes?.data?.access_token)
+        router.push('/dashboard'); 
+        dispatch(setRegisterData({}))      }
+      
+      console.log("VerifyRes ===>", verifyRes);
+    }
+    else{
+      setError(
+        "Please complete registration first"
+      );
+    }
+  };
+
+  const resendOTP = async () => {
+    const token = await executeRecaptcha("resend_otp");
     const request_Obj = {
       login_name: registerdata?.login_name,
       recaptcha_token: token,
-      otp: "571877",
     };
-    const verifyRes = await verifyRegOtp(request_Obj);
 
-    console.log("VerifyRes ===>", verifyRes);
-  };
+    const resendOtp_res = await resendOTP(request_Obj)
 
-  const resendOTP = () => {
+    console.log("resendOtp res ===>", resendOtp_res)
     document.getElementById("otpForm").reset();
     setCountDown(59);
   };
@@ -55,14 +88,15 @@ export default function Verify() {
     e.preventDefault();
     if (otpValue === null) {
       setError(
-        "Please Provide your 4 digit OTP number! Do not share this with anyone"
+        "Please Provide your 6 digit OTP number! Do not share this with anyone"
       );
     } else {
-      if (otpValue.length < 4) {
-        setError("OTP must have 4 digits");
+      if (otpValue.length < 6) {
+        setError("OTP must have 6 digits");
       } else {
         console.log(otpValue);
-
+        setLoading(true)
+        variFicationHandler()
         setError(null);
       }
     }
@@ -77,12 +111,14 @@ export default function Verify() {
         <p className="mt-3 text-xl">Enter OTP to confirm your verification.</p>
       </div>
       <form id="otpForm" onSubmit={handleSubmit}>
-        <InputOTP onChange={(value) => setOtpValue(value)} maxLength={4}>
+        <InputOTP onChange={(value) => setOtpValue(value)} maxLength={6}>
           <InputOTPGroup className="h-16 w-[448px]">
             <InputOTPSlot index={0} />
             <InputOTPSlot index={1} />
             <InputOTPSlot index={2} />
             <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
           </InputOTPGroup>
         </InputOTP>
         <p className="pt-2 text-black text-lg">
@@ -90,13 +126,19 @@ export default function Verify() {
         </p>
         <p className="pt-2 text-red-500 text-lg">{error}</p>
 
-        <Button
+        {
+          loading ? <Button
+          // type="submit"
+          className="h-16 mt-10 rounded-2xl text-xl w-[448px]"
+        >
+          Loading...
+        </Button> : <Button
           type="submit"
-          onClick={variFicationHandler}
           className="h-16 mt-10 rounded-2xl text-xl w-[448px]"
         >
           Verify
         </Button>
+        }
       </form>
       <p className="pt-4 text-black text-lg text-center">
         Haven’t received it? Resend it after -{" "}

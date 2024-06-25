@@ -13,9 +13,17 @@ import { useState } from "react";
 import { GrLogout } from "react-icons/gr";
 import { MdArrowDropDown } from "react-icons/md";
 import { PiSquaresFour } from "react-icons/pi";
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
   const [authToken, setAuthToken] = useState(true);
+  const router = useRouter();
+
+  const logOutHandler = () => {
+    localStorage.clear()
+    setTimeout(() => { router.push("/singin")}, 500)
+  }
+
   return (
     <nav className="xl:border-b  border-primary-200 pb-6 mt-6">
       <div className="sm:px-8 px-12">
@@ -63,7 +71,9 @@ const Header = () => {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <div className="flex items-center text-lg text-medium gap-6 px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left cursor-pointer">
+                    <div onClick={() => {
+                      logOutHandler()
+                    }} className="flex items-center text-lg text-medium gap-6 px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left cursor-pointer">
                       <GrLogout size={20} /> Logout
                     </div>
                   </DropdownMenuItem>
