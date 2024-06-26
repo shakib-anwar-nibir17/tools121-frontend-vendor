@@ -1,3 +1,3 @@
 
 //------Staging Url----------//
-export const BASE_URL = 'https://testapireal.tools121.com'
+export const BASE_URL = 'https://testshopapi.tools121.com'

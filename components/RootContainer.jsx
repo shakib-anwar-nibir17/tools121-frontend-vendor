@@ -12,21 +12,21 @@ export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true)
   const router = useRouter();
 
-  useEffect(() => {
-    const isToken = localStorage.getItem("vendorToken")
-    if(isToken){
-      setLoading(false)
-    }
-    else{
-      setLoading(false)
-      router.push('/signin'); 
-    }
-  },[])
+  // useEffect(() => {
+  //   const isToken = localStorage.getItem("vendorToken")
+  //   if(isToken){
+  //     setLoading(false)
+  //   }
+  //   else{
+  //     setLoading(false)
+  //     router.push('/signin'); 
+  //   }
+  // },[])
 
   return (
     <>
       {
-         loading ? <h1 className="text-3xl font-bold">Loading...</h1> : <ReCaptchaProvider>
+         !loading ? <h1 className="text-3xl font-bold">Loading...</h1> : <ReCaptchaProvider>
          <Provider store={store}>
          <PersistGate loading={null} persistor={persistor}>
            {children}

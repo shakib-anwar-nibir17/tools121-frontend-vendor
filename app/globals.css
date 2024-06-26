@@ -27,3 +27,14 @@
   border-top: var(--size) solid black;
   top: 55%;
 }
+
+
+/* App.css */
+.hidden-select__single-value {
+  display: none; /* Hide single selected value */
+  background-color: green;
+}
+
+.hidden-select__multi-value {
+  display: none; /* Hide multi selected values */
+}

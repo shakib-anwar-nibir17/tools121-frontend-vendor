@@ -1,6 +1,25 @@
+'use client'
 import { Button } from "@/components/ui/button";
+import MultiSelect from "./MultiSelect";
+import { useState } from "react";
 
 const ShopInfoForm = () => {
+  const [selectedOptions, setSelectedOptions] = useState([])
+  const optionsData = [
+    { value: 'internationalTravel', label: 'International Travel' },
+    { value: 'sustainableLiving', label: 'Sustainable Living' },
+    { value: 'innovativeSolutions', label: 'Innovative Solutions' },
+    { value: 'artificialIntelligence', label: 'Artificial Intelligence' },
+    { value: 'climateChangeAction', label: 'Climate Change Action' },
+    { value: 'renewableResources', label: 'Renewable Resources' },
+    { value: 'healthcareInnovations', label: 'Healthcare Innovations' },
+    { value: 'educationalReforms', label: 'Educational Reforms' },
+    { value: 'digitalTransformation', label: 'Digital Transformation' },
+    { value: 'cybersecurityMeasures', label: 'cybersecurityMeasures'},
+    { value: 'cybersecurityMeasures cybersecurityMeasures cybersecurityMeasures' , label: 'cybersecurityMeasures cybersecurityMeasures cybersecurityMeasures'},
+
+    ]  
+console.log("selected Options ==>", selectedOptions)
   return (
     <form className="mt-4 mb-20">
       <div className="flex justify-between gap-6">
@@ -14,13 +33,7 @@ const ShopInfoForm = () => {
         </div>
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">Shop Category*</label>
-          <select
-            className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12 "
-            type="text"
-            placeholder="Shop name"
-          >
-            <option className="text-primary-950">Select Category</option>
-          </select>
+          <MultiSelect selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} optionsData={optionsData}/>
         </div>
       </div>
       <div className="flex justify-between gap-6">
