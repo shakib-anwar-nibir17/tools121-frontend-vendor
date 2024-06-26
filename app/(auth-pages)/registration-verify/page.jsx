@@ -41,10 +41,10 @@ export default function Verify() {
   }, [countDown]);
 
   const variFicationHandler = async () => {
-    if(registerdata?.login_name){
+    if(registerdata?.phone){
       const token = await executeRecaptcha("verify_otp");
       const request_Obj = {
-        login_name: registerdata?.login_name,
+        phone: registerdata?.phone,
         recaptcha_token: token,
         otp: otpValue,
       };

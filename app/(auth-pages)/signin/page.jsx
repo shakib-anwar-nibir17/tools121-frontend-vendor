@@ -20,7 +20,7 @@ export default function SignIn() {
 
   const schema = yup
     .object({
-      login_name: yup
+      username: yup
         .string()
         .required("Login name is required")
         .matches(
@@ -55,7 +55,7 @@ export default function SignIn() {
     const token = await executeRecaptcha("login");
 
     const request_Obj = {
-      login_name: data?.login_name,
+      username: data?.username,
       password: data?.password,
       recaptcha_token: token
     }
@@ -92,22 +92,22 @@ export default function SignIn() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-5">
           <label
-            htmlFor="login_name"
+            htmlFor="username"
             className="text-primary-950 inline-block mb-1.5 font-normal"
           >
             Login Name*
           </label>
           <div className="relative flex items-center border h-12 rounded-xl overflow-hidden">
             <input
-              {...register("login_name")}
+              {...register("username")}
               className="py-2.5 px-4 w-full focus:outline-none"
-              id="login_name"
+              id="username"
               type="text"
               placeholder="Enter login name"
             />
           </div>
-          {errors.login_name && (
-            <div className="text-red-500">{errors.login_name.message}</div>
+          {errors.username && (
+            <div className="text-red-500">{errors.username.message}</div>
           )}
         </div>
 

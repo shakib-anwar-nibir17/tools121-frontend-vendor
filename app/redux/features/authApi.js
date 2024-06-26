@@ -4,7 +4,7 @@ const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     signUp: builder.mutation({
       query: (data ) => ({
-        url: '/register',
+        url: '/supplier/auth/registration',
         method: 'POST',
         body: data,
       }),
@@ -12,7 +12,7 @@ const authApi = api.injectEndpoints({
     }),
     logIn: builder.mutation({
       query: (data ) => ({
-        url: '/token',
+        url: '/supplier/auth/login',
         method: 'POST',
         body: data,
       }),
@@ -21,12 +21,12 @@ const authApi = api.injectEndpoints({
 
     registerOtpVerify: builder.mutation({
       query: (data ) => ({
-        url: '/verify_otp',
+        url: '/supplier/auth/verify-otp',
         method: 'POST',
         body: data,
       }),
     //   invalidatesTags: [''],
-    }),
+    }), 
 
     resendOtp: builder.mutation({
       query: (data ) => ({

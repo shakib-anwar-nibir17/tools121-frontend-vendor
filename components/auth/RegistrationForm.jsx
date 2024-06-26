@@ -23,10 +23,10 @@ export default function RegistrationForm() {
   // schema for validation
   const schema = yup
     .object({
-      full_name: yup
+      shop_name: yup
         .string()
-        .required("Name is required")
-        .min(5, "Name must be at least 5 characters long"),
+        .required("Shop name is required")
+        .min(5, "Shop name must be at least 5 characters long"),
       login_name: yup
         .string()
         .required("Login Name is required")
@@ -83,7 +83,15 @@ export default function RegistrationForm() {
   const registerHandler = async (data) => {
     const token = await executeRecaptcha("register");
 
-    const request_Obj = {...data,   recaptcha_token: token,}
+    const request_Obj = {
+      shop_name: data?.shop_name,
+      supplier_address: "",
+      username: data?.login_name,
+      phone: data?.phone,
+      email: data?.email,
+      recaptcha_token: token,
+      password: data?.password
+    }
     const registerRes = await signUpHandler(request_Obj)
     
     console.log('Register Response =====>', registerRes)
@@ -112,7 +120,6 @@ export default function RegistrationForm() {
   }
   async function onSubmit(data) {
     setLoading(true)
-    console.log("Register Data ===>", data);
     registerHandler(data)
   }
 
@@ -128,26 +135,26 @@ export default function RegistrationForm() {
         {/* your full name */}
         <div className="mb-2">
           <label
-            htmlFor="full_name"
+            htmlFor="shop_name"
             className="text-black inline-block mb-1.5 font-normal"
           >
-            Your Full Name*
+            Shop Name*
           </label>
           <div
             className={`relative flex items-center rounded-xl border ${
-              errors.full_name?.message ? "border-red-400" : ""
+              errors.shop_name?.message ? "border-red-400" : ""
             } overflow-hidden`}
           >
             <input
-              {...register("full_name")}
+              {...register("shop_name")}
               className="h-[51px] p-4 w-full focus:outline-none"
-              id="full_name"
+              id="shop_name"
               type="text"
               placeholder="Enter Your Name"
             />
           </div>
-          {errors.full_name && (
-            <div className="text-red-500">{errors.full_name.message}</div>
+          {errors.shop_name && (
+            <div className="text-red-500">{errors.shop_name.message}</div>
           )}
         </div>
         {/* login name */}
