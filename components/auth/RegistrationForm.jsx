@@ -85,7 +85,7 @@ export default function RegistrationForm() {
 
     const request_Obj = {
       shop_name: data?.shop_name,
-      supplier_address: "",
+      supplier_address: "akhdk",
       username: data?.login_name,
       phone: data?.phone,
       email: data?.email,
