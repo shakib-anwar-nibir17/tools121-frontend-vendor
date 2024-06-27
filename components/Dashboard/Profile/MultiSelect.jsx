@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import { components } from "react-select";
-import Select from "react-select";
-
+import Select, { components } from "react-select";
 
 const Option = (props) => {
   return (
@@ -18,44 +15,41 @@ const Option = (props) => {
   );
 };
 
-function MultiSelect({optionsData, setSelectedOptions, selectedOptions}) {
-
+function MultiSelect({ optionsData, setSelectedOptions, selectedOptions }) {
   return (
     <div>
       <Select
-      
         options={optionsData}
         isMulti
         closeMenuOnSelect={false}
         hideSelectedOptions={false}
         components={{
-          Option
+          Option,
         }}
         onChange={(selected) => setSelectedOptions(selected)}
         value={selectedOptions}
-        
         // Hide dropdown list  when select any item
         // closeMenuOnSelect={true}
 
         //Selected Item Remove in dropdown list
         // hideSelectedOptions={true}
         styles={{
-            control: (baseStyles, state) => ({
-              ...baseStyles,
-              paddingTop: '3px',
-              paddingBottom: '3px',
+          control: (baseStyles, state) => ({
+            ...baseStyles,
+            paddingTop: "3px",
+            paddingBottom: "3px",
             //   backgroundColor: '#DDDDDD'
-            marginTop: '10px',
-            
-            }),
-          }}
+            marginTop: "10px",
+            border: "1px solid #E2E8F0",
+          }),
+        }}
         theme={(theme) => ({
-            ...theme,
-            colors: {
+          ...theme,
+          colors: {
             ...theme.colors,
-            primary: 'white',
-            multiValue: 'white'
-            },
+            primary: "white",
+            multiValue: "white",
+          },
         })}
       />
     </div>
