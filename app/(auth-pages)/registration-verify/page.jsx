@@ -58,7 +58,7 @@ export default function Verify() {
           });
         
         localStorage.setItem("vendorToken", verifyRes?.data?.access_token)
-        router.push('/dashboard'); 
+        router.push('/signin'); 
         dispatch(setRegisterData({}))      }
       
       console.log("VerifyRes ===>", verifyRes);
