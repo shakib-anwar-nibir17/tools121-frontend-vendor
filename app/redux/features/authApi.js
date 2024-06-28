@@ -4,8 +4,12 @@ const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     signUp: builder.mutation({
       query: (data ) => ({
-        url: '/supplier/auth/registration',
+        url: '/supplier/auth/v1/registration',
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept-Language': 'en'
+        },
         body: data,
       }),
     //   invalidatesTags: [''],
@@ -47,12 +51,12 @@ const authApi = api.injectEndpoints({
     //   invalidatesTags: [''],
     }),
 
-    userData: builder.query({
+    healthcheck: builder.query({
       query: () =>({
-        url: '/users',
+        url: '/health',
         method: 'GET',
       }),
-      providesTags: ['userinfo'],
+      // providesTags: ['userinfo'],
     }),
 
   }),
@@ -64,5 +68,6 @@ export const {
   useUserDataQuery,
   useRegisterOtpVerifyMutation,
   useResendOtpMutation,
-  useForgotPassUserNameOtpSendMutation
+  useForgotPassUserNameOtpSendMutation,
+  useHealthcheckQuery
 } = authApi;
