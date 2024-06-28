@@ -67,9 +67,9 @@ export default function SignIn() {
       localStorage.setItem("vendorToken", loginRes?.data?.access_token)
       router.push('/dashboard'); 
     }
-    else if(loginRes?.error?.data?.detail == "Invalid credentials"){
+    else if(loginRes?.error?.data?.message == "Supplier with this username or phone not exist"){
       setLoading(false)
-      setLoginErr("Please ensure that your username and password is correct")
+      setLoginErr("Supplier with this username or phone not exist")
     }
     else{
       setLoading(false)

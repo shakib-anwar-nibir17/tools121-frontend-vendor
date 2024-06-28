@@ -50,7 +50,7 @@ export default function Verify() {
       };
       const verifyRes = await verifyRegOtp(request_Obj);
       
-      if(verifyRes?.data?.access_token){
+      if(verifyRes?.data?.message == 'OTP verify success'){
         setLoading(false)
         toast.success('Registration Successfull', {
           position: "top-right",

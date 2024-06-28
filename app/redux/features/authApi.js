@@ -17,8 +17,12 @@ const authApi = api.injectEndpoints({
 
     logIn: builder.mutation({
       query: (data ) => ({
-        url: '/supplier/auth/login',
+        url: '/supplier/auth/v1/login',
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept-Language': 'en'
+        },
         body: data,
       }),
     //   invalidatesTags: [''],
@@ -26,8 +30,12 @@ const authApi = api.injectEndpoints({
 
     registerOtpVerify: builder.mutation({
       query: (data ) => ({
-        url: '/supplier/auth/verify-otp',
+        url: '/supplier/auth/v1/verify-otp/phone',
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept-Language': 'en'
+        },
         body: data,
       }),
     //   invalidatesTags: [''],
