@@ -1,5 +1,7 @@
 import { Lato } from "next/font/google";
 import "./globals.css";
+import RootLayout from "@/components/RootContainer";
+
 
 const lato = Lato({
   weight: ["300", "400", "700"],
@@ -14,6 +16,7 @@ export const metadata = {
 };
 
 export default function Layout({ children }) {
+ 
   return (
     <html lang="en">
       <body
@@ -21,7 +24,9 @@ export default function Layout({ children }) {
         suppressHydrationWarning={true}
         data-theme="main"
       >
-        {children}
+        <RootLayout>
+            {children}
+        </RootLayout>
       </body>
     </html>
   );

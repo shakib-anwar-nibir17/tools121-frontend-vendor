@@ -6,7 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn } from "/lib/utils";
 import { addDays, format } from "date-fns";
 import { useState } from "react";
 import { SlCalender } from "react-icons/sl";

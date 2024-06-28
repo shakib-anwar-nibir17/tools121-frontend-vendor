@@ -10,7 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn } from "/lib/utils";
 import { useState } from "react";
 import CustomerInfo from "./CustomerInfo";
 import InvoiceItemList from "./InvoiceItemList";

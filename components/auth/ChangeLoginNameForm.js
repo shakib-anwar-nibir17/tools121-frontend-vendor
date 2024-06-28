@@ -1,15 +1,36 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
 export default function ChangeLoginNameForm() {
+  const schema = yup
+    .object({
+      phone: yup
+        .string()
+        .required("Phone number is required")
+        .matches(
+          /^01\d{9}$/,
+          'Invalid phone number (must start with "01" and be 11 digits)'
+        ),
+    })
+    .required();
+
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
-    <form className="text-black">
+    <form onSubmit={handleSubmit(onSubmit)} className="text-black">
       <div className="mb-2">
         <label
           htmlFor="mobile_number"

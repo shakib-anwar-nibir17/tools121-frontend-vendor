@@ -1,20 +1,88 @@
 "use client";
 
+import { useLogInMutation } from "@/app/redux/features/authApi";
 import { Button } from "@/components/ui/button";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import * as yup from "yup";
+import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
+  const [loginHandler, { }] = useLogInMutation();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [loginErr, setLoginErr] = useState('')
+
+  const schema = yup
+    .object({
+      username: yup
+        .string()
+        .required("Login name is required")
+        .matches(
+          /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/,
+          "Login name can only contain Aa-Zz,0-9,-_ . _ or - cannot be at the start or end and should be used only once in a row."
+        )
+        .min(6, "Login name must be at least 6 characters long"),
+      password: yup
+        .string()
+        .required("Password is required")
+        .min(6, "Password must be at least 6 characters long"),
+    })
+    .required();
+
   const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  async function onSubmit(data) {
+    setLoginErr('')
+    setLoading(true)
+    const token = await executeRecaptcha("login");
+
+    const request_Obj = {
+      username: data?.username,
+      password: data?.password,
+      recaptcha_token: token
+    }
+    const loginRes = await loginHandler(request_Obj)
+    console.log('login Response =====>', loginRes    )
+    
+    if(loginRes?.data?.data?.token){
+      setLoading(false)
+      localStorage.setItem("vendorToken", loginRes?.data?.data?.token)
+      router.push('/dashboard'); 
+    }
+    else if(loginRes?.error?.data?.message == "Supplier with this username or phone not exist"){
+      setLoading(false)
+      setLoginErr("Supplier with this username or phone not exist")
+    }
+    else if(loginRes?.error?.data?.message == "Username and password does not match"){
+      setLoginErr("Username and password does not match")
+      setLoading(false)
+    }
+    else{
+      setLoading(false)
+      toast.error('Login failed try again', {
+        position: "top-right",
+        duration: 2000,
+        });
+    }
+  }
 
   return (
     <>
@@ -25,25 +93,25 @@ export default function SignIn() {
         <p>Log in to your account form here.</p>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-5">
           <label
-            htmlFor="login_name"
+            htmlFor="username"
             className="text-primary-950 inline-block mb-1.5 font-normal"
           >
             Login Name*
           </label>
           <div className="relative flex items-center border h-12 rounded-xl overflow-hidden">
             <input
-              {...register("login_name")}
+              {...register("username")}
               className="py-2.5 px-4 w-full focus:outline-none"
-              id="login_name"
+              id="username"
               type="text"
               placeholder="Enter login name"
             />
           </div>
-          {errors.login_name && (
-            <div className="text-red-500">{errors.login_name.message}</div>
+          {errors.username && (
+            <div className="text-red-500">{errors.username.message}</div>
           )}
         </div>
 
@@ -107,16 +175,23 @@ export default function SignIn() {
           {errors.password && (
             <div className="text-red-500">{errors.password.message}</div>
           )}
+          <p className="text-red-500 font-medium ">{loginErr}</p>
+
           <div className="text-right">
             <Link href={"/forgot-password"} className=" text-primary-950">
               Forgot Password?
             </Link>
           </div>
         </div>
-
-        <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-6">
-          Sign In
-        </Button>
+        
+          {
+            loading ?  <Button className="h-16 w-full text-xl  rounded-xl mb-6">
+            Loading...
+          </Button> :
+           <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-6">
+           Sign In
+         </Button>
+          }
       </form>
 
       <p className="flex justify-center text-primary-950">
