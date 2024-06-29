@@ -1,72 +1,83 @@
 import { api } from "../api/api";
 
-const authApi = api.injectEndpoints({ 
+const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     signUp: builder.mutation({
-      query: (data ) => ({
-        url: '/supplier/auth/v1/registration',
-        method: 'POST',
+      query: (data) => ({
+        url: "/supplier/auth/v1/registration",
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept-Language': 'en'
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
         },
         body: data,
       }),
-    //   invalidatesTags: [''],
+      //   invalidatesTags: [''],
     }),
 
     logIn: builder.mutation({
-      query: (data ) => ({
-        url: '/supplier/auth/v1/login',
-        method: 'POST',
+      query: (data) => ({
+        url: "/supplier/auth/v1/login",
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept-Language': 'en'
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
         },
         body: data,
       }),
-    //   invalidatesTags: [''],
+      //   invalidatesTags: [''],
     }),
 
     registerOtpVerify: builder.mutation({
-      query: (data ) => ({
-        url: '/supplier/auth/v1/verify-otp/phone',
-        method: 'POST',
+      query: (data) => ({
+        url: "/supplier/auth/v1/verify-otp/phone",
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept-Language': 'en'
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
         },
         body: data,
       }),
-    //   invalidatesTags: [''],
-    }), 
-
-    resendOtp: builder.mutation({
-      query: (data ) => ({
-        url: '/resend/otp',
-        method: 'POST',
+      //   invalidatesTags: [''],
+    }),
+    userNameVerify: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/auth/v1/verify/username",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
         body: data,
       }),
-    //   invalidatesTags: [''],
+      //   invalidatesTags: [''],
+    }),
+
+    resendOtp: builder.mutation({
+      query: (data) => ({
+        url: "/resend/otp",
+        method: "POST",
+        body: data,
+      }),
+      //   invalidatesTags: [''],
     }),
 
     forgotPassUserNameOtpSend: builder.mutation({
-      query: (data ) => ({
-        url: '',
-        method: 'POST',
+      query: (data) => ({
+        url: "",
+        method: "POST",
         body: data,
       }),
-    //   invalidatesTags: [''],
+      //   invalidatesTags: [''],
     }),
 
     healthcheck: builder.query({
-      query: () =>({
-        url: '/health',
-        method: 'GET',
+      query: () => ({
+        url: "/health",
+        method: "GET",
       }),
       // providesTags: ['userinfo'],
     }),
-
   }),
 });
 
@@ -77,5 +88,6 @@ export const {
   useRegisterOtpVerifyMutation,
   useResendOtpMutation,
   useForgotPassUserNameOtpSendMutation,
-  useHealthcheckQuery
+  useHealthcheckQuery,
+  useUserNameVerifyMutation,
 } = authApi;

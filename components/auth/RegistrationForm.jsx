@@ -1,3 +1,5 @@
+/* eslint-disable no-empty-pattern */
+/* eslint-disable no-unused-vars */
 "use client";
 import {
   useHealthcheckQuery,
@@ -103,10 +105,10 @@ export default function RegistrationForm() {
       dispatch(setRegisterData(request_Obj));
       setLoading(false);
     } else if (
-      registerRes?.data?.message == "User with this login_name already exsist"
+      registerRes?.data?.message == "Supplier with this username already exist"
     ) {
       setLoading(false);
-      toast.error("User with this login_name already exsist", {
+      toast.error("Supplier with this username already exist", {
         position: "top-right",
         duration: 2500,
       });
@@ -398,7 +400,7 @@ export default function RegistrationForm() {
         </div>
 
         {loading ? (
-          <Button className="h-16 w-full text-xl  rounded-xl mb-3">
+          <Button className="h-16 w-full text-xl rounded-xl mb-3">
             Loading...
           </Button>
         ) : (
