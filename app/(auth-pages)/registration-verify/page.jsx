@@ -1,5 +1,9 @@
+/* eslint-disable no-empty-pattern */
 "use client";
-import { useRegisterOtpVerifyMutation, useResendOtpMutation } from "@/app/redux/features/authApi";
+import {
+  useRegisterOtpVerifyMutation,
+  useResendOtpMutation,
+} from "@/app/redux/features/authApi";
 import { setRegisterData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,11 +11,11 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from 'next/navigation';
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Verify() {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -20,9 +24,9 @@ export default function Verify() {
   const [resendOtp, {}] = useResendOtpMutation();
   const [otpValue, setOtpValue] = useState(null);
   const [error, setError] = useState();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [countDown, setCountDown] = useState(59);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -41,32 +45,31 @@ export default function Verify() {
   }, [countDown]);
 
   const variFicationHandler = async () => {
-    if(registerdata?.phone){
+    if (registerdata?.phone) {
       const token = await executeRecaptcha("verify_otp");
       const request_Obj = {
         phone: registerdata?.phone,
         recaptcha_token: token,
         otp: otpValue,
       };
+      console.log(request_Obj);
       const verifyRes = await verifyRegOtp(request_Obj);
-      
-      if(verifyRes?.data?.message == 'OTP verify success'){
-        setLoading(false)
-        toast.success('Registration Successfull', {
+
+      if (verifyRes?.data?.message == "OTP verify success") {
+        setLoading(false);
+        toast.success("Registration Successfull", {
           position: "top-right",
           duration: 2000,
-          });
-        
-        localStorage.setItem("vendorToken", verifyRes?.data?.access_token)
-        router.push('/signin'); 
-        dispatch(setRegisterData({}))      }
-      
+        });
+
+        localStorage.setItem("vendorToken", verifyRes?.data?.access_token);
+        router.push("/signin");
+        dispatch(setRegisterData({}));
+      }
+
       console.log("VerifyRes ===>", verifyRes);
-    }
-    else{
-      setError(
-        "Please complete registration first"
-      );
+    } else {
+      setError("Please complete registration first");
     }
   };
 
@@ -77,9 +80,9 @@ export default function Verify() {
       recaptcha_token: token,
     };
 
-    const resendOtp_res = await resendOTP(request_Obj)
+    const resendOtp_res = await resendOtp(request_Obj);
 
-    console.log("resendOtp res ===>", resendOtp_res)
+    console.log("resendOtp res ===>", resendOtp_res);
     document.getElementById("otpForm").reset();
     setCountDown(59);
   };
@@ -95,8 +98,8 @@ export default function Verify() {
         setError("OTP must have 6 digits");
       } else {
         console.log(otpValue);
-        setLoading(true)
-        variFicationHandler()
+        setLoading(true);
+        variFicationHandler();
         setError(null);
       }
     }
@@ -126,19 +129,21 @@ export default function Verify() {
         </p>
         <p className="pt-2 text-red-500 text-lg">{error}</p>
 
-        {
-          loading ? <Button
-          // type="submit"
-          className="h-16 mt-10 rounded-2xl text-xl w-[448px]"
-        >
-          Loading...
-        </Button> : <Button
-          type="submit"
-          className="h-16 mt-10 rounded-2xl text-xl w-[448px]"
-        >
-          Verify
-        </Button>
-        }
+        {loading ? (
+          <Button
+            // type="submit"
+            className="h-16 mt-10 rounded-2xl text-xl w-[448px]"
+          >
+            Loading...
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className="h-16 mt-10 rounded-2xl text-xl w-[448px]"
+          >
+            Verify
+          </Button>
+        )}
       </form>
       <p className="pt-4 text-black text-lg text-center">
         Haven’t received it? Resend it after -{" "}

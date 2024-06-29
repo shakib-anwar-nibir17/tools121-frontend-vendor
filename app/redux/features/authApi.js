@@ -40,7 +40,7 @@ const authApi = api.injectEndpoints({
       }),
       //   invalidatesTags: [''],
     }),
-    userNameVerify: builder.mutation({
+    userNameVerifyOtp: builder.mutation({
       query: (data) => ({
         url: "/supplier/auth/v1/verify/username",
         method: "POST",
@@ -57,9 +57,25 @@ const authApi = api.injectEndpoints({
       query: (data) => ({
         url: "/resend/otp",
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
         body: data,
       }),
       //   invalidatesTags: [''],
+    }),
+    //  resend otp based on user name data
+    resendOtpUserName: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/auth/v1/resend-otp/username",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
     }),
 
     forgotPassUserNameOtpSend: builder.mutation({
@@ -89,5 +105,6 @@ export const {
   useResendOtpMutation,
   useForgotPassUserNameOtpSendMutation,
   useHealthcheckQuery,
-  useUserNameVerifyMutation,
+  useUserNameVerifyOtpMutation,
+  useResendOtpUserNameMutation,
 } = authApi;

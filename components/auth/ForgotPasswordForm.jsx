@@ -1,6 +1,6 @@
 /* eslint-disable no-empty-pattern */
 "use client";
-import { useUserNameVerifyMutation } from "@/app/redux/features/authApi";
+import { useUserNameVerifyOtpMutation } from "@/app/redux/features/authApi";
 import { setUserNameData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
 export default function ForgotPasswordForm() {
-  const [userNameVerify, {}] = useUserNameVerifyMutation();
+  const [userNameVerifyOtp, {}] = useUserNameVerifyOtpMutation();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ export default function ForgotPasswordForm() {
       recaptcha_token: token,
     };
 
-    const response = await userNameVerify(request_Obj);
+    const response = await userNameVerifyOtp(request_Obj);
 
     console.log("Register Response =====>", response);
     if (response?.data?.message == "OTP sent for verification") {
