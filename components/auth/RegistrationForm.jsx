@@ -1,5 +1,8 @@
 "use client";
-import { useSignUpMutation } from "@/app/redux/features/authApi";
+import {
+  useHealthcheckQuery,
+  useSignUpMutation,
+} from "@/app/redux/features/authApi";
 import { setRegisterData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,6 +22,9 @@ export default function RegistrationForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
+  const { data: helathCheck, refetch } = useHealthcheckQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
   // schema for validation
   const schema = yup
@@ -82,7 +88,6 @@ export default function RegistrationForm() {
 
     const request_Obj = {
       shop_name: data?.shop_name,
-      supplier_address: "",
       username: data?.login_name,
       phone: data?.phone,
       email: data?.email,
@@ -118,7 +123,7 @@ export default function RegistrationForm() {
     setLoading(true);
     registerHandler(data);
   }
-
+  console.log("helath check ==>", helathCheck);
   return (
     <div className="max-w-[400px] text-black">
       <div className="text-center lg:text-left my-10">

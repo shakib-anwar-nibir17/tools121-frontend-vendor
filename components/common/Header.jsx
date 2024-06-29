@@ -21,7 +21,7 @@ const Header = () => {
 
   const logOutHandler = () => {
     localStorage.clear()
-    setTimeout(() => { router.push("/singin")}, 500)
+    setTimeout(() => { router.push("/signin")}, 500)
   }
 
   return (

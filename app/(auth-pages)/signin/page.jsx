@@ -60,16 +60,20 @@ export default function SignIn() {
       recaptcha_token: token
     }
     const loginRes = await loginHandler(request_Obj)
-    console.log('login Response =====>', loginRes?.error?.data)
+    console.log('login Response =====>', loginRes    )
     
-    if(loginRes?.data?.access_token){
+    if(loginRes?.data?.data?.token){
       setLoading(false)
-      localStorage.setItem("vendorToken", loginRes?.data?.access_token)
+      localStorage.setItem("vendorToken", loginRes?.data?.data?.token)
       router.push('/dashboard'); 
     }
-    else if(loginRes?.error?.data?.detail == "Invalid credentials"){
+    else if(loginRes?.error?.data?.message == "Supplier with this username or phone not exist"){
       setLoading(false)
-      setLoginErr("Please ensure that your username and password is correct")
+      setLoginErr("Supplier with this username or phone not exist")
+    }
+    else if(loginRes?.error?.data?.message == "Username and password does not match"){
+      setLoginErr("Username and password does not match")
+      setLoading(false)
     }
     else{
       setLoading(false)
