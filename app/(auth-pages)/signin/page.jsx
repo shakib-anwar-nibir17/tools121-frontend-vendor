@@ -1,22 +1,23 @@
+/* eslint-disable no-empty-pattern */
 "use client";
 
 import { useLogInMutation } from "@/app/redux/features/authApi";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as yup from "yup";
-import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
-  const [loginHandler, { }] = useLogInMutation();
+  const [loginHandler, {}] = useLogInMutation();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [loginErr, setLoginErr] = useState('')
+  const [loginErr, setLoginErr] = useState("");
 
   const schema = yup
     .object({
@@ -50,37 +51,39 @@ export default function SignIn() {
   };
 
   async function onSubmit(data) {
-    setLoginErr('')
-    setLoading(true)
+    setLoginErr("");
+    setLoading(true);
     const token = await executeRecaptcha("login");
 
     const request_Obj = {
       username: data?.username,
       password: data?.password,
-      recaptcha_token: token
-    }
-    const loginRes = await loginHandler(request_Obj)
-    console.log('login Response =====>', loginRes    )
-    
-    if(loginRes?.data?.data?.token){
-      setLoading(false)
-      localStorage.setItem("vendorToken", loginRes?.data?.data?.token)
-      router.push('/dashboard'); 
-    }
-    else if(loginRes?.error?.data?.message == "Supplier with this username or phone not exist"){
-      setLoading(false)
-      setLoginErr("Supplier with this username or phone not exist")
-    }
-    else if(loginRes?.error?.data?.message == "Username and password does not match"){
-      setLoginErr("Username and password does not match")
-      setLoading(false)
-    }
-    else{
-      setLoading(false)
-      toast.error('Login failed try again', {
+      recaptcha_token: token,
+    };
+    const loginRes = await loginHandler(request_Obj);
+    console.log("login Response =====>", loginRes);
+
+    if (loginRes?.data?.data?.token) {
+      setLoading(false);
+      localStorage.setItem("vendorToken", loginRes?.data?.data?.token);
+      router.push("/dashboard");
+    } else if (
+      loginRes?.error?.data?.message ==
+      "Supplier with this username or phone not exist"
+    ) {
+      setLoading(false);
+      setLoginErr("Supplier with this username or phone not exist");
+    } else if (
+      loginRes?.error?.data?.message == "Username and password does not match"
+    ) {
+      setLoginErr("Username and password does not match");
+      setLoading(false);
+    } else {
+      setLoading(false);
+      toast.error("Login failed try again", {
         position: "top-right",
         duration: 2000,
-        });
+      });
     }
   }
 
@@ -183,15 +186,19 @@ export default function SignIn() {
             </Link>
           </div>
         </div>
-        
-          {
-            loading ?  <Button className="h-16 w-full text-xl  rounded-xl mb-6">
+
+        {loading ? (
+          <Button className="h-16 w-full text-xl  rounded-xl mb-6">
             Loading...
-          </Button> :
-           <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-6">
-           Sign In
-         </Button>
-          }
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className="h-16 w-full text-xl  rounded-xl mb-6"
+          >
+            Sign In
+          </Button>
+        )}
       </form>
 
       <p className="flex justify-center text-primary-950">

@@ -13,7 +13,7 @@ export default function ProfileSettingsLayout({ children }) {
   return (
     <>
       <HeaderLinks paths={paths} />
-      <ShopInfo value={values[2]} />
+      <ShopInfo value={values[1]} />
       {children}
     </>
   );
