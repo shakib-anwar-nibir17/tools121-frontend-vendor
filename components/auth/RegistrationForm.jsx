@@ -1,27 +1,32 @@
+/* eslint-disable no-empty-pattern */
+/* eslint-disable no-unused-vars */
 "use client";
+import {
+  useHealthcheckQuery,
+  useSignUpMutation,
+} from "@/app/redux/features/authApi";
+import { setRegisterData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
-import { useRouter } from 'next/navigation';
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import PasswordMeter from "./PasswordMeter";
-import { useHealthcheckQuery, useSignUpMutation } from "@/app/redux/features/authApi";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { setRegisterData } from "@/app/redux/slices/authSlice";
+import * as yup from "yup";
+import PasswordMeter from "./PasswordMeter";
 
 export default function RegistrationForm() {
-  const [signUpHandler, { }] = useSignUpMutation();
+  const [signUpHandler, {}] = useSignUpMutation();
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const dispatch = useDispatch()
-  const {data: helathCheck, refetch} = useHealthcheckQuery({
-		refetchOnMountOrArgChange: true,
-	  });
+  const dispatch = useDispatch();
+  const { data: helathCheck, refetch } = useHealthcheckQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
   // schema for validation
   const schema = yup
@@ -42,10 +47,7 @@ export default function RegistrationForm() {
         .string()
         .email("Invalid email address")
         .required("Email is required")
-        .matches(
-          /\S+@\S+\.\S+/,
-          ('Invalid email .!')
-        ),
+        .matches(/\S+@\S+\.\S+/, "Invalid email .!"),
       phone: yup
         .string()
         .required("Phone number is required")
@@ -92,39 +94,38 @@ export default function RegistrationForm() {
       phone: data?.phone,
       email: data?.email,
       recaptcha_token: token,
-      password: data?.password
-    }
-    const registerRes = await signUpHandler(request_Obj)
-    
-    console.log('Register Response =====>', registerRes)
+      password: data?.password,
+    };
+    const registerRes = await signUpHandler(request_Obj);
 
-    if(registerRes?.data?.message == "OTP sent for verification"){
-      router.push('/registration-verify'); 
-      dispatch(setRegisterData(request_Obj))
-      setLoading(false)
-      
-    }
-    else if(registerRes?.data?.message == "User with this login_name already exsist"){
-      setLoading(false)
-      toast.error('User with this login_name already exsist', {
+    console.log("Register Response =====>", registerRes);
+
+    if (registerRes?.data?.message == "OTP sent for verification") {
+      router.push("/registration-verify");
+      dispatch(setRegisterData(request_Obj));
+      setLoading(false);
+    } else if (
+      registerRes?.data?.message == "Supplier with this username already exist"
+    ) {
+      setLoading(false);
+      toast.error("Supplier with this username already exist", {
         position: "top-right",
         duration: 2500,
-        });
-    }
-    else{
-      setLoading(false)
+      });
+    } else {
+      setLoading(false);
 
-      toast.error('Signed-up failed try again', {
+      toast.error("Signed-up failed try again", {
         position: "top-right",
         duration: 2000,
-        });
+      });
     }
-  }
+  };
   async function onSubmit(data) {
-    setLoading(true)
-    registerHandler(data)
+    setLoading(true);
+    registerHandler(data);
   }
-console.log("helath check ==>", helathCheck)
+  console.log("helath check ==>", helathCheck);
   return (
     <div className="max-w-[400px] text-black">
       <div className="text-center lg:text-left my-10">
@@ -398,13 +399,18 @@ console.log("helath check ==>", helathCheck)
           )}
         </div>
 
-        {
-          loading ? <Button className="h-16 w-full text-xl  rounded-xl mb-3">
-          Loading...
-        </Button> : <Button type="submit" className="h-16 w-full text-xl  rounded-xl mb-3">
-          Create Account
-        </Button>
-        }
+        {loading ? (
+          <Button className="h-16 w-full text-xl rounded-xl mb-3">
+            Loading...
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className="h-16 w-full text-xl  rounded-xl mb-3"
+          >
+            Create Account
+          </Button>
+        )}
       </form>
       <p className=" flex justify-center text-black mt-4">
         Already have an account?{" "}

@@ -1,22 +1,29 @@
+/* eslint-disable no-empty-pattern */
 "use client";
-import { useForgotPassUserNameOtpSendMutation } from "@/app/redux/features/authApi";
+import { useUserNameVerifyOtpMutation } from "@/app/redux/features/authApi";
+import { setUserNameData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
 export default function ForgotPasswordForm() {
-  const [userNameOtpSend, { }] = useForgotPassUserNameOtpSendMutation();
+  const [userNameVerifyOtp, {}] = useUserNameVerifyOtpMutation();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   // schema for validation
   const schema = yup
     .object({
       username: yup.string().required("User Name is required"),
-      // .matches(
-      //   /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/,
-      //   "User name can only contain Aa-Zz,0-9,-_ . _ or - cannot be at the start or end and should be used only once in a row."
-      // )
-      // .min(6, "Login name must be at least 6 characters long"),
     })
     .required();
   const {
@@ -28,18 +35,36 @@ export default function ForgotPasswordForm() {
   });
 
   const userNameOtpSendHandler = async (data) => {
+    const token = await executeRecaptcha("user_verify");
     const request_Obj = {
-      username: data?.username
+      username: data?.username,
+      recaptcha_token: token,
+    };
+
+    const response = await userNameVerifyOtp(request_Obj);
+
+    console.log("Register Response =====>", response);
+    if (response?.data?.message == "OTP sent for verification") {
+      toast.success("OTP has been successfully", {
+        position: "top-left",
+        duration: 3000,
+      });
+      router.push("/username-verify");
+      dispatch(setUserNameData(request_Obj));
+      setLoading(false);
+    } else {
+      setLoading(false);
+
+      toast.error("Signed-up failed try again", {
+        position: "top-right",
+        duration: 2000,
+      });
     }
+  };
 
-    const response = await userNameOtpSend(request_Obj)
-
-    console.log("response ===>" , response)
-    
-  }
-
-  const onSubmit = (data) => {
-    userNameOtpSendHandler(data)
+  const onSubmit = async (data) => {
+    setLoading(true);
+    userNameOtpSendHandler(data);
     console.log(data);
   };
 
@@ -75,9 +100,19 @@ export default function ForgotPasswordForm() {
             <div className="text-red-500">{errors.username.message}</div>
           )}
         </div>
-        <Button type="submit" className="h-16 w-full  rounded-xl mb-6 text-xl">
-          Send Verification Code
-        </Button>
+
+        {loading ? (
+          <Button className="h-16 w-full text-xl rounded-xl mb-3">
+            Loading...
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className="h-16 w-full  rounded-xl mb-6 text-xl"
+          >
+            Send Verification Code
+          </Button>
+        )}
       </form>
     </>
   );
