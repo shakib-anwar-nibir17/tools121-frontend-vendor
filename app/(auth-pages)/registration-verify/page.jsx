@@ -1,7 +1,7 @@
 /* eslint-disable no-empty-pattern */
 "use client";
 import {
-  useRegisterOtpVerifyMutation,
+  usePhoneOtpVerifyMutation,
   useResendOtpMutation,
 } from "@/app/redux/features/authApi";
 import { setRegisterData } from "@/app/redux/slices/authSlice";
@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Verify() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const registerdata = useSelector((state) => state.authStore.registerdata);
-  const [verifyRegOtp, {}] = useRegisterOtpVerifyMutation();
+  const [verifyRegOtp, {}] = usePhoneOtpVerifyMutation();
   const [resendOtp, {}] = useResendOtpMutation();
   const [otpValue, setOtpValue] = useState(null);
   const [error, setError] = useState();

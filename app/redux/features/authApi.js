@@ -28,7 +28,7 @@ const authApi = api.injectEndpoints({
       //   invalidatesTags: [''],
     }),
 
-    registerOtpVerify: builder.mutation({
+    phoneOtpVerify: builder.mutation({
       query: (data) => ({
         url: "/supplier/auth/v1/verify-otp/phone",
         method: "POST",
@@ -100,8 +100,7 @@ const authApi = api.injectEndpoints({
 export const {
   useSignUpMutation,
   useLogInMutation,
-  useUserDataQuery,
-  useRegisterOtpVerifyMutation,
+  usePhoneOtpVerifyMutation,
   useResendOtpMutation,
   useForgotPassUserNameOtpSendMutation,
   useHealthcheckQuery,

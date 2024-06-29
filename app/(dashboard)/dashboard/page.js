@@ -1,4 +1,5 @@
 "use client"
+import { useUserDataQuery } from "@/app/redux/features/userInfo";
 import MainHeader from "@/components/Dashboard/DashboardPage/MainHeader";
 import TodaysQuotation from "@/components/Dashboard/DashboardPage/TodaysQuotation";
 import TopSellingItems from "@/components/Dashboard/DashboardPage/TopSellingItems";
@@ -9,7 +10,13 @@ import SearchInput from "@/components/common/SearchInput";
 
 const DashboradPage = () => {
   const paths = ["Dashboard", "Dashboard"];
-	
+  const token = localStorage.getItem('vendorToken')
+
+  const {data: profileInfo, refetch} = useUserDataQuery(token, {
+		refetchOnMountOrArgChange: true,
+	  });
+  
+    // console.log('userInfo ===>>>', profileInfo)
   return (
     <div>
       <HeaderLinks paths={paths} />
