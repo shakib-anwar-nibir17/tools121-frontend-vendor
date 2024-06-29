@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import PasswordMeter from "./PasswordMeter";
-import { useSignUpMutation } from "@/app/redux/features/authApi";
+import { useHealthcheckQuery, useSignUpMutation } from "@/app/redux/features/authApi";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -19,6 +19,9 @@ export default function RegistrationForm() {
   const [loading, setLoading] = useState(false)
   const router = useRouter();
   const dispatch = useDispatch()
+  const {data: helathCheck, refetch} = useHealthcheckQuery({
+		refetchOnMountOrArgChange: true,
+	  });
 
   // schema for validation
   const schema = yup
@@ -85,7 +88,6 @@ export default function RegistrationForm() {
 
     const request_Obj = {
       shop_name: data?.shop_name,
-      supplier_address: "",
       username: data?.login_name,
       phone: data?.phone,
       email: data?.email,
@@ -122,7 +124,7 @@ export default function RegistrationForm() {
     setLoading(true)
     registerHandler(data)
   }
-
+console.log("helath check ==>", helathCheck)
   return (
     <div className="max-w-[400px] text-black">
       <div className="text-center lg:text-left my-10">
