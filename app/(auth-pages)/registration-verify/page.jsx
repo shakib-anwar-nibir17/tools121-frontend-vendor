@@ -106,54 +106,58 @@ export default function Verify() {
   };
 
   return (
-    <div className="w-[448px]">
-      <div className="pb-11 text-center lg:text-left">
-        <h1 className=" text-2xl sm:text-3xl lg:text-4xl text-[#01060D] font-bold pb-3">
-          Enter your OTP
-        </h1>
-        <p className="mt-3 text-xl">Enter OTP to confirm your verification.</p>
-      </div>
-      <form id="otpForm" onSubmit={handleSubmit}>
-        <InputOTP onChange={(value) => setOtpValue(value)} maxLength={6}>
-          <InputOTPGroup className="h-16 w-[448px]">
-            <InputOTPSlot index={0} />
-            <InputOTPSlot index={1} />
-            <InputOTPSlot index={2} />
-            <InputOTPSlot index={3} />
-            <InputOTPSlot index={4} />
-            <InputOTPSlot index={5} />
-          </InputOTPGroup>
-        </InputOTP>
-        <p className="pt-2 text-black text-lg">
-          Enter the code sent to your mobile.
-        </p>
-        <p className="pt-2 text-red-500 text-lg">{error}</p>
+    <div className="mt-20">
+      <div className="xl:w-[448px] md:w-[350px] w-full">
+        <div className="pb-11 text-center lg:text-left">
+          <h1 className=" text-2xl sm:text-3xl lg:text-4xl text-[#01060D] font-bold pb-3">
+            Enter your OTP
+          </h1>
+          <p className="mt-3 text-xl">
+            Enter OTP to confirm your verification.
+          </p>
+        </div>
+        <form id="otpForm" onSubmit={handleSubmit}>
+          <InputOTP onChange={(value) => setOtpValue(value)} maxLength={6}>
+            <InputOTPGroup className="h-16 xl:w-[448px] md:w-[350px] w-full">
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+              <InputOTPSlot index={3} />
+              <InputOTPSlot index={4} />
+              <InputOTPSlot index={5} />
+            </InputOTPGroup>
+          </InputOTP>
+          <p className="pt-2 text-black text-lg">
+            Enter the code sent to your mobile.
+          </p>
+          <p className="pt-2 text-red-500 text-lg">{error}</p>
 
-        {loading ? (
-          <Button
-            // type="submit"
-            className="h-16 mt-10 rounded-2xl text-xl w-[448px]"
-          >
-            Loading...
-          </Button>
-        ) : (
-          <Button
-            type="submit"
-            className="h-16 mt-10 rounded-2xl text-xl w-[448px]"
-          >
-            Verify
-          </Button>
-        )}
-      </form>
-      <p className="pt-4 text-black text-lg text-center">
-        Haven’t received it? Resend it after -{" "}
-        <span className="font-bold">{countDown}s</span>
-        {countDown === 0 && (
-          <button onClick={resendOTP} className="text-primary-900 ml-3">
-            Resend OTP
-          </button>
-        )}
-      </p>
+          {loading ? (
+            <Button
+              // type="submit"
+              className="h-16 mt-10 rounded-2xl text-xl w-full"
+            >
+              Loading...
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              className="h-16 mt-10 rounded-2xl text-xl w-full"
+            >
+              Verify
+            </Button>
+          )}
+        </form>
+        <p className="pt-4 text-black text-lg text-center">
+          Haven’t received it? Resend it after -{" "}
+          <span className="font-bold">{countDown}s</span>
+          {countDown === 0 && (
+            <button onClick={resendOTP} className="text-primary-900 ml-3">
+              Resend OTP
+            </button>
+          )}
+        </p>
+      </div>
     </div>
   );
 }

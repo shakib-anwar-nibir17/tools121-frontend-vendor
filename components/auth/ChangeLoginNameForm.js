@@ -1,6 +1,10 @@
+/* eslint-disable no-empty-pattern */
 "use client";
+import { useUserNamesQuery } from "@/app/redux/features/authApi";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -17,6 +21,10 @@ export default function ChangeLoginNameForm() {
     })
     .required();
 
+  const [loading, setLoading] = useState();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const { userNames } = useUserNamesQuery();
+
   const {
     register,
     handleSubmit,
@@ -25,7 +33,19 @@ export default function ChangeLoginNameForm() {
     resolver: yupResolver(schema),
   });
 
+  const formHandler = async (data) => {
+    const token = await executeRecaptcha("register");
+    const request_Obj = {
+      phone: data?.phone,
+      recaptcha_token: token,
+    };
+
+    const response = await userNames(request_Obj);
+    console.log("response form change login field ====>", response);
+  };
+
   const onSubmit = (data) => {
+    formHandler(data);
     console.log(data);
   };
 

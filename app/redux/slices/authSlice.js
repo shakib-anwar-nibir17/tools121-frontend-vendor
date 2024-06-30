@@ -8,6 +8,7 @@ export const authSlice = createSlice({
   initialState: {
     registerdata: {},
     userNameData: {},
+    otpCode: {},
   },
   reducers: {
     setRegisterData: (state, action) => {
@@ -18,9 +19,13 @@ export const authSlice = createSlice({
       // Add setUserData reducer
       state.userNameData = action.payload;
     },
+    setOtpCode: (state, action) => {
+      state.otpCode = action.payload;
+    },
   },
 });
 
-export const { setRegisterData, setUserNameData } = authSlice.actions;
+export const { setRegisterData, setUserNameData, setOtpCode } =
+  authSlice.actions;
 
 export const authSliceReducer = authSlice.reducer;
