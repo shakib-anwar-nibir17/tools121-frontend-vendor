@@ -1,24 +1,28 @@
 'use client'
 import { Button } from "@/components/ui/button";
 import MultiSelect from "./MultiSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUserDataQuery } from "@/app/redux/features/userInfo";
 
 const ShopInfoForm = () => {
   const [selectedOptions, setSelectedOptions] = useState([])
-  const optionsData = [
-    { value: 'internationalTravel', label: 'International Travel' },
-    { value: 'sustainableLiving', label: 'Sustainable Living' },
-    { value: 'innovativeSolutions', label: 'Innovative Solutions' },
-    { value: 'artificialIntelligence', label: 'Artificial Intelligence' },
-    { value: 'climateChangeAction', label: 'Climate Change Action' },
-    { value: 'renewableResources', label: 'Renewable Resources' },
-    { value: 'healthcareInnovations', label: 'Healthcare Innovations' },
-    { value: 'educationalReforms', label: 'Educational Reforms' },
-    { value: 'digitalTransformation', label: 'Digital Transformation' },
-    { value: 'cybersecurityMeasures', label: 'cybersecurityMeasures'},
-    { value: 'cybersecurityMeasures cybersecurityMeasures cybersecurityMeasures' , label: 'cybersecurityMeasures cybersecurityMeasures cybersecurityMeasures'},
-
-    ]  
+  const token = localStorage.getItem('vendorToken')
+  const {data: profileInfo, refetch} = useUserDataQuery(token, {
+		refetchOnMountOrArgChange: true});
+  const [optionsData, setOptionsData] = useState([])
+  
+  useEffect(() => {
+    if(profileInfo?.data?.categories?.length > 0){
+      const optionFormat = profileInfo?.data?.categories?.map((item) => {
+        const formatObj = {
+          label: item?.category_name,
+          value: item?.category_id,
+        }
+        return formatObj
+      })
+      setOptionsData(optionFormat)
+    }
+  },[profileInfo?.data?.categories,profileInfo?.data?.categories?.length])
 console.log("selected Options ==>", selectedOptions)
   return (
     <form className="mt-4 mb-20">
