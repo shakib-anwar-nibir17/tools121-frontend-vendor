@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Select, { components } from "react-select";
 
 const Option = (props) => {
@@ -15,10 +16,17 @@ const Option = (props) => {
   );
 };
 
-function MultiSelect({ optionsData, setSelectedOptions, selectedOptions }) {
+function MultiSelect({
+  optionsData,
+  setSelectedOptions,
+  selectedOptions,
+  register,
+  errors,
+}) {
   return (
     <div>
       <Select
+        {...register("shop_categories")}
         options={optionsData}
         isMulti
         closeMenuOnSelect={false}
@@ -52,6 +60,9 @@ function MultiSelect({ optionsData, setSelectedOptions, selectedOptions }) {
           },
         })}
       />
+      {errors.shop_categories && (
+        <div className="text-red-500">{errors.shop_categories.message}</div>
+      )}
     </div>
   );
 }
