@@ -43,10 +43,10 @@ export default function ForgotPasswordForm() {
 
     const response = await userNameVerifyOtp(request_Obj);
 
-    console.log("Register Response =====>", response);
+    console.log("Forget Pass form Response =====>", response);
     if (response?.data?.message == "OTP sent for verification") {
       toast.success("OTP has been successfully", {
-        position: "top-left",
+        position: "top-right",
         duration: 3000,
       });
       router.push("/username-verify");
@@ -65,7 +65,6 @@ export default function ForgotPasswordForm() {
   const onSubmit = async (data) => {
     setLoading(true);
     userNameOtpSendHandler(data);
-    console.log(data);
   };
 
   return (

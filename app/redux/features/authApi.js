@@ -52,6 +52,18 @@ const authApi = api.injectEndpoints({
       }),
       //   invalidatesTags: [''],
     }),
+    resetPassword: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/auth/v1/reset/password",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
+      //   invalidatesTags: [''],
+    }),
 
     resendOtp: builder.mutation({
       query: (data) => ({
@@ -107,4 +119,5 @@ export const {
   useHealthcheckQuery,
   useUserNameVerifyOtpMutation,
   useResendOtpUserNameMutation,
+  useResetPasswordMutation,
 } = authApi;

@@ -5,7 +5,7 @@ import {
   useResendOtpUserNameMutation,
   useUserNameVerifyOtpMutation,
 } from "@/app/redux/features/authApi";
-import { setUserNameData } from "@/app/redux/slices/authSlice";
+import { setOtpCode } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -24,12 +24,12 @@ export default function Verify() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [loading, setLoading] = useState(false);
   const [resendOtpUserName, {}] = useResendOtpUserNameMutation();
-  const [userNameVerifyOtp] = useUserNameVerifyOtpMutation();
+  const [userNameVerifyOtp, {}] = useUserNameVerifyOtpMutation();
 
   const userNameData = useSelector((state) => state.authStore.userNameData);
 
-  const dispatch = useDispatch();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [countDown, setCountDown] = useState(59);
 
@@ -75,9 +75,11 @@ export default function Verify() {
       };
       console.log(request_Obj);
       const verifyRes = await userNameVerifyOtp(request_Obj);
+      console.log(verifyRes);
 
-      if (verifyRes?.data?.otp) {
+      if (verifyRes?.data?.status === "200") {
         setLoading(false);
+        dispatch(setOtpCode(request_Obj));
         toast.success("OTP Verification Successful", {
           position: "top-right",
           duration: 2000,
@@ -85,7 +87,6 @@ export default function Verify() {
 
         // localStorage.setItem("vendorToken", verifyRes?.data?.access_token); // user not registered
         router.push("/reset-password");
-        dispatch(setUserNameData({}));
       }
 
       console.log("VerifyRes ===>", verifyRes, request_Obj);
