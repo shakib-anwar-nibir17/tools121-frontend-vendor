@@ -49,9 +49,10 @@ export default function ForgotPasswordForm() {
         position: "top-right",
         duration: 3000,
       });
-      router.push("/username-verify");
+      
       dispatch(setUserNameData(request_Obj));
       setLoading(false);
+      router.push("/username-verify");
     } else {
       setLoading(false);
 
