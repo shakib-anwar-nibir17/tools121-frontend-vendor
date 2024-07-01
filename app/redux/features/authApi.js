@@ -93,10 +93,14 @@ const authApi = api.injectEndpoints({
       //   invalidatesTags: [''],
     }),
 
-    healthcheck: builder.query({
-      query: () => ({
-        url: "/health",
+    getUsernameListByPhone: builder.query({
+      query: (data) => ({
+        url: `/supplier/auth/v1/usernames?phone=${data?.phone }&&recaptcha_token=${data?.token}`,
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
       }),
       // providesTags: ['userinfo'],
     }),
@@ -108,8 +112,9 @@ export const {
   useLogInMutation,
   useVerifyOtpMutation,
   useResendOtpMutation,
-  useHealthcheckQuery,
   useUserNameOtpSendMutation,
   useResetPasswordMutation,
   useUserNamesQuery,
+  useGetUsernameListByPhoneQuery,
+  useLazyGetUsernameListByPhoneQuery
 } = authApi;

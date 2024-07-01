@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 "use client";
 import {
-  useHealthcheckQuery,
+  
   useSignUpMutation,
 } from "@/app/redux/features/authApi";
 import { setRegisterData } from "@/app/redux/slices/authSlice";
@@ -24,9 +24,6 @@ export default function RegistrationForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
-  const { data: helathCheck, refetch } = useHealthcheckQuery({
-    refetchOnMountOrArgChange: true,
-  });
 
   // schema for validation
   const schema = yup
