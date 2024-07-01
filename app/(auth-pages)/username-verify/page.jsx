@@ -2,8 +2,8 @@
 "use client";
 
 import {
-  useResendOtpUserNameMutation,
-  useUserNameVerifyOtpMutation,
+  useResendOtpMutation,
+  useVerifyOtpMutation,
 } from "@/app/redux/features/authApi";
 import { setOtpCode } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
@@ -23,8 +23,8 @@ export default function Verify() {
   const [error, setError] = useState();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [loading, setLoading] = useState(false);
-  const [resendOtpUserName, {}] = useResendOtpUserNameMutation();
-  const [userNameVerifyOtp, {}] = useUserNameVerifyOtpMutation();
+  const [resendOtp, {}] = useResendOtpMutation();
+  const [userNameVerifyOtp, {}] = useVerifyOtpMutation();
 
   const userNameData = useSelector((state) => state.authStore.userNameData);
 

@@ -1,8 +1,8 @@
 /* eslint-disable no-empty-pattern */
 "use client";
 import {
-  usePhoneOtpVerifyMutation,
   useResendOtpMutation,
+  useVerifyOtpMutation,
 } from "@/app/redux/features/authApi";
 import { setRegisterData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Verify() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const registerdata = useSelector((state) => state.authStore.registerdata);
-  const [verifyRegOtp, {}] = usePhoneOtpVerifyMutation();
+  const [verifyRegOtp, {}] = useVerifyOtpMutation();
   const [resendOtp, {}] = useResendOtpMutation();
   const [otpValue, setOtpValue] = useState(null);
   const [error, setError] = useState();
@@ -48,7 +48,7 @@ export default function Verify() {
     if (registerdata?.phone) {
       const token = await executeRecaptcha("verify_otp");
       const request_Obj = {
-        phone: registerdata?.phone,
+        username: registerdata?.username,
         recaptcha_token: token,
         otp: otpValue,
       };
@@ -66,7 +66,13 @@ export default function Verify() {
         router.push("/signin");
         dispatch(setRegisterData({}));
       }
-
+      else if(verifyRes?.error?.data?.message == "Invalid OTP"){
+        setError("Invalid OTP")
+        setLoading(false)
+      }
+      else{
+        setLoading(false)
+      }
       console.log("VerifyRes ===>", verifyRes);
     } else {
       setError("Please complete registration first");
@@ -76,7 +82,7 @@ export default function Verify() {
   const resendOTP = async () => {
     const token = await executeRecaptcha("resend_otp");
     const request_Obj = {
-      login_name: registerdata?.login_name,
+      username: registerdata?.username,
       recaptcha_token: token,
     };
 

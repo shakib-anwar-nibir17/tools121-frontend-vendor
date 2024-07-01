@@ -9,6 +9,7 @@ export const authSlice = createSlice({
     registerdata: {},
     userNameData: {},
     otpCode: {},
+    userNames: []
   },
   reducers: {
     setRegisterData: (state, action) => {
@@ -22,10 +23,13 @@ export const authSlice = createSlice({
     setOtpCode: (state, action) => {
       state.otpCode = action.payload;
     },
+    setUsernames: (state, action) => {
+      state.userNames = action.payload;
+    },
   },
 });
 
-export const { setRegisterData, setUserNameData, setOtpCode } =
+export const { setRegisterData, setUserNameData, setOtpCode , setUsernames} =
   authSlice.actions;
 
 export const authSliceReducer = authSlice.reducer;

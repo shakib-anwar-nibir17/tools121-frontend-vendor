@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import PasswordMeter from "./PasswordMeter";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function ResetPasswordForm() {
   const schema = yup
@@ -35,6 +37,7 @@ export default function ResetPasswordForm() {
   const [resetPassword, {}] = useResetPasswordMutation();
   const [loading, setLoading] = useState(false);
   const [pass, setPass] = useState();
+  const router = useRouter()
 
   const {
     register,
@@ -51,14 +54,30 @@ export default function ResetPasswordForm() {
   const resetPassHandler = async (data) => {
     const token = await executeRecaptcha("register");
     const request_Obj = {
-      username: userNameData.username,
+      username: userNameData?.username,
       otp: otpCode.otp,
       recaptcha_token: token,
       new_password: data?.new_password,
     };
 
     const response = await resetPassword(request_Obj);
-    console.log("Reset Pass Response =====>", response);
+    console.log("Reset Pass Response =====>", response?.data);
+
+    if(response?.data?.message == "Password reset success"){
+      setLoading(false)
+      toast.success("Password reset Successfully", {
+        position: "top-right",
+        duration: 3000,
+      });
+      router.push('/signin')
+    }
+    else{
+      setLoading(false)
+      toast.error("Password reset failed", {
+        position: "top-right",
+        duration: 3000,
+      });
+    }
   };
 
   const onSubmit = async (data) => {
