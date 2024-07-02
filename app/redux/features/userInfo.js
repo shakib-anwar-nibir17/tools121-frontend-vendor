@@ -29,10 +29,24 @@ const authApi = api.injectEndpoints({
         invalidatesTags: ['userinfo'],
     }),
 
+    userDocList: builder.query({
+      query: (credentials) =>({
+        url: '/supplier/doc/v1/list',
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${credentials}`,
+          'Content-Type': 'application/json',
+          "Accept-Language": "en",
+        },
+      }),
+      providesTags: ['userdocs'],
+    }),
+
   }),
 });
 
 export const {
   useUserDataQuery,
-  useUpdateProfileInfoMutation
+  useUpdateProfileInfoMutation,
+  useUserDocListQuery
 } = authApi;

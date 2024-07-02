@@ -1,3 +1,5 @@
+"use client"
+import { useUserDocListQuery } from "@/app/redux/features/userInfo";
 import DocumentUploadBox from "@/components/Dashboard/VerifyShops/DocumentUploadBox";
 import { UploadLogoSVG } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
@@ -5,6 +7,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 
 const VerifyShops = () => {
+  const token = localStorage.getItem("vendorToken");
+  const { data: userDocList, refetch } = useUserDocListQuery(token, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  console.log("userdoc list ==>", userDocList)
   return (
     <form className="mb-20 max-w-[732px]">
       <div className=" min-h-screen rounded-2xl border border-slate-200">

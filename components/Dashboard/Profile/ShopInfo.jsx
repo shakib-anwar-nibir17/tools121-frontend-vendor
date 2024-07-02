@@ -7,12 +7,12 @@ const profileOptions = [
   {
     key: "Profile",
     value: "profile",
-    route: "store-settings/profile-settings/profile",
+    route: "profile-settings/profile",
   },
   {
     key: "Verify Shops",
     value: "verify-shops",
-    route: "store-settings/profile-settings/verify-shops",
+    route: "profile-settings/verify-shops",
   },
 ];
 
