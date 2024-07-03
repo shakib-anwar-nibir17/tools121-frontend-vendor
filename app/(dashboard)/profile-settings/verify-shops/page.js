@@ -1,5 +1,5 @@
 "use client"
-import { useUserDocListQuery } from "@/app/redux/features/userInfo";
+import { useUploadDocMutation, useUserDocListQuery } from "@/app/redux/features/userInfo";
 import DocumentUploadBox from "@/components/Dashboard/VerifyShops/DocumentUploadBox";
 import { UploadLogoSVG } from "@/components/icons/Icons";
 import { Button } from "@/components/ui/button";
@@ -11,8 +11,22 @@ const VerifyShops = () => {
   const { data: userDocList, refetch } = useUserDocListQuery(token, {
     refetchOnMountOrArgChange: true,
   });
+  const [uploadDoc, {}] = useUploadDocMutation();
 
-  console.log("userdoc list ==>", userDocList)
+  const docUploadHandler = async (docData, item) => {
+  console.log("params ==>", docData, item)
+
+    const forms = new FormData()
+    
+    forms.append("doc_type_id", item?.doc_type_id)
+    forms.append("file ", docData)
+
+    const docRes = await uploadDoc({forms, token})
+
+    console.log("docRes ==>", docRes)
+  }
+  // console.log("userdoc list ==>", userDocList?.data?.documents)
+
   return (
     <form className="mb-20 max-w-[732px]">
       <div className=" min-h-screen rounded-2xl border border-slate-200">
@@ -23,12 +37,11 @@ const VerifyShops = () => {
           </h1>
         </div>
         <hr className="border border-slate-200" />
-        <DocumentUploadBox />
-        <DocumentUploadBox />
-        <DocumentUploadBox />
-        <DocumentUploadBox />
-        <DocumentUploadBox />
-        <DocumentUploadBox />
+          {
+            userDocList?.data?.documents?.map((item) => (
+              <DocumentUploadBox docUploadHandler={docUploadHandler} item={item} />
+            ))
+          }
         <div className="p-6 mt-10 flex gap-2 items-center">
           <Checkbox className="border border-black" />
           <p>

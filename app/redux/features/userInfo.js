@@ -24,7 +24,7 @@ const authApi = api.injectEndpoints({
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
-        body: data,
+        body: data?.requst_body,
       }),
         invalidatesTags: ['userinfo'],
     }),
@@ -42,11 +42,26 @@ const authApi = api.injectEndpoints({
       providesTags: ['userdocs'],
     }),
 
+    uploadDoc: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/doc/v1/upload",
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data?.forms,
+      }),
+        invalidatesTags: ['userinfo'],
+    }),
+
   }),
 });
 
 export const {
   useUserDataQuery,
   useUpdateProfileInfoMutation,
-  useUserDocListQuery
+  useUserDocListQuery,
+  useUploadDocMutation,
 } = authApi;

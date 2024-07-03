@@ -51,6 +51,7 @@ const ShopInfoForm = () => {
   });
   const [optionsData, setOptionsData] = useState([]);
   const [updateProfileInfo, {}] = useUpdateProfileInfoMutation();
+  const [catErr, setCatErr] = useState('')
 
   useEffect(() => {
     if (profileInfo?.data?.categories?.length > 0) {
@@ -62,23 +63,67 @@ const ShopInfoForm = () => {
         return formatObj;
       });
       setOptionsData(optionFormat);
+
+      const selectedData = profileInfo?.data?.categories?.filter((item) => item?.is_assigned == true);
+      
+      if(selectedData?.length > 0){
+        const selectedOptionFormat = selectedData?.map((item) => {
+          const formatObj = {
+            label: item?.category_name,
+            value: item?.category_id,
+          };
+          return formatObj;
+        });
+        setSelectedOptions(selectedOptionFormat)
+      }
     }
   }, [profileInfo?.data?.categories, profileInfo?.data?.categories?.length]);
 
   const profileInfoUpdateHandler = async (data) => {
-      const request_Obj = {...data, token}
+    if(selectedOptions?.length > 0){
+      setCatErr('')
+      const categories_ids = selectedOptions?.map((item) => item?.value)
 
-      // const update_res = await updateProfileInfo(request_Obj)
+      const profileInfoData = {
+        "name": data?.shop_name,
+        "address": data?.address,
+        "phone": "01845702501",
+        "email": "aa@gmail.com",
+        "shop_name": data?.shop_name,
+        "website": "",
+        "description": '',
+        "about_us": data?.about_us,
+        "business_number": data?.business_number,
+        "business_email": data?.business_email,
+        "verify_status": 0,
+        "verify_request_time": "",
+        "is_active": true,
+        "categories_id": categories_ids,
+        "ratings": 4.5,
+        "total_ratings": 400,
+        "total_reviews": 12345,
+        "logo_url": "https://picsum.photos/200/300",
+        "banner_url": "https://picsum.photos/200/300"
+    }
+      const request_Obj = {requst_body: profileInfoData, token}
 
-      console.log("Update response ==>", request_Obj)
+      const update_res = await updateProfileInfo(request_Obj)
+
+      console.log("Update req body ==>", request_Obj)
+      console.log("update_res ==>", update_res)
+
+    }
+    else{
+      setCatErr('Please Select Shop Category')
+    }
   }
 
   const onSubmit = (data) => {
     profileInfoUpdateHandler(data)
   };
 
-  console.log("profileInfo ==>", profileInfo);
-  console.log("selected Options ==>", selectedOptions);
+  // console.log("profileInfo ==>", profileInfo?.data);
+  // console.log("selected Options ==>", selectedOptions);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-4 mb-20">
@@ -86,6 +131,7 @@ const ShopInfoForm = () => {
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">Shop Name*</label>
           <input
+            defaultValue={profileInfo?.data?.name}
             {...register("shop_name")}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12 "
             type="text"
@@ -104,12 +150,16 @@ const ShopInfoForm = () => {
             register={register}
             errors={errors}
           />
+          {catErr && (
+            <div className="text-red-500">{catErr}</div>
+          )}
         </div>
       </div>
       <div className="flex justify-between gap-6">
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">Contact Number*</label>
           <input
+            defaultValue={profileInfo?.data?.phone}
             {...register("business_number")}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12 "
             type="text"
@@ -122,6 +172,7 @@ const ShopInfoForm = () => {
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">Email Address*</label>
           <input
+            defaultValue={profileInfo?.data?.business_email}
             {...register("business_email")}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="email"
@@ -136,6 +187,7 @@ const ShopInfoForm = () => {
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">Shop Address*</label>
           <textarea
+            defaultValue={profileInfo?.data?.address}
             {...register("address")}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
             type="text"
@@ -150,6 +202,7 @@ const ShopInfoForm = () => {
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">About Us*</label>
           <textarea
+          defaultValue={profileInfo?.data?.about_us ? profileInfo?.data?.about_us : ''}
             {...register("about_us")}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
             type="text"
