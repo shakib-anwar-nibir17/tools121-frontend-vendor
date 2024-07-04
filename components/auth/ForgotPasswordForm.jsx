@@ -53,10 +53,19 @@ export default function ForgotPasswordForm() {
       dispatch(setUserNameData(request_Obj));
       setLoading(false);
       router.push("/username-verify");
-    } else {
+    }
+    else if(response?.error?.data?.message == "Supplier with this username or phone not exist"){
       setLoading(false);
 
-      toast.error("Signed-up failed try again", {
+      toast.error("Supplier with this username or phone not exist", {
+        position: "top-right",
+        duration: 2000,
+      });
+    }
+    else {
+      setLoading(false);
+
+      toast.error("OTP send failed try again", {
         position: "top-right",
         duration: 2000,
       });

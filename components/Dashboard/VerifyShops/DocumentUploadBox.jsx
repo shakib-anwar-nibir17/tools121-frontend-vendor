@@ -2,13 +2,14 @@ import UploadBox from "@/components/common/UploadBox";
 import { DocumentSVGIcon } from "@/components/icons/Icons";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
 import { RxCrossCircled } from "react-icons/rx";
-const DocumentUploadBox = () => {
+
+const DocumentUploadBox = ({item, docUploadHandler}) => {
   return (
     <div className="pt-8 px-6 pb-4 border-b border-slate-200">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-black font-bold">
-            Document Name: Trade License (Mandatory)
+            Document Name: {item?.document_name} {`${item?.is_mandatory ? '(Mandatory)' : ''}`}
           </h1>
 
           <p className="mt-2 text-sm">
@@ -20,10 +21,10 @@ const DocumentUploadBox = () => {
       </div>
       {/* upload Box */}
       <div className="mt-4">
-        <UploadBox text={"Click here to upload"} />
+        <UploadBox docUploadHandler={docUploadHandler} item={item} text={"Click here to upload"} />
       </div>
       {/* file option */}
-      <div className="mt-6 w-[292px] flex items-center justify-between">
+      {/* <div className="mt-6 w-[292px] flex items-center justify-between">
         <div className="flex items-center gap-3">
           <DocumentSVGIcon />
           <div>
@@ -35,7 +36,7 @@ const DocumentUploadBox = () => {
           </div>
         </div>
         <RxCrossCircled size={22} color="#01060D" />
-      </div>
+      </div> */}
     </div>
   );
 };

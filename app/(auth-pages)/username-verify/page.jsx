@@ -33,19 +33,26 @@ export default function Verify() {
 
   const [countDown, setCountDown] = useState(59);
 
-  const resendOTP = async () => {
+  const resendOTPHandler = async () => {
     setLoading(false);
     const token = await executeRecaptcha("resend_otp");
     const request_Obj = {
-      username: userNameData?.login_name,
+      username: userNameData?.username,
       recaptcha_token: token,
     };
 
-    const resendOtp_res = await resendOtpUserName(request_Obj);
+    const resendOtp_res = await resendOtp(request_Obj);
 
     console.log("resendOtp res ===>", resendOtp_res);
-    document.getElementById("otpForm").reset();
-    setCountDown(59);
+    if(resendOtp_res?.error?.data?.message == "Request failed"){
+      toast.success("OTP send failed", {
+        position: "top-right",
+        duration: 2000,
+      });
+    }
+    else{
+      setCountDown(59);
+    }
   };
 
   useEffect(() => {
@@ -160,7 +167,7 @@ export default function Verify() {
           Haven’t received it? Resend it after -{" "}
           <span className="font-bold">{countDown}s</span>
           {countDown === 0 && (
-            <button onClick={resendOTP} className="text-primary-900 ml-3">
+            <button onClick={resendOTPHandler} className="text-primary-900 ml-3">
               Resend OTP
             </button>
           )}
