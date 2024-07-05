@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { BsExclamationCircle } from "react-icons/bs";
+import { useForm, Controller } from 'react-hook-form';
+import SingleSelect from "@/components/common/SingleSelect";
 
 const AddProductsForm = ({ setShowForm }) => {
   const token = localStorage.getItem("vendorToken");
-  const [category, setCategory] = useState({})
-  const [subCategory, setSubcateory] = useState();
 
   const { data: productCategories, refetch: refetchCategory } = useProductCategoryQuery(token, {
     refetchOnMountOrArgChange: true,
@@ -28,54 +28,51 @@ const AddProductsForm = ({ setShowForm }) => {
   });
 
 
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    
+  } = useForm({
+    // resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    console.log('Data ==>', data)
+  }
   console.log('selectProductList ==>', selectProductList)
 
   return (
-    <form className="max-w-[996px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
       <div className="gap-5 flex mb-6">
 
         <div className="w-full">
           <label className=" text-primary-950 font-bold">
             Product Category*
           </label>
-          <select
-            className="rounded-lg border border-slate-200 bg-primary-50 px-4  py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
-            type="text"
-          //  defaultValue={5}
-          onChange={(e) => {
-            setCategory(e.target?.value)
-            triggerSubCategory({cat_id: e.target?.value, token})
-          }}
-          >
-            <option className="text-primary-950">Select Category</option>
-            {
-              productCategories?.data?.categories?.map((cat) => (
-                <option value={cat?.id} className="text-primary-950">{cat?.category_name}</option>
-              ))
-            }
-          </select>
+          <SingleSelect
+            control={control}
+            name='category'
+            defaultVal=''
+            triggerFunction={triggerSubCategory}
+            data={productCategories?.data?.categories}
+          />
         </div>
 
         <div className="w-full">
           <label className=" text-primary-950 font-bold">
             Product Subcategory*
           </label>
-          <select
-            className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12 "
-            type="text"
-            placeholder="Shop name"
-            onChange={(e) => {
-              setSubcateory(e.target?.value)
-              triggerSelectProduct({sub_cat_id: e.target.value, token})
-            }}
-          >
-            <option className="text-primary-950">Select Category</option>
-            {
-              subCategories?.data?.sub_categories?.map((item) => (
-                <option value={item?.id} className="text-primary-950">{item?.sub_category_name}</option>
-              ))
-            }
-          </select>
+          <SingleSelect
+            control={control}
+            name='sub_category'
+            defaultVal=''
+            triggerFunction={triggerSelectProduct}
+            data={subCategories?.data?.sub_categories}
+          />
+          
         </div>
       </div>
 
@@ -221,7 +218,7 @@ const AddProductsForm = ({ setShowForm }) => {
           >
             Cancel
           </Button>
-          <Button className="text-xl px-6">Add Products</Button>
+          <Button  type="submit" className="text-xl px-6">Add Products</Button>
         </div>
       </div>
     </form>
