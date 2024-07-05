@@ -67,7 +67,7 @@ const invenntoryProductApi = api.injectEndpoints({
         // providesTags: ['productCat'],
       }),
 
-      selectProductList: builder.query({
+    selectProductList: builder.query({
         query: (data) =>({
           url: `/product/v1/list?sub_cat_id=${data?.sub_cat_id}`,
           method: 'GET',
@@ -79,6 +79,20 @@ const invenntoryProductApi = api.injectEndpoints({
         }),
         // providesTags: ['productSubCat'],
       }),
+
+    addProduct: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/product/v1/add",
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data?.requst_body,
+      }),
+        // invalidatesTags: ['product'],
+    }),
       
   }),
 });
@@ -90,4 +104,5 @@ export const {
     useProductModelQuery,
     useProductEngineQuery,
     useLazySelectProductListQuery,
+    useAddProductMutation,
 } = invenntoryProductApi;

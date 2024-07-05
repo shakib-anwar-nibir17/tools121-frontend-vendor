@@ -1,5 +1,5 @@
 "use client"
-import { useLazyProductSubCategoryQuery, useLazySelectProductListQuery, useProductBrandQuery, useProductCategoryQuery, useProductEngineQuery, useProductModelQuery } from "@/app/redux/features/inventoryProduct";
+import { useAddProductMutation, useLazyProductSubCategoryQuery, useLazySelectProductListQuery, useProductBrandQuery, useProductCategoryQuery, useProductEngineQuery, useProductModelQuery } from "@/app/redux/features/inventoryProduct";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import { useForm, Controller } from 'react-hook-form';
 import SingleSelect from "@/components/common/SingleSelect";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import toast from "react-hot-toast";
 
 const AddProductsForm = ({ setShowForm }) => {
   const token = localStorage.getItem("vendorToken");
@@ -28,7 +29,8 @@ const AddProductsForm = ({ setShowForm }) => {
   const { data: productEngine, refetch: refetchEngine } = useProductEngineQuery(token, {
     refetchOnMountOrArgChange: true,
   });
-
+  const [addProduct, {}] = useAddProductMutation();
+  const [loading, setLoading] = useState(false)
 
   const schema = yup
   .object({
@@ -55,9 +57,16 @@ const AddProductsForm = ({ setShowForm }) => {
     engine_id: yup
     .string()
     .required("Engine is required"),
+
+    delivery_note: yup
+    .string()
+    .required("Delivery note is required"),
+
+    product_specification: yup
+    .string()
+    .required("Production Specification is required"),
   })
   .required();
-  
 
   const {
     control,
@@ -70,10 +79,41 @@ const AddProductsForm = ({ setShowForm }) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log('Data ==>', data)
+  const addProductHandler = async (data) => {
+    setLoading(true)
+    const requst_body = {
+      ...data,
+      product_model_id: parseInt(data?.product_model_id),
+      engine_id: parseInt(data?.engine_id),
+      brand_id: parseInt(data?.brand_id),
+      stock_color: "",
+      product_description: "",
+    }
+    console.log('requst_body ===>', requst_body)
+    const product_add_res = await addProduct({requst_body, token})
+
+    if(product_add_res?.data?.message == "Request success"){
+      setLoading(false)
+        toast.success("Product added Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+        reset()
+    }
+    else{
+      setLoading(false)
+        toast.error("Product Adding failed", {
+          position: "top-right",
+          duration: 2000,
+        });
+    }
+    console.log('product_add_res ===>', product_add_res)
   }
-  console.log('selectProductList ==>', productCategories?.data?.categories)
+  const onSubmit = (data) => {
+   addProductHandler(data)
+  }
+ 
+  // console.log('selectProductList ==>', productCategories?.data?.categories)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
@@ -189,6 +229,7 @@ const AddProductsForm = ({ setShowForm }) => {
             type="text"
             placeholder="Regular Price"
           />
+          
         </div>
         <div className="w-full">
           <label className="font-bold">New Price</label>
@@ -219,6 +260,9 @@ const AddProductsForm = ({ setShowForm }) => {
             type="text"
             placeholder="Delivery Note"
           />
+           {errors.delivery_note && (
+            <div className="text-red-500">{errors.delivery_note.message}</div>
+          )}
         </div>
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">
@@ -230,6 +274,9 @@ const AddProductsForm = ({ setShowForm }) => {
             type="text"
             placeholder="Production Specification"
           />
+           {errors.product_specification && (
+            <div className="text-red-500">{errors.product_specification.message}</div>
+          )}
         </div>
       </div>
 
@@ -241,7 +288,10 @@ const AddProductsForm = ({ setShowForm }) => {
           >
             Cancel
           </Button>
-          <Button  type="submit" className="text-xl px-6">Add Products</Button>
+          {
+            loading ? <Button className="text-xl px-6">Loading...</Button>
+            : <Button  type="submit" className="text-xl px-6">Add Products</Button>
+          }
         </div>
       </div>
     </form>
