@@ -149,8 +149,6 @@ const ShopInfoForm = () => {
         setSelectedOptions(selectedOptionFormat)
       }
   }
-  // console.log("profileInfo ==>", profileInfo?.data);
-  // console.log("selected Options ==>", selectedOptions);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-4 mb-20">
@@ -184,7 +182,7 @@ const ShopInfoForm = () => {
       </div>
       <div className="flex justify-between gap-6">
         <div className="w-full mt-6">
-          <label className=" text-primary-950 font-bold">Contact Number*</label>
+          <label className=" text-primary-950 font-bold">Business Contact Number*</label>
           <input
             defaultValue={profileInfo?.data?.phone}
             {...register("business_number")}
