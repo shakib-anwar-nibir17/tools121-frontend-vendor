@@ -1,11 +1,12 @@
 import React from 'react'
 import { Controller } from 'react-hook-form';
 
-const SingleSelect = ({control, name, data, defaultVal, triggerFunction = false}) => {
+const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHolderName, errorMessage = ''}) => {
     const token = localStorage.getItem("vendorToken");
 
   return (
-    <Controller
+    <div>
+ <Controller
     name={name}
     control={control}
     defaultValue=""
@@ -17,22 +18,30 @@ const SingleSelect = ({control, name, data, defaultVal, triggerFunction = false}
        defaultValue={defaultVal}
       onChange={(e) => {
         field.onChange(e); // call the react-hook-form onChange
-        if(triggerFunction){
+        if(name == 'category'){
             triggerFunction({cat_id: e.target?.value, token})
+        }
+        else if(name == 'sub_category'){
+          triggerFunction({sub_cat_id: e.target?.value, token})
         }
       }}
       >
-        <option className="text-primary-950">Select {name}</option>
+        <option className="text-primary-950">Select {placeHolderName}</option>
         {
           data?.map((item) => (
             <option key={item?.id} value={item?.id} className="text-primary-950">{
-                item?.category_name || item?.sub_category_name
+                item?.category_name || item?.sub_category_name || item?.product_name || item?.brand_name || item?.model_name || item?.engine_name
             }</option>
           ))
         }
       </select>
     )}
     />
+      {errorMessage && (
+            <div className="text-red-500">{errorMessage}</div>
+          )}
+    </div>
+   
   )
 }
 
