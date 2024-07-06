@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import MultiSelect from "./MultiSelect";
+import toast from "react-hot-toast";
 
 const ShopInfoForm = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -41,6 +42,7 @@ const ShopInfoForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -52,6 +54,7 @@ const ShopInfoForm = () => {
   const [optionsData, setOptionsData] = useState([]);
   const [updateProfileInfo, {}] = useUpdateProfileInfoMutation();
   const [catErr, setCatErr] = useState('')
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (profileInfo?.data?.categories?.length > 0) {
@@ -81,6 +84,7 @@ const ShopInfoForm = () => {
 
   const profileInfoUpdateHandler = async (data) => {
     if(selectedOptions?.length > 0){
+      setLoading(true)
       setCatErr('')
       const categories_ids = selectedOptions?.map((item) => item?.value)
 
@@ -110,7 +114,15 @@ const ShopInfoForm = () => {
       const update_res = await updateProfileInfo(request_Obj)
 
       console.log("Update req body ==>", request_Obj)
-      console.log("update_res ==>", update_res)
+      console.log("update_res ==>", update_res) 
+
+      if(update_res?.data?.message == "Request success"){
+        setLoading(false)
+        toast.success("Profile updated Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
 
     }
     else{
@@ -122,8 +134,21 @@ const ShopInfoForm = () => {
     profileInfoUpdateHandler(data)
   };
 
-  // console.log("profileInfo ==>", profileInfo?.data);
-  // console.log("selected Options ==>", selectedOptions);
+  const resetHandler = () => {
+    reset()
+    const selectedData = profileInfo?.data?.categories?.filter((item) => item?.is_assigned == true);
+      
+      if(selectedData?.length > 0){
+        const selectedOptionFormat = selectedData?.map((item) => {
+          const formatObj = {
+            label: item?.category_name,
+            value: item?.category_id,
+          };
+          return formatObj;
+        });
+        setSelectedOptions(selectedOptionFormat)
+      }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-4 mb-20">
@@ -157,7 +182,7 @@ const ShopInfoForm = () => {
       </div>
       <div className="flex justify-between gap-6">
         <div className="w-full mt-6">
-          <label className=" text-primary-950 font-bold">Contact Number*</label>
+          <label className=" text-primary-950 font-bold">Business Contact Number*</label>
           <input
             defaultValue={profileInfo?.data?.phone}
             {...register("business_number")}
@@ -217,12 +242,21 @@ const ShopInfoForm = () => {
       </div>
 
       <div className="mt-6 flex justify-end gap-4">
-        <Button className="text-xl px-6 bg-white text-primary-900 border border-primary-900">
-          Reset
-        </Button>
-        <Button type="submit" className="text-xl px-6">
+        <div className="text-xl px-6 bg-white text-primary-900 border border-primary-900 rounded-md cursor-pointer w-[100px] flex justify-center items-center h-[40px]" >
+        <p onClick={() => {
+          resetHandler()
+        }}>
+            Reset
+        </p>
+        </div>
+       
+        {
+          loading ? <Button className="text-xl px-6">
+          Loading...
+        </Button> : <Button type="submit" className="text-xl px-6">
           Save
         </Button>
+        }
       </div>
     </form>
   );

@@ -55,6 +55,20 @@ const authApi = api.injectEndpoints({
       }),
         invalidatesTags: ['userinfo'],
     }),
+    
+    uploadImg: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/img/v1/upload",
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data?.formdata,
+      }),
+        invalidatesTags: ['userinfo'],
+    }),
 
   }),
 });
@@ -64,4 +78,5 @@ export const {
   useUpdateProfileInfoMutation,
   useUserDocListQuery,
   useUploadDocMutation,
+  useUploadImgMutation,
 } = authApi;

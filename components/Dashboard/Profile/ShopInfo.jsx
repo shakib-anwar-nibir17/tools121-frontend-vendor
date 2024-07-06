@@ -17,6 +17,7 @@ const profileOptions = [
 ];
 
 const ShopInfo = ({ value }) => {
+  
   return (
     <div className="mb-8">
       <ShopBanner />
