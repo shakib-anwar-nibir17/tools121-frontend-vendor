@@ -1,7 +1,7 @@
 import React from 'react'
 import { Controller } from 'react-hook-form';
 
-const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHolderName, errorMessage = ''}) => {
+const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHolderName, errorMessage = '', bgPrimary = true}) => {
     const token = localStorage.getItem("vendorToken");
 
   return (
@@ -13,7 +13,7 @@ const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHo
     render={({ field }) => (
       <select
       {...field}
-        className="rounded-lg border border-slate-200 bg-primary-50 px-4  py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
+        className={`rounded-lg border border-slate-200  px-4  py-2 text-primary-950 focus:outline-none w-full mt-2 h-12 ${bgPrimary ? 'bg-primary-50' : 'white'}`}
         // type="text"
        defaultValue={defaultVal}
       onChange={(e) => {

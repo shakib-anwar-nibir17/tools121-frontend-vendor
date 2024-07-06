@@ -188,7 +188,7 @@ const AddProductsForm = ({ setShowForm }) => {
             <p className="text-[14px]">Product not found?</p>
             <BsExclamationCircle color="#FF1E7C" />
           </div>
-          <Link href="#" className="text-primary-900 underline text-[14px]">
+          <Link href="/inventory/product-request-form" className="text-primary-900 underline text-[14px]">
             Click Here
           </Link>
         </div>

@@ -1,4 +1,4 @@
-const MoreInfo = () => {
+const MoreInfo = ({control, errors, register}) => {
   return (
     <>
       <div className="p-6 border border-slate-300 mt-6 rounded-lg">
@@ -6,10 +6,14 @@ const MoreInfo = () => {
         <div className="w-full mt-5">
           <label className="font-bold text-black">Base Price</label>
           <input
+           {...register("product_name")}
             className="rounded-lg border border-slate-300 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="text"
             placeholder="$    Type base price"
           />
+          {errors.product_name?.message && (
+            <div className="text-red-500">{errors.product_name?.message}</div>
+          )}
         </div>
       </div>
       <div className="p-6 border border-slate-300 mt-6 rounded-lg">
