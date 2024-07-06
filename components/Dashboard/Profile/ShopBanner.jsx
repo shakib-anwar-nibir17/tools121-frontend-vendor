@@ -6,14 +6,26 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineModeEditOutline, MdVerified } from "react-icons/md";
 import profile from "../../../public/profile_pic.png";
 import banner from "../../../public/shopbanner.png";
-import { useUserDataQuery } from "@/app/redux/features/userInfo";
+import { useUploadImgMutation, useUserDataQuery } from "@/app/redux/features/userInfo";
+import { useRef } from "react";
 
 const ShopBanner = () => {
   const token = localStorage.getItem("vendorToken");
   const { data: profileInfo, refetch } = useUserDataQuery(token, {
     refetchOnMountOrArgChange: true,
   });
+  const fileRef = useRef();
+  const [addImage, {}] = useUploadImgMutation();
 
+  const imgUploadHandler = async (data) => {
+    const formdata = new FormData()
+
+    formdata.append("img_type", "profile")
+    formdata.append("file", data)
+
+    const imgUpRes = await addImage({formdata, token})
+    console.log("imgUpRes ===>", imgUpRes)
+  }
   return (
     <div className="pb-6 border-b-2 border-slate-300">
       <div className="h-[300px] rounded-2xl w-full relative">
@@ -32,9 +44,16 @@ const ShopBanner = () => {
             className="rounded-full relative"
           />
           <div className="w-11 h-11 rounded-full bg-primary-200 cursor-pointer border-2 border-white absolute bottom-0 right-3 flex items-center justify-center">
-            <MdOutlineModeEditOutline size={20} className="text-black" />
+            <MdOutlineModeEditOutline onClick={(e) => {
+              e.preventDefault()
+              fileRef.current.click()
+            }} size={20} className="text-black" />
           </div>
-        </div>
+          <input onChange={(e) =>{
+              e.preventDefault()
+              imgUploadHandler(e.target.files[0])
+            }} ref={fileRef} type="file" hidden accept="image/*" />
+        </div> 
       </div>
       {/* shop name and other information */}
       <div className="ml-[240px] mt-4">
@@ -45,7 +64,7 @@ const ShopBanner = () => {
           {profileInfo?.data?.verify_status == 0 ? '' : <MdVerified color="#49ADF4" size={20} />}
         </div>
         <div className="text-lg flex items-center gap-3 mt-3">
-          <RatingComponent rating={parseInt(profileInfo?.data?.ratings)} size={20} />
+          <RatingComponent rating={profileInfo?.data?.ratings ? parseInt(profileInfo?.data?.ratings) : 0} size={20} />
           <span>|</span>
           <p> {profileInfo?.data?.total_ratings ? profileInfo?.data?.total_ratings : '-'} Total Ratings</p>
           <span>|</span>

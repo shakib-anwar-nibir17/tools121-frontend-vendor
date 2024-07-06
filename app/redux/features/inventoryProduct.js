@@ -93,7 +93,21 @@ const invenntoryProductApi = api.injectEndpoints({
       }),
         // invalidatesTags: ['product'],
     }),
-      
+
+    addProductRequest: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/product/v1/request",
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data?.requst_body,
+      }),
+        // invalidatesTags: ['product'],
+    }),
+
   }),
 });
 
@@ -105,4 +119,5 @@ export const {
     useProductEngineQuery,
     useLazySelectProductListQuery,
     useAddProductMutation,
+    useAddProductRequestMutation,
 } = invenntoryProductApi;

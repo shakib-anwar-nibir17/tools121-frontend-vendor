@@ -6,8 +6,30 @@ import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm, Controller } from 'react-hook-form';
+import { useAddProductRequestMutation } from "@/app/redux/features/inventoryProduct";
 
 const ProductRequestForm = () => {
+  const token = localStorage.getItem('vendorToken')
+  const [addProductRequst, {}] = useAddProductRequestMutation();
+  const schema = yup
+  .object({
+    category: yup
+      .string()
+      .required("Category is required"),
+
+    sub_category: yup
+    .string()
+    .required("Sub Category is required"),
+
+    product_name: yup
+    .string()
+    .required("Product name is required"),
+
+    product_description: yup
+    .string()
+    .required("Production Description is required"),
+  })
+  .required();
 
   const {
     control,
@@ -17,11 +39,17 @@ const ProductRequestForm = () => {
     reset,
     
   } = useForm({
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const productRequestSubmit = async () => {
+    
     console.log('form data ==>', data)
+  }
+
+  const onSubmit = (data) => {
+    productRequestSubmit(data)
+    
    }
 
   return (
