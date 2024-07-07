@@ -1,4 +1,5 @@
 import { api } from "../api/api";
+const Vtoken = localStorage.getItem("vendorToken");
 
 const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -47,13 +48,13 @@ const authApi = api.injectEndpoints({
         url: "/supplier/doc/v1/upload",
         method: "POST",
         headers: {
-          'Authorization': `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
+          'Authorization': `Bearer ${Vtoken}`,
+          // "Content-Type": "application/json",
           "Accept-Language": "en",
         },
-        body: data?.forms,
+        body: data,
       }),
-        invalidatesTags: ['userinfo'],
+        // invalidatesTags: ['userinfo'],
     }),
     
     uploadImg: builder.mutation({
@@ -61,11 +62,11 @@ const authApi = api.injectEndpoints({
         url: "/supplier/img/v1/upload",
         method: "POST",
         headers: {
-          'Authorization': `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
+          'Authorization': `Bearer ${Vtoken}`,
+          // "Content-Type": "application/json",
           "Accept-Language": "en",
         },
-        body: data?.formdata,
+        body: data,
       }),
         invalidatesTags: ['userinfo'],
     }),
