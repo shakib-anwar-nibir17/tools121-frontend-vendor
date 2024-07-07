@@ -100,6 +100,13 @@ const AddProductsForm = ({ setShowForm }) => {
         });
         reset()
     }
+    else if(product_add_res?.error?.data?.message == "Supplier product already exit"){
+      setLoading(false)
+      toast.error("Supplier product already exit", {
+        position: "top-right",
+        duration: 2500,
+      });
+    }
     else{
       setLoading(false)
         toast.error("Product Adding failed", {
@@ -113,7 +120,7 @@ const AddProductsForm = ({ setShowForm }) => {
    addProductHandler(data)
   }
  
-  // console.log('selectProductList ==>', productCategories?.data?.categories)
+  console.log('selectProductList ==>',selectProductList)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">

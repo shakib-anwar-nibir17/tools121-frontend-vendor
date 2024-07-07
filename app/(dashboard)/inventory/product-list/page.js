@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetProductListQuery } from "@/app/redux/features/inventoryProduct";
 import AddProductsForm from "@/components/Dashboard/ProductList/AddProductsForm";
 import NoProducts from "@/components/Dashboard/ProductList/NoProducts";
 import ProductListTable from "@/components/Dashboard/ProductList/ProductListTable";
@@ -8,8 +9,14 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const ProductList = () => {
+  const token = localStorage.getItem('vendorToken')
   const [products, setProducts] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const { data: productList, refetchProduct } = useGetProductListQuery(token, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  console.log("product list ==>", productList?.data?.supplier_products)
   return (
     <div>
       {showForm && <AddProductsForm setShowForm={setShowForm} />}
@@ -28,7 +35,7 @@ const ProductList = () => {
           </div>
         )}
       </div>
-      <ProductListTable />
+      <ProductListTable productData={productList?.data?.supplier_products}/>
       {products && <NoProducts setProducts={setProducts} />}
     </div>
   );

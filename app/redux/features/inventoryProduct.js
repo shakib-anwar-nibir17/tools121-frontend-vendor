@@ -2,6 +2,19 @@ import { api } from "../api/api";
 
 const invenntoryProductApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    getProductList: builder.query({
+      query: (token) =>({
+        url: '/supplier/product/v1/list',
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          "Accept-Language": "en",
+        },
+      }),
+      providesTags: ['productlist'],
+    }),
+
     productCategory: builder.query({
         query: (token) =>({
           url: '/categories/v1/list',
@@ -91,7 +104,7 @@ const invenntoryProductApi = api.injectEndpoints({
         },
         body: data?.requst_body,
       }),
-        // invalidatesTags: ['product'],
+      invalidatesTags: ['productlist'],
     }),
 
     addProductRequest: builder.mutation({
@@ -108,6 +121,19 @@ const invenntoryProductApi = api.injectEndpoints({
         // invalidatesTags: ['product'],
     }),
 
+    deleteProduct: builder.mutation({
+      query: (data) => ({
+        url: `/supplier/product/v1/delete/${data?.prod_id}`,
+        method: "DELETE", 
+        headers: {
+          'Authorization': `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+        invalidatesTags: ['productlist'],
+    }),
+
   }),
 });
 
@@ -120,4 +146,6 @@ export const {
     useLazySelectProductListQuery,
     useAddProductMutation,
     useAddProductRequestMutation,
+    useGetProductListQuery,
+    useDeleteProductMutation,
 } = invenntoryProductApi;
