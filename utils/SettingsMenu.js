@@ -1,3 +1,4 @@
+import { IoSettingsOutline } from "react-icons/io5";
 import { MdStorefront } from "react-icons/md";
 
 const SettingsMenu = [
@@ -26,12 +27,12 @@ const SettingsMenu = [
   //   value: "vendor-network",
   //   route: "vendor-network",
   // },
-  // {
-  //   menu: "System Preferences",
-  //   icons: IoSettingsOutline,
-  //   value: "system-preference",
-  //   route: "system-preference",
-  // },
+  {
+    menu: "System Preferences",
+    icons: IoSettingsOutline,
+    value: "system-preference",
+    route: "system-preference",
+  },
 ];
 
 export default SettingsMenu;
