@@ -100,6 +100,13 @@ const AddProductsForm = ({ setShowForm }) => {
         });
         reset()
     }
+    else if(product_add_res?.error?.data?.message == "Supplier product already exit"){
+      setLoading(false)
+      toast.error("Supplier product already exit", {
+        position: "top-right",
+        duration: 2500,
+      });
+    }
     else{
       setLoading(false)
         toast.error("Product Adding failed", {
