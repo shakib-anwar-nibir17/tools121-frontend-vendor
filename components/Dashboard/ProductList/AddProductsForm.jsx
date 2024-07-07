@@ -120,7 +120,7 @@ const AddProductsForm = ({ setShowForm }) => {
    addProductHandler(data)
   }
  
-  // console.log('selectProductList ==>', productCategories?.data?.categories)
+  console.log('selectProductList ==>',selectProductList)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
