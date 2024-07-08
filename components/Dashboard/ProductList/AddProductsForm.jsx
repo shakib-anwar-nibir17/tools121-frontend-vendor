@@ -3,7 +3,7 @@ import { useAddProductMutation, useLazyProductSubCategoryQuery, useLazySelectPro
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsExclamationCircle } from "react-icons/bs";
 import { useForm, Controller } from 'react-hook-form';
 import SingleSelect from "@/components/common/SingleSelect";
@@ -31,32 +31,68 @@ const AddProductsForm = ({ setShowForm }) => {
   });
   const [addProduct, {}] = useAddProductMutation();
   const [loading, setLoading] = useState(false)
+  const [formatedCategory, setFormatedCategory] = useState([])
+  const [formatedSubCategory, setFormatedSubCategory] = useState([])
+  const [formatedProdName, setFormatedProdName] = useState([])
+  const [formatedBrand, setFormatedBrand] = useState([])
+  const [formatedModel, setFormatedModel] = useState([])
+  const [formatedEngines, setFormatedEngines] = useState([])
 
   const schema = yup
   .object({
     category: yup
-      .string()
-      .required("Category is required"),
+    .object()
+    .shape({
+      value: yup.string().required("Category value is required"),
+      label: yup.string().required("Category label is required"),
+    })
+    .typeError("Category is required")
+    .required("Category is required"),
 
     sub_category: yup
-    .string()
+    .object()
+    .shape({
+      value: yup.string().required("Sub Category value is required"),
+      label: yup.string().required("Sub Category label is required"),
+    })
+    .typeError("Sub Category is required")
     .required("Sub Category is required"),
 
     product_id: yup
-    .string()
+    .object()
+    .shape({
+      value: yup.string().required("Product name value is required"),
+      label: yup.string().required("Product name label is required"),
+    })
+    .typeError("Product name is required")
     .required("Product name is required"),
 
     brand_id: yup
-    .string()
+    .object()
+    .shape({
+      value: yup.string().required("Brand value is required"),
+      label: yup.string().required("Brand label is required"),
+    })
+    .typeError("Brand is required")
     .required("Brand is required"),
 
     product_model_id: yup
-    .string()
+    .object()
+    .shape({
+      value: yup.string().required("Model value is required"),
+      label: yup.string().required("Model label is required"),
+    })
+    .typeError("Model is required")
     .required("Model is required"),
 
     engine_id: yup
-    .string()
-    .required("Engine is required"),
+    .object()
+    .shape({
+      value: yup.string().required("Engine value is required"),
+      label: yup.string().required("Engine label is required"),
+    })
+    .typeError("Engine is required")
+    .required("Engine required"),
 
     delivery_note: yup
     .string()
@@ -80,6 +116,8 @@ const AddProductsForm = ({ setShowForm }) => {
   });
 
   const addProductHandler = async (data) => {
+    console.log("data ==>", data)
+    return
     setLoading(true)
     const requst_body = {
       ...data,
@@ -119,8 +157,86 @@ const AddProductsForm = ({ setShowForm }) => {
   const onSubmit = (data) => {
    addProductHandler(data)
   }
- 
-  console.log('selectProductList ==>',selectProductList)
+  
+  useEffect(() => {
+    if(productCategories?.data?.categories?.length > 0){
+      const format = productCategories?.data?.categories?.map((item) => {
+        const obj = {
+          label: item?.category_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedCategory(format)
+    }
+  },[productCategories?.data?.categories])
+  
+  useEffect(() => {
+    if(subCategories?.data?.sub_categories?.length > 0){
+      const format = subCategories?.data?.sub_categories?.map((item) => {
+        const obj = {
+          label: item?.sub_category_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedSubCategory(format)
+    }
+  },[subCategories?.data?.sub_categories])
+  
+  useEffect(() => {
+    if(selectProductList?.data?.products?.length > 0){
+      const format = selectProductList?.data?.products?.map((item) => {
+        const obj = {
+          label: item?.product_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedProdName(format)
+    }
+  },[selectProductList?.data?.products])
+
+  useEffect(() => {
+    if(productBrand?.data?.brands?.length > 0){
+      const format = productBrand?.data?.brands?.map((item) => {
+        const obj = {
+          label: item?.brand_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedBrand(format)
+    }
+  },[productBrand?.data?.brands])
+
+  useEffect(() => {
+    if(productModel?.data?.models?.length > 0){
+      const format = productModel?.data?.models?.map((item) => {
+        const obj = {
+          label: item?.model_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedModel(format)
+    }
+  },[productModel?.data?.models])
+
+  useEffect(() => {
+    if(productEngine?.data?.engines?.length > 0){
+      const format = productEngine?.data?.engines?.map((item) => {
+        const obj = {
+          label: item?.engine_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedEngines(format)
+    }
+  },[productEngine?.data?.engines])
+
+  console.log('formatedProdName ==>', )
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
@@ -136,9 +252,10 @@ const AddProductsForm = ({ setShowForm }) => {
             defaultVal=''
             placeHolderName="Category"
             triggerFunction={triggerSubCategory}
-            data={productCategories?.data?.categories}
+            data={formatedCategory}
             errorMessage={errors.category ? errors.category?.message : ''}
           />
+          
         </div>
 
         <div className="w-full">
@@ -151,7 +268,7 @@ const AddProductsForm = ({ setShowForm }) => {
             placeHolderName='Sub Category'
             defaultVal=''
             triggerFunction={triggerSelectProduct}
-            data={subCategories?.data?.sub_categories}
+            data={formatedSubCategory}
             errorMessage={errors.sub_category ? errors.sub_category?.message : ''}
           />
         </div>
@@ -165,7 +282,7 @@ const AddProductsForm = ({ setShowForm }) => {
             name='product_id'
             placeHolderName='Product Name'
             defaultVal=''
-            data={selectProductList?.data?.products}
+            data={formatedProdName}
             errorMessage={errors.product_id ? errors.product_id?.message : ''}
           />
         </div>
@@ -177,7 +294,7 @@ const AddProductsForm = ({ setShowForm }) => {
             name='brand_id'
             placeHolderName='Brand'
             defaultVal=''
-            data={productBrand?.data?.brands}
+            data={formatedBrand}
             errorMessage={errors.brand_id ? errors.brand_id?.message : ''}
           />
         </div>
@@ -209,7 +326,7 @@ const AddProductsForm = ({ setShowForm }) => {
             name='product_model_id'
             placeHolderName='Model'
             defaultVal=''
-            data={productModel?.data?.models}
+            data={formatedModel}
             errorMessage={errors.product_model_id ? errors.product_model_id?.message : ''}
           />
         </div>
@@ -221,7 +338,7 @@ const AddProductsForm = ({ setShowForm }) => {
             name='engine_id'
             placeHolderName='Engine'
             defaultVal=''
-            data={productEngine?.data?.engines}
+            data={formatedEngines}
             errorMessage={errors.engine_id ? errors.engine_id?.message : ''}
           />
         </div>

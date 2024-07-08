@@ -18,14 +18,14 @@ const VerifyShops = () => {
 
     const forms = new FormData()
     
-    forms.append("doc_type_id", item?.doc_type_id)
-    forms.append("file ", docData)
+    forms.append("doc_type_id", item?.document_type_id)
+    forms.append("file", docData)
 
-    const docRes = await uploadDoc({forms, token})
+    const docRes = await uploadDoc(forms)
 
     console.log("docRes ==>", docRes)
   }
-  // console.log("userdoc list ==>", userDocList?.data?.documents)
+  console.log("userdoc list ==>", userDocList?.data?.documents)
 
   return (
     <form className="mb-20 max-w-[732px]">
