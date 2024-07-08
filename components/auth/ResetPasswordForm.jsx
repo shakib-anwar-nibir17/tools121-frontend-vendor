@@ -1,10 +1,16 @@
+/* eslint-disable no-empty-pattern */
 "use client";
+import { useResetPasswordMutation } from "@/app/redux/features/authApi";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import * as yup from "yup";
 import PasswordMeter from "./PasswordMeter";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function ResetPasswordForm() {
   const schema = yup
@@ -20,11 +26,18 @@ export default function ResetPasswordForm() {
 
       confirm_password: yup
         .string()
-        .oneOf([yup.ref("password"), null], "Passwords must match")
+        .oneOf([yup.ref("new_password"), null], "Passwords must match")
         .required("Confirm Password is required"),
     })
     .required();
   const [showPassword, setShowPassword] = useState(false);
+  const userNameData = useSelector((state) => state.authStore.userNameData);
+  const otpCode = useSelector((state) => state.authStore.otpCode);
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [resetPassword, {}] = useResetPasswordMutation();
+  const [loading, setLoading] = useState(false);
+  const [pass, setPass] = useState();
+  const router = useRouter()
 
   const {
     register,
@@ -38,8 +51,39 @@ export default function ResetPasswordForm() {
     setShowPassword(!showPassword);
   };
 
-  const onSubmit = (data) => {
+  const resetPassHandler = async (data) => {
+    const token = await executeRecaptcha("register");
+    const request_Obj = {
+      username: userNameData?.username,
+      otp: otpCode.otp,
+      recaptcha_token: token,
+      new_password: data?.new_password,
+    };
+
+    const response = await resetPassword(request_Obj);
+    console.log("Reset Pass Response =====>", response?.data);
+
+    if(response?.data?.message == "Password reset success"){
+      setLoading(false)
+      toast.success("Password reset Successfully", {
+        position: "top-right",
+        duration: 3000,
+      });
+      router.push('/signin')
+    }
+    else{
+      setLoading(false)
+      toast.error("Password reset failed", {
+        position: "top-right",
+        duration: 3000,
+      });
+    }
+  };
+
+  const onSubmit = async (data) => {
     console.log(data);
+    setLoading(true);
+    resetPassHandler(data);
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full">
@@ -61,6 +105,7 @@ export default function ResetPasswordForm() {
               className="py-2.5 px-4 w-full focus:outline-none"
               id="new_password"
               type={showPassword ? "text" : "password"}
+              onChange={(e) => setPass(e.target.value)}
               placeholder="Create a new password"
             />
             <span
@@ -108,7 +153,7 @@ export default function ResetPasswordForm() {
           <div className="mt-2.5 font-bold flex items-center gap-3 justify-end">
             <p>Password Strength</p>
             <div className="w-[120px] h-3 rounded-xl flex">
-              <PasswordMeter />
+              <PasswordMeter password={pass} />
             </div>
           </div>
           {errors.new_password && (
@@ -184,9 +229,16 @@ export default function ResetPasswordForm() {
           )}
         </div>
       </div>
-      <Button type="submit" className="h-12 text-xl w-full rounded-xl mb-6">
-        Reset Password
-      </Button>
+
+      {loading ? (
+        <Button type="submit" className="h-14 text-xl w-full rounded-xl mb-6">
+          Loading...
+        </Button>
+      ) : (
+        <Button type="submit" className="h-14 text-xl w-full rounded-xl mb-6">
+          Reset Password
+        </Button>
+      )}
     </form>
   );
 }

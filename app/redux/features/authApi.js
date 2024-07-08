@@ -28,9 +28,9 @@ const authApi = api.injectEndpoints({
       //   invalidatesTags: [''],
     }),
 
-    phoneOtpVerify: builder.mutation({
+    verifyOtp: builder.mutation({
       query: (data) => ({
-        url: "/supplier/auth/v1/verify-otp/phone",
+        url: "/supplier/auth/v1/verify-otp",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +40,8 @@ const authApi = api.injectEndpoints({
       }),
       //   invalidatesTags: [''],
     }),
-    userNameVerifyOtp: builder.mutation({
+
+    userNameOtpSend: builder.mutation({
       query: (data) => ({
         url: "/supplier/auth/v1/verify/username",
         method: "POST",
@@ -53,9 +54,35 @@ const authApi = api.injectEndpoints({
       //   invalidatesTags: [''],
     }),
 
+    userNames: builder.query({
+      query: (data) => ({
+        url: "/supplier/auth/v1/usernames",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        params: data,
+      }),
+      //   invalidatesTags: [''],
+    }),
+
+    resetPassword: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/auth/v1/reset/password",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
+      //   invalidatesTags: [''],
+    }),
+
     resendOtp: builder.mutation({
       query: (data) => ({
-        url: "/resend/otp",
+        url: "/supplier/auth/v1/resend-otp",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,45 +92,30 @@ const authApi = api.injectEndpoints({
       }),
       //   invalidatesTags: [''],
     }),
-    //  resend otp based on user name data
-    resendOtpUserName: builder.mutation({
-      query: (data) => ({
-        url: "/supplier/auth/v1/resend-otp/username",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept-Language": "en",
-        },
-        body: data,
-      }),
-    }),
 
-    forgotPassUserNameOtpSend: builder.mutation({
+    getUsernameListByPhone: builder.query({
       query: (data) => ({
-        url: "",
-        method: "POST",
-        body: data,
-      }),
-      //   invalidatesTags: [''],
-    }),
-
-    healthcheck: builder.query({
-      query: () => ({
-        url: "/health",
+        url: `/supplier/auth/v1/usernames?phone=${data?.phone }&&recaptcha_token=${data?.token}`,
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
       }),
       // providesTags: ['userinfo'],
     }),
+    
   }),
 });
 
 export const {
   useSignUpMutation,
   useLogInMutation,
-  usePhoneOtpVerifyMutation,
+  useVerifyOtpMutation,
   useResendOtpMutation,
-  useForgotPassUserNameOtpSendMutation,
-  useHealthcheckQuery,
-  useUserNameVerifyOtpMutation,
-  useResendOtpUserNameMutation,
+  useUserNameOtpSendMutation,
+  useResetPasswordMutation,
+  useUserNamesQuery,
+  useGetUsernameListByPhoneQuery,
+  useLazyGetUsernameListByPhoneQuery
 } = authApi;

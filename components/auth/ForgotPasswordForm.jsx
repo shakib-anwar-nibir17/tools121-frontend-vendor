@@ -1,6 +1,6 @@
 /* eslint-disable no-empty-pattern */
 "use client";
-import { useUserNameVerifyOtpMutation } from "@/app/redux/features/authApi";
+import { useUserNameOtpSendMutation } from "@/app/redux/features/authApi";
 import { setUserNameData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
 export default function ForgotPasswordForm() {
-  const [userNameVerifyOtp, {}] = useUserNameVerifyOtpMutation();
+  const [userNameOtpSend, {}] = useUserNameOtpSendMutation();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -41,21 +41,31 @@ export default function ForgotPasswordForm() {
       recaptcha_token: token,
     };
 
-    const response = await userNameVerifyOtp(request_Obj);
+    const response = await userNameOtpSend(request_Obj);
 
-    console.log("Register Response =====>", response);
+    console.log("Forget Pass form Response =====>", response);
     if (response?.data?.message == "OTP sent for verification") {
       toast.success("OTP has been successfully", {
-        position: "top-left",
+        position: "top-right",
         duration: 3000,
       });
-      router.push("/username-verify");
+      
       dispatch(setUserNameData(request_Obj));
       setLoading(false);
-    } else {
+      router.push("/username-verify");
+    }
+    else if(response?.error?.data?.message == "Supplier with this username or phone not exist"){
       setLoading(false);
 
-      toast.error("Signed-up failed try again", {
+      toast.error("Supplier with this username or phone not exist", {
+        position: "top-right",
+        duration: 2000,
+      });
+    }
+    else {
+      setLoading(false);
+
+      toast.error("OTP send failed try again", {
         position: "top-right",
         duration: 2000,
       });
@@ -65,7 +75,6 @@ export default function ForgotPasswordForm() {
   const onSubmit = async (data) => {
     setLoading(true);
     userNameOtpSendHandler(data);
-    console.log(data);
   };
 
   return (

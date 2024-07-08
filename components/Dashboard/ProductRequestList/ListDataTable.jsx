@@ -117,7 +117,7 @@ const ButtonStyles = {
   },
 };
 
-const ListDataTable = () => {
+const ListDataTable = ({requestData}) => {
   return (
     <Table className="max-w-[1412px] mt-10 mb-20">
       <TableHeader>
@@ -135,7 +135,7 @@ const ListDataTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody className="border-b-2 border-slate-200">
-        {ProductList.map((product) => (
+        {requestData?.map((product) => (
           <TableRow
             className="text-black border-b-2 border-slate-200"
             key={product._id}
@@ -144,11 +144,11 @@ const ListDataTable = () => {
               <Checkbox className="w-4 h-4 border border-black rounded-md" />
             </TableCell>
             <TableCell className="font-medium ">
-              {product.product_name}
+              {product?.product_name}
             </TableCell>
-            <TableCell>{product.category}</TableCell>
-            <TableCell>{product.stock}</TableCell>
-            <TableCell>{product.price}</TableCell>
+            <TableCell>{product?.sub_cat}</TableCell>
+            <TableCell>{product?.stock ? product?.stock : ''}</TableCell>
+            <TableCell>{product?.product_rate ? product?.product_rate : ''}</TableCell>
             <TableCell className="text-center">
               <button
                 style={ButtonStyles[product.status]}

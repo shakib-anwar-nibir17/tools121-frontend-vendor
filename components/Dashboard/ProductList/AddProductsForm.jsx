@@ -1,59 +1,313 @@
+"use client"
+import { useAddProductMutation, useLazyProductSubCategoryQuery, useLazySelectProductListQuery, useProductBrandQuery, useProductCategoryQuery, useProductEngineQuery, useProductModelQuery } from "@/app/redux/features/inventoryProduct";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { BsExclamationCircle } from "react-icons/bs";
+import { useForm, Controller } from 'react-hook-form';
+import SingleSelect from "@/components/common/SingleSelect";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import toast from "react-hot-toast";
 
 const AddProductsForm = ({ setShowForm }) => {
+  const token = localStorage.getItem("vendorToken");
+
+  const { data: productCategories, refetch: refetchCategory } = useProductCategoryQuery(token, {
+    refetchOnMountOrArgChange: true,
+  });
+  const [triggerSubCategory, { data: subCategories, error, isLoading }] = useLazyProductSubCategoryQuery();
+  const [triggerSelectProduct, { data: selectProductList }] = useLazySelectProductListQuery();
+
+  const { data: productBrand, refetch: refetchBrand } = useProductBrandQuery(token, {
+    refetchOnMountOrArgChange: true,
+  });
+  const { data: productModel, refetch: refetchModel } = useProductModelQuery(token, {
+    refetchOnMountOrArgChange: true,
+  });
+  const { data: productEngine, refetch: refetchEngine } = useProductEngineQuery(token, {
+    refetchOnMountOrArgChange: true,
+  });
+  const [addProduct, {}] = useAddProductMutation();
+  const [loading, setLoading] = useState(false)
+  const [formatedCategory, setFormatedCategory] = useState([])
+  const [formatedSubCategory, setFormatedSubCategory] = useState([])
+  const [formatedProdName, setFormatedProdName] = useState([])
+  const [formatedBrand, setFormatedBrand] = useState([])
+  const [formatedModel, setFormatedModel] = useState([])
+  const [formatedEngines, setFormatedEngines] = useState([])
+
+  const schema = yup
+  .object({
+    category: yup
+    .object()
+    .shape({
+      value: yup.string().required("Category value is required"),
+      label: yup.string().required("Category label is required"),
+    })
+    .typeError("Category is required")
+    .required("Category is required"),
+
+    sub_category: yup
+    .object()
+    .shape({
+      value: yup.string().required("Sub Category value is required"),
+      label: yup.string().required("Sub Category label is required"),
+    })
+    .typeError("Sub Category is required")
+    .required("Sub Category is required"),
+
+    product_id: yup
+    .object()
+    .shape({
+      value: yup.string().required("Product name value is required"),
+      label: yup.string().required("Product name label is required"),
+    })
+    .typeError("Product name is required")
+    .required("Product name is required"),
+
+    brand_id: yup
+    .object()
+    .shape({
+      value: yup.string().required("Brand value is required"),
+      label: yup.string().required("Brand label is required"),
+    })
+    .typeError("Brand is required")
+    .required("Brand is required"),
+
+    product_model_id: yup
+    .object()
+    .shape({
+      value: yup.string().required("Model value is required"),
+      label: yup.string().required("Model label is required"),
+    })
+    .typeError("Model is required")
+    .required("Model is required"),
+
+    engine_id: yup
+    .object()
+    .shape({
+      value: yup.string().required("Engine value is required"),
+      label: yup.string().required("Engine label is required"),
+    })
+    .typeError("Engine is required")
+    .required("Engine required"),
+
+    delivery_note: yup
+    .string()
+    .required("Delivery note is required"),
+
+    product_specification: yup
+    .string()
+    .required("Production Specification is required"),
+  })
+  .required();
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    resetField,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const addProductHandler = async (data) => {
+    console.log("data ==>", data)
+    // return
+    setLoading(true)
+
+    const findProduct = selectProductList?.data?.products?.filter((item) => item?.id == data?.product_id?.value)
+
+    const requst_body = {
+      ...data,
+      product_id: data?.product_id?.value,
+      product_model_id: parseInt(data?.product_model_id?.value),
+      engine_id: parseInt(data?.engine_id?.value),
+      brand_id: parseInt(data?.brand_id?.value),
+      stock_color: "",
+      product_description: "",
+      previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate
+    }
+    
+    console.log('requst_body ===>', requst_body)
+    const product_add_res = await addProduct({requst_body, token})
+
+    if(product_add_res?.data?.message == "Request success"){
+      setLoading(false)
+        toast.success("Product added Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+        reset()
+    }
+    else if(product_add_res?.error?.data?.message == "Supplier product already exit"){
+      setLoading(false)
+      toast.error("Supplier product already exit", {
+        position: "top-right",
+        duration: 2500,
+      });
+    }
+    else{
+      setLoading(false)
+        toast.error("Product Adding failed", {
+          position: "top-right",
+          duration: 2000,
+        });
+    }
+    console.log('product_add_res ===>', product_add_res)
+  }
+  const onSubmit = (data) => {
+   addProductHandler(data)
+  }
+  
+  useEffect(() => {
+    if(productCategories?.data?.categories?.length > 0){
+      const format = productCategories?.data?.categories?.map((item) => {
+        const obj = {
+          label: item?.category_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedCategory(format)
+    }
+  },[productCategories?.data?.categories])
+  
+  useEffect(() => {
+    if(subCategories?.data?.sub_categories?.length > 0){
+      const format = subCategories?.data?.sub_categories?.map((item) => {
+        const obj = {
+          label: item?.sub_category_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedSubCategory(format)
+    }
+  },[subCategories?.data?.sub_categories])
+  
+  useEffect(() => {
+    if(selectProductList?.data?.products?.length > 0){
+      const format = selectProductList?.data?.products?.map((item) => {
+        const obj = {
+          label: item?.product_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedProdName(format)
+    }
+  },[selectProductList?.data?.products])
+
+  useEffect(() => {
+    if(productBrand?.data?.brands?.length > 0){
+      const format = productBrand?.data?.brands?.map((item) => {
+        const obj = {
+          label: item?.brand_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedBrand(format)
+    }
+  },[productBrand?.data?.brands])
+
+  useEffect(() => {
+    if(productModel?.data?.models?.length > 0){
+      const format = productModel?.data?.models?.map((item) => {
+        const obj = {
+          label: item?.model_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedModel(format)
+    }
+  },[productModel?.data?.models])
+
+  useEffect(() => {
+    if(productEngine?.data?.engines?.length > 0){
+      const format = productEngine?.data?.engines?.map((item) => {
+        const obj = {
+          label: item?.engine_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedEngines(format)
+    }
+  },[productEngine?.data?.engines])
+
+  console.log('formatedProdName ==>', selectProductList)
+
   return (
-    <form className="max-w-[996px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
       <div className="gap-5 flex mb-6">
+
         <div className="w-full">
           <label className=" text-primary-950 font-bold">
             Product Category*
           </label>
-          <select
-            className="rounded-lg border border-slate-200 bg-primary-50 px-4  py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
-            type="text"
-            placeholder="Shop name"
-          >
-            <option className="text-primary-950">Select Category</option>
-          </select>
+          <SingleSelect
+            control={control}
+            name='category'
+            defaultVal=''
+            placeHolderName="Category"
+            triggerFunction={triggerSubCategory}
+            data={formatedCategory}
+            errorMessage={errors.category ? errors.category?.message : ''}
+            resetField={resetField}
+          />
+          
         </div>
+
         <div className="w-full">
           <label className=" text-primary-950 font-bold">
             Product Subcategory*
           </label>
-          <select
-            className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12 "
-            type="text"
-            placeholder="Shop name"
-          >
-            <option className="text-primary-950">Select Category</option>
-          </select>
+          <SingleSelect
+            control={control}
+            name='sub_category'
+            placeHolderName='Sub Category'
+            defaultVal=''
+            triggerFunction={triggerSelectProduct}
+            data={formatedSubCategory}
+            errorMessage={errors.sub_category ? errors.sub_category?.message : ''}
+            resetField={resetField}
+          />
         </div>
       </div>
+
       <div className="gap-5 flex mb-6">
         <div className="w-full">
           <label className=" text-primary-950 font-bold">Product Name*</label>
-          <select
-            className="rounded-lg border border-slate-200 bg-primary-50 px-4  py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
-            type="text"
-            placeholder="Shop name"
-          >
-            <option className="text-primary-950">Select Category</option>
-          </select>
+          <SingleSelect
+            control={control}
+            name='product_id'
+            placeHolderName='Product Name'
+            defaultVal=''
+            data={formatedProdName}
+            errorMessage={errors.product_id ? errors.product_id?.message : ''}
+          />
         </div>
+        
         <div className="w-full">
           <label className=" text-primary-950 font-bold">Product Brand*</label>
-          <select
-            className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12 "
-            type="text"
-            placeholder="Shop name"
-          >
-            <option className="text-primary-950">Select Category</option>
-          </select>
+          <SingleSelect
+            control={control}
+            name='brand_id'
+            placeHolderName='Brand'
+            defaultVal=''
+            data={formatedBrand}
+            errorMessage={errors.brand_id ? errors.brand_id?.message : ''}
+          />
         </div>
       </div>
+
       <div className="flex mb-6">
         <div className="h-[71px] border border-slate-200 py-3 px-4 w-1/2 rounded-lg flex justify-between items-start">
           <div className="flex items-center gap-3">
@@ -66,45 +320,53 @@ const AddProductsForm = ({ setShowForm }) => {
             <p className="text-[14px]">Product not found?</p>
             <BsExclamationCircle color="#FF1E7C" />
           </div>
-          <Link href="#" className="text-primary-900 underline text-[14px]">
+          <Link href="/inventory/product-request-form" className="text-primary-900 underline text-[14px]">
             Click Here
           </Link>
         </div>
       </div>
+
       <div className="gap-5 flex mb-6">
         <div className="w-full">
           <label className=" text-primary-950 font-bold">Model*</label>
-          <select
-            className="rounded-lg border border-slate-200 bg-primary-50 px-4  py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
-            type="text"
-            placeholder="Shop name"
-          >
-            <option className="text-primary-950">Select Category</option>
-          </select>
+          <SingleSelect
+            control={control}
+            name='product_model_id'
+            placeHolderName='Model'
+            defaultVal=''
+            data={formatedModel}
+            errorMessage={errors.product_model_id ? errors.product_model_id?.message : ''}
+          />
         </div>
+
         <div className="w-full">
           <label className=" text-primary-950 font-bold">Engine*</label>
-          <select
-            className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12 "
-            type="text"
-            placeholder="Shop name"
-          >
-            <option className="text-primary-950">Select Category</option>
-          </select>
+          <SingleSelect
+            control={control}
+            name='engine_id'
+            placeHolderName='Engine'
+            defaultVal=''
+            data={formatedEngines}
+            errorMessage={errors.engine_id ? errors.engine_id?.message : ''}
+          />
         </div>
       </div>
+
       <div className="gap-5 flex mb-6">
         <div className="w-full">
           <label className="font-bold">Regular Price</label>
           <input
+          {...register("previous_price")}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="text"
             placeholder="Regular Price"
           />
+          
         </div>
         <div className="w-full">
           <label className="font-bold">New Price</label>
           <input
+          {...register("new_price")}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="text"
             placeholder="....."
@@ -113,32 +375,43 @@ const AddProductsForm = ({ setShowForm }) => {
         <div className="w-full">
           <label className="font-bold">Stock</label>
           <input
+            {...register("stock")}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="number"
             placeholder="...."
           />
         </div>
       </div>
+
       <div className="flex gap-5">
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">Delivery Note*</label>
           <textarea
+           {...register("delivery_note")}
             className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
             type="text"
             placeholder="Delivery Note"
           />
+           {errors.delivery_note && (
+            <div className="text-red-500">{errors.delivery_note.message}</div>
+          )}
         </div>
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">
             Production Specification*
           </label>
           <textarea
+           {...register("product_specification")}
             className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
             type="text"
             placeholder="Production Specification"
           />
+           {errors.product_specification && (
+            <div className="text-red-500">{errors.product_specification.message}</div>
+          )}
         </div>
       </div>
+
       <div className="mt-10 mb-[60px]">
         <div className="flex justify-end gap-4">
           <Button
@@ -147,7 +420,10 @@ const AddProductsForm = ({ setShowForm }) => {
           >
             Cancel
           </Button>
-          <Button className="text-xl px-6">Add Products</Button>
+          {
+            loading ? <Button className="text-xl px-6">Loading...</Button>
+            : <Button  type="submit" className="text-xl px-6">Add Products</Button>
+          }
         </div>
       </div>
     </form>
