@@ -7,18 +7,34 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm, Controller } from 'react-hook-form';
 import { useAddProductRequestMutation } from "@/app/redux/features/inventoryProduct";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const ProductRequestForm = () => {
   const token = localStorage.getItem('vendorToken')
   const [addProductRequst, {}] = useAddProductRequestMutation();
+  const [prodImg, setProdImg] = useState(null)
+  const [imgErr, setImgErr] = useState('')
+  const [loader, setLoader] = useState(false)
+  
   const schema = yup
   .object({
     category: yup
-      .string()
-      .required("Category is required"),
+    .object()
+    .shape({
+      value: yup.string().required("Category value is required"),
+      label: yup.string().required("Category label is required"),
+    })
+    .typeError("Category is required")
+    .required("Category is required"),
 
     sub_category: yup
-    .string()
+    .object()
+    .shape({
+      value: yup.string().required("Sub Category value is required"),
+      label: yup.string().required("Sub Category label is required"),
+    })
+    .typeError("Sub Category is required")
     .required("Sub Category is required"),
 
     product_name: yup
@@ -28,45 +44,92 @@ const ProductRequestForm = () => {
     product_description: yup
     .string()
     .required("Production Description is required"),
+
+    product_rate: yup
+    .string()
+    .required("Product rate is required"),
   })
   .required();
-
+  
   const {
     control,
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    
+    resetField,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const productRequestSubmit = async () => {
+  const productRequestSubmit = async (data) => {
+    if(prodImg){
+      setLoader(true)
+      const formdata = new FormData();
+
+      formdata.append("product_name", data?.product_name)
+      formdata.append("sub_cat_id", parseInt(data?.sub_category?.value))
+      formdata.append("product_description", data?.product_description)
+      formdata.append("purchase_quantity", 0)
+      formdata.append("product_rate", parseInt(data?.product_rate))
+      formdata.append("file", prodImg)
+      formdata.append("product_specification", data?.product_description)
+      console.log('data ==>', data)
+
+      const prod_reqest_res = await addProductRequst({requst_body: formdata, token:token})
+
+      if(prod_reqest_res?.data?.message == "Request success"){
+        setLoader(false)
+          toast.success("Product request Successfully", {
+            position: "top-right",
+            duration: 2000,
+          });
+          reset()
+      }
+      else{
+        setLoader(false)
+        toast.error("Product request Failed", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
+
+      console.log('Prod Request res ==>', prod_reqest_res)
+    }
+    else{
+      
+      setImgErr('Image is Required')
+    }
     
-    console.log('form data ==>', data)
   }
 
   const onSubmit = (data) => {
     productRequestSubmit(data)
     
    }
-
+console.log(prodImg)
   return (
     <div className="max-w-[676px] mb-[102px]">
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* General Information */}
-        <GeneralInfo control={control} errors={errors} register={register}/>
+        <GeneralInfo  resetField={resetField} control={control} errors={errors} register={register}/>
         {/* Media Information */}
-        <MediaInfo />
+        <MediaInfo imgErr={imgErr} setProdImg={setProdImg} prodImg={prodImg}/>
         {/* More Information */}
         <MoreInfo control={control} errors={errors} register={register}/>
         <div className="mt-12 mb-[50px]">
           <div className="flex justify-end gap-4">
-            <Button className="text-xl px-6 bg-white text-primary-900 border border-primary-900">
-              Cancel
-            </Button>
-            <Button type="submit" className="text-xl px-6">Save Products</Button>
+            <div className="text-xl px-6 bg-white text-primary-900 border border-primary-900 rounded-md cursor-pointer w-[100px] flex justify-center items-center h-[40px]" >
+        <p onClick={() => {
+          setProdImg(null)
+          reset()
+        }}>
+            Cancel
+        </p>
+        </div>
+            {
+              loader ? <Button  className="text-xl px-6">Loading...</Button> : <Button type="submit" className="text-xl px-6">Save Products</Button>
+            }
           </div>
         </div>
       </form>
