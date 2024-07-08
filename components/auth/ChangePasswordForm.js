@@ -70,7 +70,7 @@ export default function ChangePasswordForm() {
     };
 
     const response = await changePassword(request_Obj);
-    console.log("Reset Pass Response =====>", response?.data);
+    console.log("Change Pass Response =====>", response?.data);
     if (response?.data?.message == "Password reset success") {
       reset();
       setLoading(false);
