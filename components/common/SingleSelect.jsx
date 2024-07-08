@@ -1,5 +1,8 @@
 import React from 'react'
 import { Controller } from 'react-hook-form';
+// import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select';
+
 
 const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHolderName, errorMessage = '', bgPrimary = true}) => {
     const token = localStorage.getItem("vendorToken");
@@ -11,30 +14,26 @@ const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHo
     control={control}
     defaultValue=""
     render={({ field }) => (
-      <select
-      {...field}
-        className={`rounded-lg border border-slate-200  px-4  py-2 text-primary-950 focus:outline-none w-full mt-2 h-12 ${bgPrimary ? 'bg-primary-50' : 'white'}`}
-        // type="text"
-       defaultValue={defaultVal}
-      onChange={(e) => {
-        field.onChange(e); // call the react-hook-form onChange
-        if(name == 'category'){
-            triggerFunction({cat_id: e.target?.value, token})
-        }
-        else if(name == 'sub_category'){
-          triggerFunction({sub_cat_id: e.target?.value, token})
-        }
-      }}
-      >
-        <option className="text-primary-950">Select {placeHolderName}</option>
-        {
-          data?.map((item) => (
-            <option key={item?.id} value={item?.id} className="text-primary-950">{
-                item?.category_name || item?.sub_category_name || item?.product_name || item?.brand_name || item?.model_name || item?.engine_name
-            }</option>
-          ))
-        }
-      </select>
+      <Select
+        {...field}
+        isSearchable={true}
+         onChange={(selectedOption) => {
+            field.onChange(selectedOption)
+            if(name == 'category' && selectedOption){
+                triggerFunction({cat_id: selectedOption?.value, token})
+            }
+            else if(name == 'sub_category' && selectedOption){
+              triggerFunction({sub_cat_id:  selectedOption?.value, token})
+            }
+        }}
+         styles={{  control: (provided) => ({
+            ...provided,
+            backgroundColor: bgPrimary ? '#e2eeff' : 'white', // Change the background color of the control
+            marginTop: '10px'
+          }),}}
+          placeholder={`Search Or Select ${placeHolderName}`}
+         isClearable options={data} 
+         />
     )}
     />
       {errorMessage && (

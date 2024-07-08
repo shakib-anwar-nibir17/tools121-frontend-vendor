@@ -10,6 +10,10 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    domains: ['testshopapi.tools121.com'], // Add your image domain here
+  },
+};
 
 export default withBundleAnalyzer(nextConfig);

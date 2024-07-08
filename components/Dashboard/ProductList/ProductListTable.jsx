@@ -167,7 +167,7 @@ const ProductListTable = ({productData}) => {
         </TableRow>
       </TableHeader>
       <TableBody className="border-b-2 border-slate-200">
-        {productData.map((product) => (
+        {productData?.map((product) => (
           <TableRow
             className="text-black border-b-2 border-slate-200"
             key={product?.id}
