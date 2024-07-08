@@ -1,10 +1,7 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable no-unused-vars */
 "use client";
-import {
-  
-  useSignUpMutation,
-} from "@/app/redux/features/authApi";
+import { useSignUpMutation } from "@/app/redux/features/authApi";
 import { setRegisterData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -122,7 +119,7 @@ export default function RegistrationForm() {
     setLoading(true);
     registerHandler(data);
   }
-  console.log("helath check ==>", helathCheck);
+  // console.log("helath check ==>", helathCheck);
   return (
     <div className="w-full text-black mt-8">
       <div className="text-center lg:text-left my-10">
