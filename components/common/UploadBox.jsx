@@ -17,7 +17,7 @@ const UploadBox = ({ text, docUploadHandler , item}) => {
       <input onChange={(e) =>{
         e.preventDefault()
          docUploadHandler(e.target.files[0], item)
-      }} ref={fileRef} type="file" hidden accept="image/*" />
+      }} ref={fileRef} type="file" hidden  />
       <p className="mt-1 text-primary-700">{text}</p>
     </div>
   );

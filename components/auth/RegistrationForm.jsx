@@ -122,7 +122,7 @@ export default function RegistrationForm() {
     setLoading(true);
     registerHandler(data);
   }
-  console.log("helath check ==>", helathCheck);
+  // console.log("helath check ==>", );
   return (
     <div className="w-full text-black mt-8">
       <div className="text-center lg:text-left my-10">
