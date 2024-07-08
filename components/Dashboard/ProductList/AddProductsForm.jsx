@@ -236,7 +236,7 @@ const AddProductsForm = ({ setShowForm }) => {
     }
   },[productEngine?.data?.engines])
 
-  console.log('formatedProdName ==>', )
+  console.log('formatedProdName ==>', selectProductList)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
