@@ -24,13 +24,24 @@ const ShopBanner = () => {
   const imgUploadHandler = async (data) => {
     const formdata = new FormData();
 
-    formdata.append("img_type", "profile");
+    formdata.append("img_type", "0");
     formdata.append("file", data);
 
-    const imgUpRes = await addImage({ formdata, token });
+    const imgUpRes = await addImage({ formdata: formdata, token: token });
     console.log("imgUpRes ===>", imgUpRes);
   };
 
+  const bnrUploadHandler = async (data) => {
+    const formdata = new FormData();
+
+    formdata.append("img_type", "1");
+    formdata.append("file", data);
+
+    const imgUpRes = await addImage({ formdata: formdata, token: token });
+    console.log("imgUpRes ===>", imgUpRes);
+  };
+
+  console.log("Profile info ==>", profileInfo);
   return (
     <div className="pb-6 border-b-2 border-slate-300">
       <div className="h-[300px] rounded-2xl w-full relative">

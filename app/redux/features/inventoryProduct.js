@@ -15,6 +15,19 @@ const invenntoryProductApi = api.injectEndpoints({
       providesTags: ['productlist'],
     }),
 
+    getProducRequesttList: builder.query({
+      query: (token) =>({
+        url: '/supplier/product/v1/requested/list',
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          "Accept-Language": "en",
+        },
+      }),
+      providesTags: ['productrequestlist'],
+    }),
+
     productCategory: builder.query({
         query: (token) =>({
           url: '/categories/v1/list',
@@ -113,12 +126,12 @@ const invenntoryProductApi = api.injectEndpoints({
         method: "POST",
         headers: {
           'Authorization': `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
           "Accept-Language": "en",
         },
         body: data?.requst_body,
       }),
-        // invalidatesTags: ['product'],
+        invalidatesTags: ['productrequestlist'],
     }),
 
     deleteProduct: builder.mutation({
@@ -148,4 +161,5 @@ export const {
     useAddProductRequestMutation,
     useGetProductListQuery,
     useDeleteProductMutation,
+    useGetProducRequesttListQuery,
 } = invenntoryProductApi;

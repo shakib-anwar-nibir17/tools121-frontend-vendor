@@ -26,7 +26,7 @@ const Options = [
   },
 ];
 
-const ListTabs = () => {
+const ListTabs = ({requestData}) => {
   return (
     <Tabs defaultValue="all-products">
       <div className="flex items-center mt-10 justify-between">
@@ -53,7 +53,7 @@ const ListTabs = () => {
         </div>
       </div>
       <TabsContent value="all-products">
-        <ListDataTable />
+        <ListDataTable requestData={requestData} />
       </TabsContent>
       <div className="flex justify-end">
         <PaginationComponent />
