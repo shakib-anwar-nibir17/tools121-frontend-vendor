@@ -21,7 +21,7 @@ const VerifyShops = () => {
     forms.append("doc_type_id", item?.document_type_id)
     forms.append("file", docData)
 
-    const docRes = await uploadDoc(forms)
+    const docRes = await uploadDoc({forms: forms,token: token})
 
     console.log("docRes ==>", docRes)
   }

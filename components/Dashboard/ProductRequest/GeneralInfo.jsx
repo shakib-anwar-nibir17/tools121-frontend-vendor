@@ -1,12 +1,41 @@
 import { useLazyProductSubCategoryQuery, useProductCategoryQuery } from "@/app/redux/features/inventoryProduct";
 import SingleSelect from "@/components/common/SingleSelect";
+import { useEffect, useState } from "react";
 
-const GeneralInfo = ({control, errors, register}) => {
+const GeneralInfo = ({control, errors, register,  resetField}) => {
   const token = localStorage.getItem('vendorToken')
   const { data: productCategories, refetch: refetchCategory } = useProductCategoryQuery(token, {
     refetchOnMountOrArgChange: true,
   });
   const [triggerSubCategory, { data: subCategories, error, isLoading }] = useLazyProductSubCategoryQuery();
+  const [formatedCategory, setFormatedCategory] = useState([])
+  const [formatedSubCategory, setFormatedSubCategory] = useState([])
+
+  useEffect(() => {
+    if(productCategories?.data?.categories?.length > 0){
+      const format = productCategories?.data?.categories?.map((item) => {
+        const obj = {
+          label: item?.category_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedCategory(format)
+    }
+  },[productCategories?.data?.categories])
+
+  useEffect(() => {
+    if(subCategories?.data?.sub_categories?.length > 0){
+      const format = subCategories?.data?.sub_categories?.map((item) => {
+        const obj = {
+          label: item?.sub_category_name,
+          value: item?.id
+        }
+        return obj
+      })
+      setFormatedSubCategory(format)
+    }
+  },[subCategories?.data?.sub_categories])
 
   // console.log('category ===>', productCategories)
   
@@ -25,9 +54,10 @@ const GeneralInfo = ({control, errors, register}) => {
             defaultVal=''
             placeHolderName="Category"
             triggerFunction={triggerSubCategory}
-            data={productCategories?.data?.categories}
+            data={formatedCategory}
             errorMessage={errors.category ? errors.category?.message : ''}
             bgPrimary={false}
+            resetField={resetField}
           />
         </div>
         <div className="w-full mt-5">
@@ -40,9 +70,10 @@ const GeneralInfo = ({control, errors, register}) => {
             defaultVal=''
             placeHolderName="Sub Category"
             triggerFunction={triggerSubCategory}
-            data={subCategories?.data?.sub_categories}
+            data={formatedSubCategory}
             errorMessage={errors.sub_category ? errors.sub_category?.message : ''}
             bgPrimary={false}
+            resetField={resetField}
           />
         </div>
       </div>

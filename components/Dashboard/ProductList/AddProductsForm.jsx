@@ -110,23 +110,29 @@ const AddProductsForm = ({ setShowForm }) => {
     handleSubmit,
     formState: { errors },
     reset,
-    
+    resetField,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
   const addProductHandler = async (data) => {
     console.log("data ==>", data)
-    return
+    // return
     setLoading(true)
+
+    const findProduct = selectProductList?.data?.products?.filter((item) => item?.id == data?.product_id?.value)
+
     const requst_body = {
       ...data,
-      product_model_id: parseInt(data?.product_model_id),
-      engine_id: parseInt(data?.engine_id),
-      brand_id: parseInt(data?.brand_id),
+      product_id: data?.product_id?.value,
+      product_model_id: parseInt(data?.product_model_id?.value),
+      engine_id: parseInt(data?.engine_id?.value),
+      brand_id: parseInt(data?.brand_id?.value),
       stock_color: "",
       product_description: "",
+      previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate
     }
+    
     console.log('requst_body ===>', requst_body)
     const product_add_res = await addProduct({requst_body, token})
 
@@ -236,7 +242,7 @@ const AddProductsForm = ({ setShowForm }) => {
     }
   },[productEngine?.data?.engines])
 
-  console.log('formatedProdName ==>', )
+  console.log('formatedProdName ==>', selectProductList)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
@@ -254,6 +260,7 @@ const AddProductsForm = ({ setShowForm }) => {
             triggerFunction={triggerSubCategory}
             data={formatedCategory}
             errorMessage={errors.category ? errors.category?.message : ''}
+            resetField={resetField}
           />
           
         </div>
@@ -270,6 +277,7 @@ const AddProductsForm = ({ setShowForm }) => {
             triggerFunction={triggerSelectProduct}
             data={formatedSubCategory}
             errorMessage={errors.sub_category ? errors.sub_category?.message : ''}
+            resetField={resetField}
           />
         </div>
       </div>

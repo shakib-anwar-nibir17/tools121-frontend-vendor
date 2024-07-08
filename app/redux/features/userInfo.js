@@ -1,5 +1,5 @@
+import { GetVendorToken } from "@/utils/GetToken";
 import { api } from "../api/api";
-const Vtoken = localStorage.getItem("vendorToken");
 
 const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -48,11 +48,10 @@ const authApi = api.injectEndpoints({
         url: "/supplier/doc/v1/upload",
         method: "POST",
         headers: {
-          'Authorization': `Bearer ${Vtoken}`,
-          // "Content-Type": "application/json",
+          'Authorization': `Bearer ${GetVendorToken()}`,
           "Accept-Language": "en",
         },
-        body: data,
+        body: data?.forms,
       }),
         // invalidatesTags: ['userinfo'],
     }),
@@ -62,11 +61,10 @@ const authApi = api.injectEndpoints({
         url: "/supplier/img/v1/upload",
         method: "POST",
         headers: {
-          'Authorization': `Bearer ${Vtoken}`,
-          // "Content-Type": "application/json",
+          'Authorization': `Bearer ${data?.token}`,
           "Accept-Language": "en",
         },
-        body: data,
+        body: data?.formdata,
       }),
         invalidatesTags: ['userinfo'],
     }),

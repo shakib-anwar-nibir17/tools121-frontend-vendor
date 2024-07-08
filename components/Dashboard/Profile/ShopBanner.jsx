@@ -22,11 +22,11 @@ const ShopBanner = () => {
 
   const imgUploadHandler = async (data) => {
     const formdata = new FormData()
-
+    
     formdata.append("img_type", "0")
     formdata.append("file", data)
 
-    const imgUpRes = await addImage(formdata)
+    const imgUpRes = await addImage({formdata: formdata, token: token})
     console.log("imgUpRes ===>", imgUpRes)
   }
 
@@ -36,7 +36,7 @@ const ShopBanner = () => {
     formdata.append("img_type", "1")
     formdata.append("file", data)
 
-    const imgUpRes = await addImage(formdata)
+    const imgUpRes = await addImage({formdata: formdata, token: token})
     console.log("imgUpRes ===>", imgUpRes)
   }
 
