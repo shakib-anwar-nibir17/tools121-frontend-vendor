@@ -3,14 +3,14 @@
 import { useResetPasswordMutation } from "@/app/redux/features/authApi";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import PasswordMeter from "./PasswordMeter";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
 export default function ResetPasswordForm() {
   const schema = yup
@@ -37,7 +37,7 @@ export default function ResetPasswordForm() {
   const [resetPassword, {}] = useResetPasswordMutation();
   const [loading, setLoading] = useState(false);
   const [pass, setPass] = useState();
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
@@ -63,16 +63,15 @@ export default function ResetPasswordForm() {
     const response = await resetPassword(request_Obj);
     console.log("Reset Pass Response =====>", response?.data);
 
-    if(response?.data?.message == "Password reset success"){
-      setLoading(false)
+    if (response?.data?.message == "Password reset success") {
+      setLoading(false);
       toast.success("Password reset Successfully", {
         position: "top-right",
         duration: 3000,
       });
-      router.push('/signin')
-    }
-    else{
-      setLoading(false)
+      router.push("/signin");
+    } else {
+      setLoading(false);
       toast.error("Password reset failed", {
         position: "top-right",
         duration: 3000,
