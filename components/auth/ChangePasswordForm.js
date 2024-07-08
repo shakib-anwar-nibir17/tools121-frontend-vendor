@@ -1,12 +1,16 @@
+/* eslint-disable no-empty-pattern */
 /* eslint-disable no-unused-vars */
 "use client";
 import { Button } from "@/components/ui/button";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
+import { useChangePasswordMutation } from "@/app/redux/features/authApi";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 
@@ -37,9 +41,11 @@ const schema = yup
 
 export default function ChangePasswordForm() {
   const router = useRouter();
-  const userNameData = useSelector((state) => state.authStore.userNameData);
-  console.log(userNameData);
+  const [loading, setLoading] = useState(false);
+  const loginName = useSelector((state) => state.authStore.loginName);
   const [showPassword, setShowPassword] = useState(false);
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [changePassword, {}] = useChangePasswordMutation();
 
   const {
     register,
@@ -55,36 +61,30 @@ export default function ChangePasswordForm() {
   };
 
   async function onSubmit(data) {
-    // const { confirmPassword, ...filteredObject } = data;
-    // const updated_data = {
-    //   ...filteredObject,
-    // };
-    // console.log("token----", updated_data);
-    // try {
-    //   // const res = await changePassword(updated_data);
-    //   // console.log(res);
-    //   if (res?.data) {
-    //     // localStorage.setItem(
-    //     //   "user_info",
-    //     //   JSON.stringify({ login_name: data?.login_name })
-    //     // );
-    //     // const inExpireMin = new Date(
-    //     //   new Date().getTime() + COOKIE_EXPIRE_MIN * 60 * 1000
-    //     // );
-    //     // Cookies.set("authToken", res.data.token, {
-    //     //   expires: inExpireMin,
-    //     // });
-    //     reset();
-    //     console.log("Successfully updated user info!");
-    //     router.refresh();
-    //   }
-    //   if (res?.error) {
-    //     console.log("Failed to updated user info");
-    //   }
-    // } catch (error) {
-    //   console.log("Account updated failed");
-    // }
-    console.log(data);
+    const token = await executeRecaptcha("changePassword");
+    const request_Obj = {
+      username: loginName.loginName,
+      recaptcha_token: token,
+      old_password: data?.old_password,
+      new_password: data?.new_password,
+    };
+
+    const response = await changePassword(request_Obj);
+    console.log("Reset Pass Response =====>", response?.data);
+    if (response?.data?.message == "Password reset success") {
+      reset();
+      setLoading(false);
+      toast.success("Password reset Successfully", {
+        position: "top-right",
+        duration: 3000,
+      });
+    } else {
+      setLoading(false);
+      toast.error("Password reset failed", {
+        position: "top-right",
+        duration: 3000,
+      });
+    }
   }
 
   return (

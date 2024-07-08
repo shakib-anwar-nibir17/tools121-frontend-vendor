@@ -80,6 +80,19 @@ const authApi = api.injectEndpoints({
       //   invalidatesTags: [''],
     }),
 
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/auth/v2/reset/password",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
+      //   invalidatesTags: [''],
+    }),
+
     resendOtp: builder.mutation({
       query: (data) => ({
         url: "/supplier/auth/v1/resend-otp",
@@ -95,7 +108,7 @@ const authApi = api.injectEndpoints({
 
     getUsernameListByPhone: builder.query({
       query: (data) => ({
-        url: `/supplier/auth/v1/usernames?phone=${data?.phone }&&recaptcha_token=${data?.token}`,
+        url: `/supplier/auth/v1/usernames?phone=${data?.phone}&&recaptcha_token=${data?.token}`,
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +117,6 @@ const authApi = api.injectEndpoints({
       }),
       // providesTags: ['userinfo'],
     }),
-    
   }),
 });
 
@@ -116,6 +128,7 @@ export const {
   useUserNameOtpSendMutation,
   useResetPasswordMutation,
   useUserNamesQuery,
+  useChangePasswordMutation,
   useGetUsernameListByPhoneQuery,
-  useLazyGetUsernameListByPhoneQuery
+  useLazyGetUsernameListByPhoneQuery,
 } = authApi;

@@ -30,6 +30,7 @@ const ShopBanner = () => {
     const imgUpRes = await addImage({ formdata, token });
     console.log("imgUpRes ===>", imgUpRes);
   };
+
   return (
     <div className="pb-6 border-b-2 border-slate-300">
       <div className="h-[300px] rounded-2xl w-full relative">

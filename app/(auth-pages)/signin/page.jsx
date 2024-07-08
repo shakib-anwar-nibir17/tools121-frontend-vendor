@@ -2,6 +2,7 @@
 "use client";
 
 import { useLogInMutation } from "@/app/redux/features/authApi";
+import { setLoginName } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import { useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
 export default function SignIn() {
@@ -18,6 +20,7 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [loginErr, setLoginErr] = useState("");
+  const dispatch = useDispatch();
 
   const schema = yup
     .object({
@@ -65,6 +68,7 @@ export default function SignIn() {
 
     if (loginRes?.data?.data?.token) {
       setLoading(false);
+      dispatch(setLoginName({ loginName: data?.username }));
       localStorage.setItem("vendorToken", loginRes?.data?.data?.token);
       router.push("/dashboard");
     } else if (
