@@ -1,10 +1,7 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable no-unused-vars */
 "use client";
-import {
-  
-  useSignUpMutation,
-} from "@/app/redux/features/authApi";
+import { useSignUpMutation } from "@/app/redux/features/authApi";
 import { setRegisterData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
