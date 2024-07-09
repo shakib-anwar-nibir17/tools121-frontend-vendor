@@ -48,12 +48,12 @@ const authApi = api.injectEndpoints({
         url: "/supplier/doc/v1/upload",
         method: "POST",
         headers: {
-          'Authorization': `Bearer ${GetVendorToken()}`,
+          'Authorization': `Bearer ${data?.token}`,
           "Accept-Language": "en",
         },
         body: data?.forms,
       }),
-        // invalidatesTags: ['userinfo'],
+        invalidatesTags: ['userdocs'],
     }),
     
     uploadImg: builder.mutation({
@@ -69,6 +69,18 @@ const authApi = api.injectEndpoints({
         invalidatesTags: ['userinfo'],
     }),
 
+    requestDocVerification: builder.mutation({
+      query: (token) => ({
+        url: "/supplier/doc/v1/verify-request",
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          "Accept-Language": "en",
+        },
+      }),
+        invalidatesTags: ['userdocs'],
+    }),
+
   }),
 });
 
@@ -78,4 +90,6 @@ export const {
   useUserDocListQuery,
   useUploadDocMutation,
   useUploadImgMutation,
+  useRequestDocVerificationMutation,
+
 } = authApi;
