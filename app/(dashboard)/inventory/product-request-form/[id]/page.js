@@ -6,54 +6,55 @@ import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm, Controller } from 'react-hook-form';
-import { useAddProductRequestMutation, useLazyGetSingleProductRequestQuery } from "@/app/redux/features/inventoryProduct";
+import { useLazyGetSingleProductRequestQuery, useUpdateReqProductMutation } from "@/app/redux/features/inventoryProduct";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const ProductRequestForm = ({params}) => {
   const token = localStorage.getItem('vendorToken')
-  const [addProductRequst, {}] = useAddProductRequestMutation();
+  const [updateProductRequst, {}] = useUpdateReqProductMutation();
   const [prodImg, setProdImg] = useState(null)
   const [imgErr, setImgErr] = useState('')
   const [loader, setLoader] = useState(false)
   const [preview, setPreview] = useState('')
-
+  const router = useRouter()
   //-------Editng State-----------//
 
-  // const schema = yup
-  // .object({
-  //   category: yup
-  //   .object()
-  //   .shape({
-  //     value: yup.string().required("Category value is required"),
-  //     label: yup.string().required("Category label is required"),
-  //   })
-  //   .typeError("Category is required")
-  //   .required("Category is required"),
+  const schema = yup
+  .object({
+    category: yup
+    .object()
+    .shape({
+      value: yup.string().required("Category value is required"),
+      label: yup.string().required("Category label is required"),
+    })
+    .typeError("Category is required")
+    .required("Category is required"),
 
-  //   sub_category: yup
-  //   .object()
-  //   .shape({
-  //     value: yup.string().required("Sub Category value is required"),
-  //     label: yup.string().required("Sub Category label is required"),
-  //   })
-  //   .typeError("Sub Category is required")
-  //   .required("Sub Category is required"),
+    sub_category: yup
+    .object()
+    .shape({
+      value: yup.string().required("Sub Category value is required"),
+      label: yup.string().required("Sub Category label is required"),
+    })
+    .typeError("Sub Category is required")
+    .required("Sub Category is required"),
 
-  //   product_name: yup
-  //   .string()
-  //   .required("Product name is required"),
+    product_name: yup
+    .string()
+    .required("Product name is required"),
 
-  //   product_description: yup
-  //   .string()
-  //   .required("Production Description is required"),
+    product_description: yup
+    .string()
+    .required("Production Description is required"),
 
-  //   product_rate: yup
-  //   .string()
-  //   .required("Product rate is required"),
-  // })
-  // .required();
+    product_rate: yup
+    .string()
+    .required("Product rate is required"),
+  })
+  .required();
   
   const {
     control,
@@ -64,12 +65,10 @@ const ProductRequestForm = ({params}) => {
     resetField,
     setValue
   } = useForm({
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
     defaultValues:{
       product_name: "",
       product_description: "",
-      category: null,
-      sub_category: null,
       product_rate: "",
       sku: "",
       barcode: "",
@@ -82,23 +81,24 @@ const ProductRequestForm = ({params}) => {
   });
 
   const productRequestSubmit = async (data) => {
-    console.log('Prod Request obj ==>', data)
-
-    return
-    if(prodImg){
+    
+    if(prodImg || preview){
       setLoader(true)
       const formdata = new FormData();
 
+      const imageData = prodImg ? prodImg : preview
+
+      formdata.append("product_id", data?.id)
       formdata.append("product_name", data?.product_name)
       formdata.append("sub_cat_id", parseInt(data?.sub_category?.value))
       formdata.append("product_description", data?.product_description)
       formdata.append("purchase_quantity", 0)
       formdata.append("product_rate", parseInt(data?.product_rate))
-      formdata.append("file", prodImg)
+      formdata.append("file", imageData)
       formdata.append("product_specification", data?.product_description)
       console.log('data ==>', data)
 
-      const prod_reqest_res = await addProductRequst({requst_body: formdata, token:token})
+      const prod_reqest_res = await updateProductRequst({requst_body: formdata, token:token})
 
       if(prod_reqest_res?.data?.message == "Request success"){
         setLoader(false)
@@ -118,7 +118,7 @@ const ProductRequestForm = ({params}) => {
         });
       }
 
-      console.log('Prod Request res ==>', prod_reqest_res)
+      
     }
     else{
       
@@ -161,7 +161,8 @@ const ProductRequestForm = ({params}) => {
       setPreview(singleProductRequestData?.data?.requested_products?.img_url)
     }
   },[singleProductRequestData?.data?.requested_products?.img_url])
-console.log('singleProductRequestData ===>' , preview)
+
+console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.requested_products)
 
   return (
     <div className="max-w-[676px] mb-[102px]">
@@ -181,8 +182,7 @@ console.log('singleProductRequestData ===>' , preview)
           <div className="flex justify-end gap-4">
             <div className="text-xl px-6 bg-white text-primary-900 border border-primary-900 rounded-md cursor-pointer w-[100px] flex justify-center items-center h-[40px]" >
         <p onClick={() => {
-          setProdImg(null)
-          reset()
+          router.push('/inventory/product-request-list')
         }}>
             Cancel
         </p>

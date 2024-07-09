@@ -159,6 +159,32 @@ const invenntoryProductApi = api.injectEndpoints({
       }),
     }),
 
+    updateReqProduct: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/product/v1/requested/update",
+        method: "PUT",
+        headers: {
+          'Authorization': `Bearer ${data?.token}`,
+          // "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data?.requst_body,
+      }),
+        invalidatesTags: ['productrequestlist'],
+    }),
+
+    deleteRequstProduct: builder.mutation({
+      query: (data) => ({
+        url: `/supplier/product/v1/requested/delete/${data?.prod_id}`,
+        method: "DELETE", 
+        headers: {
+          'Authorization': `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+        invalidatesTags: ['productrequestlist'],
+    }),
   }),
 });
 
@@ -175,4 +201,6 @@ export const {
     useDeleteProductMutation,
     useGetProducRequesttListQuery,
     useLazyGetSingleProductRequestQuery,
+    useUpdateReqProductMutation,
+    useDeleteRequstProductMutation
 } = invenntoryProductApi;

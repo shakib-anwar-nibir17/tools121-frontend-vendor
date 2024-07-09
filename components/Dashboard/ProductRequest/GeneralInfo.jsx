@@ -27,7 +27,7 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
       })
       setFormatedCategory(format)
     }
-  },[productCategories?.data?.categories])
+  },[productCategories?.data?.categories, productCategories?.data?.categories?.length])
 
   useEffect(() => {
     if(subCategories?.data?.sub_categories?.length > 0){
@@ -47,6 +47,7 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
 
   useEffect(() => {
     if(paramsId && formatedCategory?.length > 0 && singleProductRequestData?.id){
+      console.log('entering...')
       const findCate = formatedCategory?.find((item) => item?.label == singleProductRequest?.category_name)
       setSelectedCategory(findCate)
       triggerSubCategory({cat_id: findCate?.value, token})
@@ -54,10 +55,10 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
       Object.keys(singleProductRequestData).forEach(key => {
         setValue(key, singleProductRequestData[key]);
       });
-  
-    }
-  },[paramsId, formatedCategory?.length])
 
+    }
+  },[paramsId, formatedCategory?.length, singleProductRequestData?.id])
+  
   useEffect(() => {
     if(paramsId && formatedSubCategory?.length > 0){
       const findSubCate = formatedSubCategory?.find((item) => item?.label == singleProductRequestData?.sub_cat)
@@ -66,6 +67,7 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
     }
   },[paramsId, formatedSubCategory?.length])
 
+console.log("formatedSubCategory ==>", selectedCategory)
 
   return (
     <div className="p-6 border border-slate-300 rounded-lg mt-6">
