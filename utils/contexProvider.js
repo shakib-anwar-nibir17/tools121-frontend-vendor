@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-  const [currentColor, setCurrentColor] = useState('#7F6563');
+  const [currentColor, setCurrentColor] = useState('#0d6efd');
   const [showSidebar, setShowSidebar] = useState(true);
   const [pageData, setPageData] = useState();
   const [currentPage, setCurrentPage] = useState(0);
