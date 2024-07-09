@@ -65,7 +65,20 @@ const ProductRequestForm = ({params}) => {
     setValue
   } = useForm({
     // resolver: yupResolver(schema),
-   
+    defaultValues:{
+      product_name: "",
+      product_description: "",
+      category: null,
+      sub_category: null,
+      product_rate: "",
+      sku: "",
+      barcode: "",
+      quantity: "",
+      weight: "",
+      height: "",
+      length: "",
+      width: ""
+  }
   });
 
   const productRequestSubmit = async (data) => {
@@ -135,22 +148,31 @@ const ProductRequestForm = ({params}) => {
   }
 
   // ----------Editing Functionality -----------//
-  const singleProductRequest = useSelector((state) => state.inventoryStore.singleProductRequest)
   const [triggerSingleProductReq, { data: singleProductRequestData, error, isLoading }] = useLazyGetSingleProductRequestQuery();
 
   useEffect(() => {
-    if(params){
-      triggerSingleProductReq({id: params, token})
+    if(params?.id){
+      triggerSingleProductReq({id: params?.id, token})
     }
-  },[params])
+  },[params?.id])
 
-console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.requested_products)
+  useEffect(() => {
+    if(singleProductRequestData?.data?.requested_products?.img_url){
+      setPreview(singleProductRequestData?.data?.requested_products?.img_url)
+    }
+  },[singleProductRequestData?.data?.requested_products?.img_url])
+console.log('singleProductRequestData ===>' , preview)
 
   return (
     <div className="max-w-[676px] mb-[102px]">
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* General Information */}
-        <GeneralInfo paramsId={params} setValue={setValue} singleProductRequestData={singleProductRequestData?.data?.requested_products} resetField={resetField} control={control} errors={errors} register={register}/>
+        <GeneralInfo
+         paramsId={params?.id}
+         setValue={setValue} 
+         singleProductRequestData={singleProductRequestData?.data?.requested_products}
+         
+         resetField={resetField} control={control} errors={errors} register={register}/>
         {/* Media Information */}
         <MediaInfo  fileDrop={fileDrop} preview={preview} imgErr={imgErr} setProdImg={setProdImg} prodImg={prodImg}/>
         {/* More Information */}
