@@ -19,39 +19,41 @@ const ProductRequestForm = ({params}) => {
   const [loader, setLoader] = useState(false)
   const [preview, setPreview] = useState('')
 
-  const schema = yup
-  .object({
-    category: yup
-    .object()
-    .shape({
-      value: yup.string().required("Category value is required"),
-      label: yup.string().required("Category label is required"),
-    })
-    .typeError("Category is required")
-    .required("Category is required"),
+  //-------Editng State-----------//
 
-    sub_category: yup
-    .object()
-    .shape({
-      value: yup.string().required("Sub Category value is required"),
-      label: yup.string().required("Sub Category label is required"),
-    })
-    .typeError("Sub Category is required")
-    .required("Sub Category is required"),
+  // const schema = yup
+  // .object({
+  //   category: yup
+  //   .object()
+  //   .shape({
+  //     value: yup.string().required("Category value is required"),
+  //     label: yup.string().required("Category label is required"),
+  //   })
+  //   .typeError("Category is required")
+  //   .required("Category is required"),
 
-    product_name: yup
-    .string()
-    .required("Product name is required"),
+  //   sub_category: yup
+  //   .object()
+  //   .shape({
+  //     value: yup.string().required("Sub Category value is required"),
+  //     label: yup.string().required("Sub Category label is required"),
+  //   })
+  //   .typeError("Sub Category is required")
+  //   .required("Sub Category is required"),
 
-    product_description: yup
-    .string()
-    .required("Production Description is required"),
+  //   product_name: yup
+  //   .string()
+  //   .required("Product name is required"),
 
-    product_rate: yup
-    .string()
-    .required("Product rate is required"),
-  })
-  .required();
+  //   product_description: yup
+  //   .string()
+  //   .required("Production Description is required"),
+
+  //   product_rate: yup
+  //   .string()
+  //   .required("Product rate is required"),
+  // })
+  // .required();
   
   const {
     control,
@@ -62,12 +64,14 @@ const ProductRequestForm = ({params}) => {
     resetField,
     setValue
   } = useForm({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
    
   });
 
   const productRequestSubmit = async (data) => {
+    console.log('Prod Request obj ==>', data)
 
+    return
     if(prodImg){
       setLoader(true)
       const formdata = new FormData();
@@ -130,11 +134,23 @@ const ProductRequestForm = ({params}) => {
     setProdImg(file)
   }
 
+  // ----------Editing Functionality -----------//
+  const singleProductRequest = useSelector((state) => state.inventoryStore.singleProductRequest)
+  const [triggerSingleProductReq, { data: singleProductRequestData, error, isLoading }] = useLazyGetSingleProductRequestQuery();
+
+  useEffect(() => {
+    if(params){
+      triggerSingleProductReq({id: params, token})
+    }
+  },[params])
+
+console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.requested_products)
+
   return (
     <div className="max-w-[676px] mb-[102px]">
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* General Information */}
-        <GeneralInfo resetField={resetField} control={control} errors={errors} register={register}/>
+        <GeneralInfo paramsId={params} setValue={setValue} singleProductRequestData={singleProductRequestData?.data?.requested_products} resetField={resetField} control={control} errors={errors} register={register}/>
         {/* Media Information */}
         <MediaInfo  fileDrop={fileDrop} preview={preview} imgErr={imgErr} setProdImg={setProdImg} prodImg={prodImg}/>
         {/* More Information */}

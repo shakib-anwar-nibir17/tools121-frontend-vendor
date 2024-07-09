@@ -1,8 +1,9 @@
 import { useLazyProductSubCategoryQuery, useProductCategoryQuery } from "@/app/redux/features/inventoryProduct";
 import SingleSelect from "@/components/common/SingleSelect";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-const GeneralInfo = ({control, errors, register,  resetField}) => {
+const GeneralInfo = ({control, errors, register,  resetField, singleProductRequestData,setValue, paramsId}) => {
   const token = localStorage.getItem('vendorToken')
   const { data: productCategories, refetch: refetchCategory } = useProductCategoryQuery(token, {
     refetchOnMountOrArgChange: true,
@@ -10,6 +11,10 @@ const GeneralInfo = ({control, errors, register,  resetField}) => {
   const [triggerSubCategory, { data: subCategories, error, isLoading }] = useLazyProductSubCategoryQuery();
   const [formatedCategory, setFormatedCategory] = useState([])
   const [formatedSubCategory, setFormatedSubCategory] = useState([])
+
+  // ----------------Editing State------------//
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
   useEffect(() => {
     if(productCategories?.data?.categories?.length > 0){
@@ -37,8 +42,19 @@ const GeneralInfo = ({control, errors, register,  resetField}) => {
     }
   },[subCategories?.data?.sub_categories])
 
-  // console.log('category ===>', productCategories)
-  
+  // -----------Editing Functionality----------//
+  const singleProductRequest = useSelector((state) => state.inventoryStore.singleProductRequest)
+  useEffect(() => {
+    if(paramsId && formatedCategory?.length > 0){
+      const findCate = formatedCategory?.find((item) => item?.label == singleProductRequest?.category_name)
+      setSelectedCategory(findCate)
+      triggerSubCategory({cat_id: findCate?.value, token})
+      setValue('category', findCate)
+    }
+  },[paramsId, formatedCategory?.length])
+
+  console.log("selectedCategory", selectedCategory)
+
   return (
     <div className="p-6 border border-slate-300 rounded-lg mt-6">
       <h1 className="text-lg text-black">General Information</h1>
@@ -51,13 +67,14 @@ const GeneralInfo = ({control, errors, register,  resetField}) => {
           <SingleSelect
             control={control}
             name='category'
-            defaultVal=''
             placeHolderName="Category"
             triggerFunction={triggerSubCategory}
             data={formatedCategory}
             errorMessage={errors.category ? errors.category?.message : ''}
             bgPrimary={false}
             resetField={resetField}
+            defaultVal={selectedCategory}
+            setSelectedData={setSelectedCategory}
           />
         </div>
         <div className="w-full mt-5">
@@ -67,13 +84,14 @@ const GeneralInfo = ({control, errors, register,  resetField}) => {
           <SingleSelect
             control={control}
             name='sub_category'
-            defaultVal=''
             placeHolderName="Sub Category"
             triggerFunction={triggerSubCategory}
             data={formatedSubCategory}
             errorMessage={errors.sub_category ? errors.sub_category?.message : ''}
             bgPrimary={false}
             resetField={resetField}
+            defaultVal={selectedSubCategory}
+            setSelectedData={setSelectedSubCategory}
           />
         </div>
       </div>
