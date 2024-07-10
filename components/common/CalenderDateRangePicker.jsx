@@ -10,8 +10,7 @@ import { format } from "date-fns";
 import { SlCalender } from "react-icons/sl";
 import { cn } from "/lib/utils";
 
-export function CalendarDateRangePicker({ className, date, setDate }) {
-  console.log(date);
+export function CalendarDateRangePicker({ className, date, setDate , dateFilterHandler}) {
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -55,7 +54,7 @@ export function CalendarDateRangePicker({ className, date, setDate }) {
               <p className="text-[12px]">Dhaka Time</p>
             </div>
             <Button className="bg-slate-200 text-black">Cancel</Button>
-            <Button>Update</Button>
+            <Button  onClick={() => dateFilterHandler()}>Update</Button>
           </div>
         </PopoverContent>
       </Popover>

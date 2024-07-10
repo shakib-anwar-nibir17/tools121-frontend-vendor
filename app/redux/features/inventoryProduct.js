@@ -17,8 +17,9 @@ const invenntoryProductApi = api.injectEndpoints({
     }),
 
     getProducRequesttList: builder.query({
-      query: (token) =>({
+      query: (data) =>({
         url: '/supplier/product/v1/requested/list',
+        // `/supplier/product/v1/requested/list${data?.action_type && data?.start_date? `?action_type=${data?.action_type}&start_date=${data?.start_date}&end_date=${data?.end_date}` : data?.action_type ? `?action_type=${data?.action_type}` : data?.start_date ? `?start_date=${data?.start_date}&end_date=${data?.end_date}` : ''}`
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${GetVendorToken()}`,
@@ -218,4 +219,5 @@ export const {
     useUpdateReqProductMutation,
     useDeleteRequstProductMutation,
     useLazyGetSingleProductQuery,
+    // useLazyGetProducRequesttListQuery,
 } = invenntoryProductApi;

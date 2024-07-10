@@ -266,7 +266,7 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
 
 // -------------------Editing Functionlity----------------//
 useEffect(() => {
-  console.log('entering 1 prod category...', paramsId, formatedCategory?.length, singleProductData?.id)
+  console.log('entering 1 prod category...', paramsId, singleProductData?.id)
 
   if(paramsId && singleProductData?.id){
    
@@ -306,7 +306,7 @@ useEffect(() => {
     setValue('product_model_id', modelObj)
 
   }
-},[paramsId, formatedCategory?.length, singleProductData?.id])
+},[paramsId, singleProductData?.id])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
@@ -326,6 +326,7 @@ useEffect(() => {
             resetField={resetField}
             defaultVal={selectedCategory}
             setSelectedData={setSelectedCategory}
+            setSelectedSubCategory={setSelectedSubCategory}
           />
           
         </div>
@@ -343,7 +344,9 @@ useEffect(() => {
             errorMessage={errors.sub_category ? errors.sub_category?.message : ''}
             resetField={resetField}
             defaultVal={selectedSubCategory}
-            setSelectedData={setSelectedSubCategory}
+            setSelectedSubCategory={setSelectedSubCategory}
+            setSelectedProduct={setSelectedProduct}
+            from={"addProd"}
           />
         </div>
       </div>

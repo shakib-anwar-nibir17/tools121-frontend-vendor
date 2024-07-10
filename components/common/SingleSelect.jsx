@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 import Select from 'react-select';
 
 
-const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHolderName, errorMessage = '', bgPrimary = true, resetField, setSelectedData, setSelectedSubCategory}) => {
+const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHolderName, errorMessage = '', bgPrimary = true, resetField, setSelectedData, setSelectedSubCategory, setSelectedProduct, from = ''}) => {
     const token = localStorage.getItem("vendorToken");
 
   return (
@@ -32,6 +32,9 @@ const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHo
               triggerFunction({sub_cat_id:  selectedOption?.value, token})
               setSelectedSubCategory(selectedOption)
               resetField("product_id")
+              if(from == 'addProd'){
+                setSelectedProduct(null)
+              }
             }
         }}
          styles={{  control: (provided) => ({
