@@ -46,7 +46,7 @@ const ProductRequestListPage = () => {
 
   useEffect(() => {
     setAllRequestProducts(pageData);
-  }, [pageData, allRequestProducts]);
+  }, [pageData, ]);
 
 
   const dateFilterHandler = () => {
@@ -59,18 +59,22 @@ const ProductRequestListPage = () => {
     if(val == 'pending'){
       const pendingProd = productRequestList?.data?.requested_products?.filter((item) => item?.action_type == 0)
       setAllRequestProducts(pendingProd)
+      setStoreRequestProducts(pendingProd)
     }
     else if(val == 'approved'){
       const approvedProd = productRequestList?.data?.requested_products?.filter((item) => item?.action_type == 100)
       setAllRequestProducts(approvedProd)
+      setStoreRequestProducts(approvedProd)
       console.log('approved data', approvedProd)
     }
     else if(val == 'rejected'){
       const rejectProd = productRequestList?.data?.requested_products?.filter((item) => item?.action_type == 200)
+      setStoreRequestProducts(rejectProd)
       setAllRequestProducts(rejectProd)
     }
     else{
       setAllRequestProducts(productRequestList?.data?.requested_products)
+      setStoreRequestProducts(productRequestList?.data?.requested_products)
     }
   }
 
@@ -107,7 +111,11 @@ const ProductRequestListPage = () => {
   },[productRequestList?.data?.requested_products?.length])
 
   console.log('base prod===>', productRequestList?.data?.requested_products?.length)
-  console.log("ProdReqestList", allRequestProducts);
+  console.log("ProdReqestList", allRequestProducts?.length);
+  console.log("storeRequestProducts", storeRequestProducts?.length);
+  console.log("pageData", pageData?.length);
+
+
 
   const buttonHandler = () => {
     router.push('/inventory/product-request-form')
@@ -122,9 +130,12 @@ const ProductRequestListPage = () => {
       </div>
       <div>
         {
-          isFetching ? <Loader/> : <>{
-            allRequestProducts?.length > 0 ?  <ListTabs options={options} tabVal={tabVal} tabHandler={tabHandler} requestData={allRequestProducts} totalData={storeRequestProducts} />:  <NoProducts buttonHandler={buttonHandler} />
-          }</>
+          isFetching ? <Loader/> :  <ListTabs
+          buttonHandler={buttonHandler}
+          options={options} tabVal={tabVal} 
+          tabHandler={tabHandler} 
+          requestData={allRequestProducts} totalData={storeRequestProducts} />
+          
         }
       </div>
     </div>

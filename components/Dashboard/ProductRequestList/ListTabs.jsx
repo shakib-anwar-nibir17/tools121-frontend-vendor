@@ -5,8 +5,9 @@ import ListDataTable from "./ListDataTable";
 import PaginationCom from "@/components/common/PaginationCom";
 import { useStateContext } from "@/utils/contexProvider";
 import { useEffect, useState } from "react";
+import NoProducts from "../ProductList/NoProducts";
 
-const ListTabs = ({requestData, totalData, tabHandler, tabVal, options}) => {
+const ListTabs = ({requestData, totalData, tabHandler, tabVal, options,buttonHandler}) => {
   
   return (
     <Tabs defaultValue={tabVal}>
@@ -32,9 +33,12 @@ const ListTabs = ({requestData, totalData, tabHandler, tabVal, options}) => {
           </div>
         </div>
       </div>
-      <TabsContent value={tabVal}>
+      {
+        requestData?.length > 0 ?  <TabsContent value={tabVal}>
         <ListDataTable requestData={requestData} />
-      </TabsContent>
+      </TabsContent> :<NoProducts buttonHandler={buttonHandler} />
+      }
+     
       <div className="flex justify-end">
       <PaginationCom array={totalData}/>
       </div>
