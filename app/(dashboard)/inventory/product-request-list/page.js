@@ -4,7 +4,7 @@ import ListTabs from "@/components/Dashboard/ProductRequestList/ListTabs";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
 import SearchInput from "@/components/common/SearchInput";
 import { addDays } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ProductRequestListPage = () => {
   const token = localStorage.getItem("vendorToken");
@@ -16,11 +16,14 @@ const ProductRequestListPage = () => {
 
   console.log(date);
 
-  const { data: productRequestList, refetchProduct } =
+  const { data: productRequestList, refetch:refetchReqProduct } =
     useGetProducRequesttListQuery(token, {
       refetchOnMountOrArgChange: true,
     });
 
+  useEffect(() => {
+    refetchReqProduct()
+  },[token])
   console.log("ProdReqestList", productRequestList?.data?.requested_products);
 
   return (

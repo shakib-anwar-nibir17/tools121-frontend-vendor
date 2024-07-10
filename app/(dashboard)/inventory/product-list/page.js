@@ -18,8 +18,9 @@ const ProductList = () => {
 
   useEffect(() => {
     refetchProduct()
-  },[])
-  console.log("product list ==>", productList)
+  },[token])
+
+  console.log("product list ==>", productList, token)
   // console.log("token ==>", token)
 
   return (

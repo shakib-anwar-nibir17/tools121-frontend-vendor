@@ -62,7 +62,8 @@ const ProductRequestForm = ({params}) => {
     formState: { errors },
     reset,
     resetField,
-    setValue
+    setValue,
+    watch
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues:{

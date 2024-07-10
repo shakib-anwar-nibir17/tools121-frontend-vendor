@@ -17,7 +17,7 @@ const ProductList = ({params}) => {
    if(params?.id){
     triggerSingleProduct({id: params?.id, token: token})
    }
- },[params?.id])
+ },[params?.id, token])
 
  console.log("singleProductData ==>", singleProductData)
  

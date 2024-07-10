@@ -83,7 +83,7 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
       setSelectedSubCategory(findSubCate)
       setValue('sub_category', findSubCate)
     }
-  },[paramsId, formatedSubCategory?.length, singleProductRequestData?.requested_product?.sub_cat_name])
+  },[paramsId, singleProductRequestData?.requested_product?.sub_cat_name])
 
 console.log("singleProductRequestData ==>", singleProductRequestData?.requested_product)
 
@@ -107,6 +107,7 @@ console.log("singleProductRequestData ==>", singleProductRequestData?.requested_
             resetField={resetField}
             defaultVal={selectedCategory}
             setSelectedData={setSelectedCategory}
+            setSelectedSubCategory={setSelectedSubCategory}
           />
         </div>
         <div className="w-full mt-5">
@@ -123,7 +124,8 @@ console.log("singleProductRequestData ==>", singleProductRequestData?.requested_
             bgPrimary={false}
             resetField={resetField}
             defaultVal={selectedSubCategory}
-            setSelectedData={setSelectedSubCategory}
+            setSelectedSubCategory={setSelectedSubCategory}
+            
           />
         </div>
       </div>
