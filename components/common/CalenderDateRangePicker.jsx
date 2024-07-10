@@ -6,16 +6,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "/lib/utils";
-import { addDays, format } from "date-fns";
-import { useState } from "react";
+import { format } from "date-fns";
 import { SlCalender } from "react-icons/sl";
+import { cn } from "/lib/utils";
 
-export function CalendarDateRangePicker({ className }) {
-  const [date, setDate] = useState({
-    from: new Date(2023, 0, 20),
-    to: addDays(new Date(2023, 0, 20), 20),
-  });
+export function CalendarDateRangePicker({ className, date, setDate }) {
+  console.log(date);
 
   return (
     <div className={cn("grid gap-2", className)}>
