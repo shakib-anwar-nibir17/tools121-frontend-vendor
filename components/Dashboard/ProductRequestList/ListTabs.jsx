@@ -2,6 +2,9 @@ import CustomSelect from "@/components/common/CustomSelect";
 import PaginationComponent from "@/components/common/Pagination";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ListDataTable from "./ListDataTable";
+import PaginationCom from "@/components/common/PaginationCom";
+import { useStateContext } from "@/utils/contexProvider";
+import { useEffect, useState } from "react";
 
 const Options = [
   {
@@ -27,6 +30,19 @@ const Options = [
 ];
 
 const ListTabs = ({requestData}) => {
+  const { pageData, setCurrentPage } = useStateContext();
+  const [allRequestProducts, setAllRequestProducts] = useState([])
+  
+  /// --- page data setup from pagination--- ///
+  useEffect(() => {
+    setCurrentPage(0);
+  },[setCurrentPage])
+
+  useEffect(() => {
+    setAllRequestProducts(pageData);
+  }, [pageData, allRequestProducts]);
+
+  console.log('Page data ===>', pageData)
   return (
     <Tabs defaultValue="all-products">
       <div className="flex items-center mt-10 justify-between">
@@ -46,17 +62,15 @@ const ListTabs = ({requestData}) => {
         </div>
         <div>
           <div className="flex items-center gap-3">
-            <p className="text-black">Show</p>
-            <CustomSelect />
-            <PaginationComponent />
+            <PaginationCom array={requestData}/>
           </div>
         </div>
       </div>
       <TabsContent value="all-products">
-        <ListDataTable requestData={requestData} />
+        <ListDataTable requestData={allRequestProducts} />
       </TabsContent>
       <div className="flex justify-end">
-        <PaginationComponent />
+      <PaginationCom array={requestData}/>
       </div>
     </Tabs>
   );

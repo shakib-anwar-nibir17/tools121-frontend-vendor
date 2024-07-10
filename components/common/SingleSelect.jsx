@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 import Select from 'react-select';
 
 
-const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHolderName, errorMessage = '', bgPrimary = true, resetField}) => {
+const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHolderName, errorMessage = '', bgPrimary = true, resetField, setSelectedData, setValue}) => {
     const token = localStorage.getItem("vendorToken");
 
   return (
@@ -12,13 +12,15 @@ const SingleSelect = ({control, name, data, defaultVal, triggerFunction, placeHo
  <Controller
     name={name}
     control={control}
-    defaultValue=""
+    defaultValue={defaultVal}
     render={({ field }) => (
       <Select
         {...field}
+        value={defaultVal}
         isSearchable={true}
          onChange={(selectedOption) => {
-            field.onChange(selectedOption)
+            field.onChange(selectedOption, name)
+            setSelectedData(selectedOption)
             if(name == 'category' && selectedOption){
                 triggerFunction({cat_id: selectedOption?.value, token})
                 resetField("sub_category")

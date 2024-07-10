@@ -6,18 +6,21 @@ import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm, Controller } from 'react-hook-form';
-import { useAddProductRequestMutation, useLazyGetSingleProductRequestQuery } from "@/app/redux/features/inventoryProduct";
+import { useLazyGetSingleProductRequestQuery, useUpdateReqProductMutation } from "@/app/redux/features/inventoryProduct";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const ProductRequestForm = ({params}) => {
   const token = localStorage.getItem('vendorToken')
-  const [addProductRequst, {}] = useAddProductRequestMutation();
+  const [updateProductRequst, {}] = useUpdateReqProductMutation();
   const [prodImg, setProdImg] = useState(null)
   const [imgErr, setImgErr] = useState('')
   const [loader, setLoader] = useState(false)
   const [preview, setPreview] = useState('')
+  const router = useRouter()
+  //-------Editng State-----------//
 
   const schema = yup
   .object({
@@ -63,25 +66,39 @@ const ProductRequestForm = ({params}) => {
     setValue
   } = useForm({
     resolver: yupResolver(schema),
-   
+    defaultValues:{
+      product_name: "",
+      product_description: "",
+      product_rate: "",
+      sku: "",
+      barcode: "",
+      quantity: "",
+      weight: "",
+      height: "",
+      length: "",
+      width: ""
+  }
   });
 
   const productRequestSubmit = async (data) => {
-
-    if(prodImg){
+    
+    if(prodImg || preview){
       setLoader(true)
       const formdata = new FormData();
 
+      const imageData = prodImg ? prodImg : preview
+
+      formdata.append("product_id", data?.id)
       formdata.append("product_name", data?.product_name)
       formdata.append("sub_cat_id", parseInt(data?.sub_category?.value))
       formdata.append("product_description", data?.product_description)
       formdata.append("purchase_quantity", 0)
       formdata.append("product_rate", parseInt(data?.product_rate))
-      formdata.append("file", prodImg)
+      formdata.append("file", imageData)
       formdata.append("product_specification", data?.product_description)
       console.log('data ==>', data)
 
-      const prod_reqest_res = await addProductRequst({requst_body: formdata, token:token})
+      const prod_reqest_res = await updateProductRequst({requst_body: formdata, token:token})
 
       if(prod_reqest_res?.data?.message == "Request success"){
         setLoader(false)
@@ -101,7 +118,7 @@ const ProductRequestForm = ({params}) => {
         });
       }
 
-      console.log('Prod Request res ==>', prod_reqest_res)
+      
     }
     else{
       
@@ -130,11 +147,33 @@ const ProductRequestForm = ({params}) => {
     setProdImg(file)
   }
 
+  // ----------Editing Functionality -----------//
+  const [triggerSingleProductReq, { data: singleProductRequestData, error, isLoading }] = useLazyGetSingleProductRequestQuery();
+
+  useEffect(() => {
+    if(params?.id){
+      triggerSingleProductReq({id: params?.id, token})
+    }
+  },[params?.id])
+
+  useEffect(() => {
+    if(singleProductRequestData?.data?.requested_products?.img_url){
+      setPreview(singleProductRequestData?.data?.requested_products?.img_url)
+    }
+  },[singleProductRequestData?.data?.requested_products?.img_url])
+
+console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.requested_products)
+
   return (
     <div className="max-w-[676px] mb-[102px]">
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* General Information */}
-        <GeneralInfo resetField={resetField} control={control} errors={errors} register={register}/>
+        <GeneralInfo
+         paramsId={params?.id}
+         setValue={setValue} 
+         singleProductRequestData={singleProductRequestData?.data?.requested_products}
+         
+         resetField={resetField} control={control} errors={errors} register={register}/>
         {/* Media Information */}
         <MediaInfo  fileDrop={fileDrop} preview={preview} imgErr={imgErr} setProdImg={setProdImg} prodImg={prodImg}/>
         {/* More Information */}
@@ -143,8 +182,7 @@ const ProductRequestForm = ({params}) => {
           <div className="flex justify-end gap-4">
             <div className="text-xl px-6 bg-white text-primary-900 border border-primary-900 rounded-md cursor-pointer w-[100px] flex justify-center items-center h-[40px]" >
         <p onClick={() => {
-          setProdImg(null)
-          reset()
+          router.push('/inventory/product-request-list')
         }}>
             Cancel
         </p>
