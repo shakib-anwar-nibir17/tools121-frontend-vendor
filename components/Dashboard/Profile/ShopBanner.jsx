@@ -19,6 +19,8 @@ const ShopBanner = () => {
     refetchOnMountOrArgChange: true,
   });
   const fileRef = useRef();
+  const bannerRef = useRef();
+
   const [addImage, {}] = useUploadImgMutation();
 
   const imgUploadHandler = async (data) => {
@@ -49,21 +51,34 @@ const ShopBanner = () => {
           <Image
             fill
             alt="vendor_shop"
-            src={banner}
+            src={profileInfo?.data?.banner_url ? profileInfo?.data?.banner_url : banner}
             className="rounded-xl object-cover"
+          />
+          <input
+            onChange={(e) => {
+              e.preventDefault();
+              bnrUploadHandler(e.target.files[0]);
+            }}
+            ref={bannerRef}
+            type="file"
+            hidden
+            accept="image/*"
           />
         </div>
 
         <div className="absolute bottom-6 right-8">
-          <Button className="bg-white text-black gap-2 px-3 py-2 border border-slate-100">
-            <MdOutlineModeEditOutline /> Edit Banner
+          <Button  onClick={(e) => {
+                e.preventDefault();
+                bannerRef.current.click();
+              }}  className="bg-white text-black gap-2 px-3 py-2 border border-slate-100">
+            <MdOutlineModeEditOutline   /> Edit Banner
           </Button>
         </div>
         <div className="w-[168px] h-[168px] rounded-full absolute left-10 -bottom-[78px]">
           <Image
             fill
             alt="profile_pic"
-            src={profile}
+            src={profileInfo?.data?.logo_url ? profileInfo?.data?.logo_url : profile}
             className="rounded-full relative object-cover"
           />
 
