@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import toast from "react-hot-toast";
 
-const AddProductsForm = ({ setShowForm }) => {
+const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
   const token = localStorage.getItem("vendorToken");
 
   const { data: productCategories, refetch: refetchCategory } = useProductCategoryQuery(token, {
@@ -38,71 +38,79 @@ const AddProductsForm = ({ setShowForm }) => {
   const [formatedModel, setFormatedModel] = useState([])
   const [formatedEngines, setFormatedEngines] = useState([])
 
-  const schema = yup
-  .object({
-    category: yup
-    .object()
-    .shape({
-      value: yup.string().required("Category value is required"),
-      label: yup.string().required("Category label is required"),
-    })
-    .typeError("Category is required")
-    .required("Category is required"),
+  // ----------------Selected Options state -------------//
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedModel, setSelectedModel] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedEngine, setSelectedEngine] = useState(null);
 
-    sub_category: yup
-    .object()
-    .shape({
-      value: yup.string().required("Sub Category value is required"),
-      label: yup.string().required("Sub Category label is required"),
-    })
-    .typeError("Sub Category is required")
-    .required("Sub Category is required"),
+  // const schema = yup
+  // .object({
+  //   category: yup
+  //   .object()
+  //   .shape({
+  //     value: yup.string().required("Category value is required"),
+  //     label: yup.string().required("Category label is required"),
+  //   })
+  //   .typeError("Category is required")
+  //   .required("Category is required"),
 
-    product_id: yup
-    .object()
-    .shape({
-      value: yup.string().required("Product name value is required"),
-      label: yup.string().required("Product name label is required"),
-    })
-    .typeError("Product name is required")
-    .required("Product name is required"),
+  //   sub_category: yup
+  //   .object()
+  //   .shape({
+  //     value: yup.string().required("Sub Category value is required"),
+  //     label: yup.string().required("Sub Category label is required"),
+  //   })
+  //   .typeError("Sub Category is required")
+  //   .required("Sub Category is required"),
 
-    brand_id: yup
-    .object()
-    .shape({
-      value: yup.string().required("Brand value is required"),
-      label: yup.string().required("Brand label is required"),
-    })
-    .typeError("Brand is required")
-    .required("Brand is required"),
+  //   product_id: yup
+  //   .object()
+  //   .shape({
+  //     value: yup.string().required("Product name value is required"),
+  //     label: yup.string().required("Product name label is required"),
+  //   })
+  //   .typeError("Product name is required")
+  //   .required("Product name is required"),
 
-    product_model_id: yup
-    .object()
-    .shape({
-      value: yup.string().required("Model value is required"),
-      label: yup.string().required("Model label is required"),
-    })
-    .typeError("Model is required")
-    .required("Model is required"),
+  //   brand_id: yup
+  //   .object()
+  //   .shape({
+  //     value: yup.string().required("Brand value is required"),
+  //     label: yup.string().required("Brand label is required"),
+  //   })
+  //   .typeError("Brand is required")
+  //   .required("Brand is required"),
 
-    engine_id: yup
-    .object()
-    .shape({
-      value: yup.string().required("Engine value is required"),
-      label: yup.string().required("Engine label is required"),
-    })
-    .typeError("Engine is required")
-    .required("Engine required"),
+  //   product_model_id: yup
+  //   .object()
+  //   .shape({
+  //     value: yup.string().required("Model value is required"),
+  //     label: yup.string().required("Model label is required"),
+  //   })
+  //   .typeError("Model is required")
+  //   .required("Model is required"),
 
-    delivery_note: yup
-    .string()
-    .required("Delivery note is required"),
+  //   engine_id: yup
+  //   .object()
+  //   .shape({
+  //     value: yup.string().required("Engine value is required"),
+  //     label: yup.string().required("Engine label is required"),
+  //   })
+  //   .typeError("Engine is required")
+  //   .required("Engine required"),
 
-    product_specification: yup
-    .string()
-    .required("Production Specification is required"),
-  })
-  .required();
+  //   delivery_note: yup
+  //   .string()
+  //   .required("Delivery note is required"),
+
+  //   product_specification: yup
+  //   .string()
+  //   .required("Production Specification is required"),
+  // })
+  // .required();
 
   const {
     control,
@@ -111,13 +119,27 @@ const AddProductsForm = ({ setShowForm }) => {
     formState: { errors },
     reset,
     resetField,
+    setValue
   } = useForm({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
+    defaultValues: {
+      category: null,
+      sub_category: null,
+      product_id: null,
+      brand_id: null,
+      engine_id: null,
+      product_model_id: null,
+      new_price: '',
+      stock: '',
+      previous_price: '',
+      product_specification: '',
+      delivery_note: ''
+    }
   });
 
   const addProductHandler = async (data) => {
     console.log("data ==>", data)
-    // return
+    return
     setLoading(true)
 
     const findProduct = selectProductList?.data?.products?.filter((item) => item?.id == data?.product_id?.value)
@@ -242,7 +264,49 @@ const AddProductsForm = ({ setShowForm }) => {
     }
   },[productEngine?.data?.engines])
 
-  console.log('formatedProdName ==>', selectProductList)
+// -------------------Editing Functionlity----------------//
+useEffect(() => {
+  console.log('entering 1 prod category...', paramsId, formatedCategory?.length, singleProductData?.id)
+
+  if(paramsId && singleProductData?.id){
+   
+    const findCate = {
+      label: singleProductData?.category,
+      value: singleProductData?.category_id,
+    }
+    setSelectedCategory(findCate)
+
+    triggerSubCategory({cat_id: singleProductData?.category_id, token})
+
+    Object.keys(singleProductData).forEach(key => {
+      setValue(key, singleProductData[key]);
+    });
+
+    const brandObj = {
+      label: singleProductData?.brand_name,
+      value: singleProductData?.brand_id,
+    }
+    setSelectedBrand(brandObj)
+
+    const modelObj = {
+      label: singleProductData?.model_name,
+      value: singleProductData?.model_id,
+    }
+    setSelectedModel(modelObj)
+
+    const engineObj = {
+      label: singleProductData?.engine_name,
+      value: singleProductData?.engine_id,
+    }
+    setSelectedEngine(engineObj)
+
+    setValue('category', findCate)
+    setValue('brand_id', brandObj)
+    setValue('engine_id', engineObj)
+    setValue('product_model_id', modelObj)
+
+  }
+},[paramsId, formatedCategory?.length, singleProductData?.id])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
@@ -255,12 +319,13 @@ const AddProductsForm = ({ setShowForm }) => {
           <SingleSelect
             control={control}
             name='category'
-            defaultVal=''
             placeHolderName="Category"
             triggerFunction={triggerSubCategory}
             data={formatedCategory}
             errorMessage={errors.category ? errors.category?.message : ''}
             resetField={resetField}
+            defaultVal={selectedCategory}
+            setSelectedData={setSelectedCategory}
           />
           
         </div>
@@ -273,11 +338,12 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='sub_category'
             placeHolderName='Sub Category'
-            defaultVal=''
             triggerFunction={triggerSelectProduct}
             data={formatedSubCategory}
             errorMessage={errors.sub_category ? errors.sub_category?.message : ''}
             resetField={resetField}
+            defaultVal={selectedSubCategory}
+            setSelectedData={setSelectedSubCategory}
           />
         </div>
       </div>
@@ -289,9 +355,10 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='product_id'
             placeHolderName='Product Name'
-            defaultVal=''
             data={formatedProdName}
             errorMessage={errors.product_id ? errors.product_id?.message : ''}
+            defaultVal={selectedProduct}
+            setSelectedData={setSelectedProduct}
           />
         </div>
         
@@ -301,9 +368,10 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='brand_id'
             placeHolderName='Brand'
-            defaultVal=''
             data={formatedBrand}
             errorMessage={errors.brand_id ? errors.brand_id?.message : ''}
+            defaultVal={selectedBrand}
+            setSelectedData={setSelectedBrand}
           />
         </div>
       </div>
@@ -333,9 +401,10 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='product_model_id'
             placeHolderName='Model'
-            defaultVal=''
             data={formatedModel}
             errorMessage={errors.product_model_id ? errors.product_model_id?.message : ''}
+            defaultVal={selectedModel}
+            setSelectedData={setSelectedModel}
           />
         </div>
 
@@ -345,9 +414,10 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='engine_id'
             placeHolderName='Engine'
-            defaultVal=''
             data={formatedEngines}
             errorMessage={errors.engine_id ? errors.engine_id?.message : ''}
+            defaultVal={selectedEngine}
+            setSelectedData={setSelectedEngine}
           />
         </div>
       </div>
@@ -357,6 +427,7 @@ const AddProductsForm = ({ setShowForm }) => {
           <label className="font-bold">Regular Price</label>
           <input
           {...register("previous_price")}
+            defaultValue={singleProductData?.previous_price ? singleProductData?.previous_price : ''}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="text"
             placeholder="Regular Price"
@@ -367,6 +438,7 @@ const AddProductsForm = ({ setShowForm }) => {
           <label className="font-bold">New Price</label>
           <input
           {...register("new_price")}
+          defaultValue={singleProductData?.new_price ? singleProductData?.new_price : ''}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="text"
             placeholder="....."
@@ -376,6 +448,7 @@ const AddProductsForm = ({ setShowForm }) => {
           <label className="font-bold">Stock</label>
           <input
             {...register("stock")}
+            defaultValue={singleProductData?.stock ? singleProductData?.stock : ''}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="number"
             placeholder="...."
@@ -388,6 +461,7 @@ const AddProductsForm = ({ setShowForm }) => {
           <label className=" text-primary-950 font-bold">Delivery Note*</label>
           <textarea
            {...register("delivery_note")}
+           defaultValue={singleProductData?.delivery_note ? singleProductData?.delivery_note : ''}
             className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
             type="text"
             placeholder="Delivery Note"
@@ -402,6 +476,7 @@ const AddProductsForm = ({ setShowForm }) => {
           </label>
           <textarea
            {...register("product_specification")}
+           defaultValue={singleProductData?.product_specification ? singleProductData?.product_specification : ''}
             className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
             type="text"
             placeholder="Production Specification"

@@ -17,6 +17,10 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
   useEffect(() => {
+    refetchCategory()
+  },[paramsId])
+
+  useEffect(() => {
     if(productCategories?.data?.categories?.length > 0){
       const format = productCategories?.data?.categories?.map((item) => {
         const obj = {
@@ -46,28 +50,42 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
   const singleProductRequest = useSelector((state) => state.inventoryStore.singleProductRequest)
 
   useEffect(() => {
-    if(paramsId && formatedCategory?.length > 0 && singleProductRequestData?.id){
-      console.log('entering...')
-      const findCate = formatedCategory?.find((item) => item?.label == singleProductRequest?.category_name)
-      setSelectedCategory(findCate)
-      triggerSubCategory({cat_id: findCate?.value, token})
-      setValue('category', findCate)
-      Object.keys(singleProductRequestData).forEach(key => {
-        setValue(key, singleProductRequestData[key]);
-      });
+    console.log('entering 1 category...', paramsId, formatedCategory?.length, singleProductRequestData?.requested_product?.id)
 
+    if(paramsId && singleProductRequestData?.requested_product?.id){
+     
+      const findCate = {
+        label: singleProductRequestData?.requested_product?.cat_name,
+        value: singleProductRequestData?.requested_product?.cat_id,
+      }
+
+      setSelectedCategory(findCate)
+
+      triggerSubCategory({cat_id: findCate?.value, token})
+
+      Object.keys(singleProductRequestData?.requested_product).forEach(key => {
+        setValue(key, singleProductRequestData?.requested_product[key]);
+      });
+      setValue('category', findCate)
     }
-  },[paramsId, formatedCategory?.length, singleProductRequestData?.id])
+  },[paramsId, formatedCategory?.length, singleProductRequestData?.requested_product?.id])
   
   useEffect(() => {
-    if(paramsId && formatedSubCategory?.length > 0){
-      const findSubCate = formatedSubCategory?.find((item) => item?.label == singleProductRequestData?.sub_cat)
+    console.log('entering 2 sub cat...', paramsId, formatedSubCategory?.length, singleProductRequestData?.requested_product?.sub_cat_name)
+
+    if(paramsId && singleProductRequestData?.requested_product?.sub_cat_name){
+
+      const findSubCate = {
+        label: singleProductRequestData?.requested_product?.sub_cat_name,
+        value: singleProductRequestData?.requested_product?.sub_cat_id,
+      }
+      
       setSelectedSubCategory(findSubCate)
       setValue('sub_category', findSubCate)
     }
-  },[paramsId, formatedSubCategory?.length])
+  },[paramsId, formatedSubCategory?.length, singleProductRequestData?.requested_product?.sub_cat_name])
 
-console.log("formatedSubCategory ==>", selectedCategory)
+console.log("singleProductRequestData ==>", singleProductRequestData?.requested_product)
 
   return (
     <div className="p-6 border border-slate-300 rounded-lg mt-6">
@@ -114,7 +132,7 @@ console.log("formatedSubCategory ==>", selectedCategory)
         <label className="font-bold text-black">Product Name</label>
         <input
           {...register("product_name")}
-          defaultValue={singleProductRequestData?.product_name ? singleProductRequestData?.product_name : ''}
+          defaultValue={singleProductRequestData?.requested_product?.product_name ? singleProductRequestData?.requested_product?.product_name : ''}
           className="rounded-lg border border-slate-300 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
           type="text"
           placeholder="Type product name"
@@ -129,7 +147,7 @@ console.log("formatedSubCategory ==>", selectedCategory)
         </label>
         <textarea
         {...register("product_description")}
-        defaultValue={singleProductRequestData?.product_description ? singleProductRequestData?.product_description : ''}
+        defaultValue={singleProductRequestData?.requested_product?.product_description ? singleProductRequestData?.requested_product?.product_description : ''}
           className="rounded-lg border border-slate-300 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
           type="text"
           placeholder=" Product Description"

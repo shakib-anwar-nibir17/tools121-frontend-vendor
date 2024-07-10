@@ -1,4 +1,4 @@
-const MoreInfo = ({control, errors, register}) => {
+const MoreInfo = ({control, errors, register, singleProductRequestData}) => {
   return (
     <>
       <div className="p-6 border border-slate-300 mt-6 rounded-lg">
@@ -7,6 +7,7 @@ const MoreInfo = ({control, errors, register}) => {
           <label className="font-bold text-black">Base Price</label>
           <input
            {...register("product_rate")}
+           defaultValue={singleProductRequestData?.product_rate}
             className="rounded-lg border border-slate-300 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="text"
             placeholder="$    Type base price"
@@ -47,6 +48,7 @@ const MoreInfo = ({control, errors, register}) => {
             <label className="font-bold text-black">Quantity</label>
             <input
             {...register("quantity")}
+            defaultValue={singleProductRequestData?.purchase_quantity}
               className="rounded-lg border border-slate-300 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
               type="text"
               placeholder="Type product quantity here"

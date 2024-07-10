@@ -6,17 +6,22 @@ import NoProducts from "@/components/Dashboard/ProductList/NoProducts";
 import ProductListTable from "@/components/Dashboard/ProductList/ProductListTable";
 import SearchInput from "@/components/common/SearchInput";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ProductList = () => {
   const token = localStorage.getItem('vendorToken')
   const [products, setProducts] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const { data: productList, refetchProduct } = useGetProductListQuery(token, {
+  const { data: productList, refetch:refetchProduct } = useGetProductListQuery(token, {
     refetchOnMountOrArgChange: true,
   });
 
-  console.log("product list ==>", productList?.data?.supplier_products)
+  useEffect(() => {
+    refetchProduct()
+  },[])
+  console.log("product list ==>", productList)
+  // console.log("token ==>", token)
+
   return (
     <div>
       {showForm && <AddProductsForm setShowForm={setShowForm} />}

@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-const ProductRequestForm = ({params}) => {
+const ProductRequestForm = () => {
   const token = localStorage.getItem('vendorToken')
   const [addProductRequst, {}] = useAddProductRequestMutation();
   const [prodImg, setProdImg] = useState(null)
