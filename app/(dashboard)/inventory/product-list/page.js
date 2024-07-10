@@ -42,7 +42,7 @@ const ProductList = () => {
         )}
       </div>
       <ProductListTable productData={productList?.data?.supplier_products}/>
-      {products && <NoProducts setProducts={setProducts} />}
+      {products && <NoProducts buttonHandler={setProducts} />}
     </div>
   );
 };
