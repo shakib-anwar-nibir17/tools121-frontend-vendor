@@ -7,6 +7,7 @@ import ReCaptchaProvider from "./reCaptchaProvider/ReCaptchaProvider";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
+import { ContextProvider } from "@/utils/contexProvider";
 
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true)
@@ -26,11 +27,14 @@ export default function RootLayout({ children }) {
   return (
     <>
       {
-         !loading ? <h1 className="text-3xl font-bold">Loading...</h1> : <ReCaptchaProvider>
+         !loading ? <h1 className="text-3xl font-bold">Loading...</h1> :
+         <ReCaptchaProvider>
          <Provider store={store}>
-         <PersistGate loading={null} persistor={persistor}>
-           {children}
-         </PersistGate>
+          <ContextProvider>
+            <PersistGate loading={null} persistor={persistor}>
+            {children}
+          </PersistGate>
+          </ContextProvider>
        </Provider>
        <Toaster position="bottom-right" reverseOrder={false} />
        </ReCaptchaProvider>
