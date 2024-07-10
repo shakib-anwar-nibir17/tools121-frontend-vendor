@@ -1,9 +1,17 @@
+"use client";
+import { useSupplierReviewListQuery } from "@/app/redux/features/supplierReview";
 import CustomerReviewBox from "@/components/common/CustomerReviewBox";
 import Select from "@/components/common/Select";
 import { CustomerReviewSVG } from "@/components/icons/Icons";
 import { BsChevronDown } from "react-icons/bs";
 
 const CustomerReview = () => {
+  const token = localStorage.getItem("vendorToken");
+  const { data: supplierReviewList } = useSupplierReviewListQuery(token, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  console.log("Supplier Review =====>", supplierReviewList);
   return (
     <div className="border border-slate-200 rounded-2xl max-w-[1387px] mt-6 pb-8 mb-20">
       <div className="p-4 border-b">
