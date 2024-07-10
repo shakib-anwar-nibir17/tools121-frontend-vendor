@@ -7,7 +7,6 @@ import { useStateContext } from "@/utils/contexProvider";
 import { addDays } from "date-fns";
 import { useEffect, useState } from "react";
 import moment from 'moment';
-import NoProducts from "@/components/Dashboard/ProductList/NoProducts";
 import Loader from "@/components/common/Loader";
 import { useRouter } from "next/navigation";
 
@@ -21,6 +20,7 @@ const ProductRequestListPage = () => {
   const [pendingData, setPendingData] = useState([])
   const [rejectData, setRejectData] = useState([])
   const [approvedData, setApprovedData] = useState([])
+  const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState([])
 
   const [date, setDate] = useState({
@@ -46,7 +46,7 @@ const ProductRequestListPage = () => {
 
   useEffect(() => {
     setAllRequestProducts(pageData);
-  }, [pageData, ]);
+  }, [pageData]);
 
 
   const dateFilterHandler = () => {
@@ -110,15 +110,35 @@ const ProductRequestListPage = () => {
     }
   },[productRequestList?.data?.requested_products?.length])
 
-  console.log('base prod===>', productRequestList?.data?.requested_products?.length)
-  console.log("ProdReqestList", allRequestProducts?.length);
-  console.log("storeRequestProducts", storeRequestProducts?.length);
-  console.log("pageData", pageData?.length);
-
-
+  // console.log('base prod===>', productRequestList?.data?.requested_products?.length)
+  // console.log("ProdReqestList", allRequestProducts?.length);
+  // console.log("storeRequestProducts", storeRequestProducts?.length);
+  // console.log("pageData", pageData?.length);
 
   const buttonHandler = () => {
     router.push('/inventory/product-request-form')
+  }
+
+  const onSearchHandler = (text) => {
+    if(text?.length > 2){
+      console.log('calling --->', text)
+      setSearchText(text);
+        const searchData = productRequestList?.data?.requested_products?.filter((item) => {
+          const searchItem = text.toLocaleLowerCase();
+          return (
+            item?.product_name?.toLocaleLowerCase()?.indexOf(searchItem) > -1
+          );
+        });
+        setAllRequestProducts(searchData);
+        
+      } 
+      else {
+        const sliceData = productRequestList?.data?.requested_products?.slice(0, 10)
+        console.log(sliceData?.length)
+        setAllRequestProducts(sliceData);
+        setStoreRequestProducts(productRequestList?.data?.requested_products)
+      }
+    
   }
   return (
     <div className="mb-20">
@@ -126,7 +146,7 @@ const ProductRequestListPage = () => {
         <CalendarDateRangePicker dateFilterHandler={dateFilterHandler} date={date} setDate={setDate} />
       </div>
       <div className="max-w-[540px]">
-        <SearchInput />
+        <SearchInput onSearchHandler={onSearchHandler}/>
       </div>
       <div>
         {
