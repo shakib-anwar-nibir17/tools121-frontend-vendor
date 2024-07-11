@@ -70,7 +70,7 @@ const ProductListTable = ({productData}) => {
   }
 
   return (
-    <Table className="max-w-[1189px] mt-10 mb-20">
+    <Table className="max-w-[1189px] mt-10 mb-7">
       <TableHeader>
         <TableRow className="bg-primary-50 font-bold text-black rounded-l-lg">
           <TableHead>
@@ -94,7 +94,7 @@ const ProductListTable = ({productData}) => {
               <Checkbox className="w-4 h-4 border border-black rounded-md" />
             </TableCell>
             <TableCell className="font-medium w-[27%]">
-              {product.product_name}
+              {product?.product_name}
             </TableCell>
             <TableCell className="w-[10%]">{product?.category ? product?.category : '-'}</TableCell>
             <TableCell className="w-[12.5%]">{product?.stock ? product?.stock : '-'}</TableCell>
