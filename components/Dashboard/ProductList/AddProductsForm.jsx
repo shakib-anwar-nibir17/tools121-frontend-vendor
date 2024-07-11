@@ -1,5 +1,5 @@
 "use client"
-import { useAddProductMutation, useLazyProductSubCategoryQuery, useLazySelectProductListQuery, useProductBrandQuery, useProductCategoryQuery, useProductEngineQuery, useProductModelQuery } from "@/app/redux/features/inventoryProduct";
+import { useAddProductMutation, useLazyProductSubCategoryQuery, useLazySelectProductListQuery, useProductBrandQuery, useProductCategoryQuery, useProductEngineQuery, useProductModelQuery, useUpdateProductMutation } from "@/app/redux/features/inventoryProduct";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,9 +10,11 @@ import SingleSelect from "@/components/common/SingleSelect";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
   const token = localStorage.getItem("vendorToken");
+  const router = useRouter()
 
   const { data: productCategories, refetch: refetchCategory } = useProductCategoryQuery(token, {
     refetchOnMountOrArgChange: true,
@@ -29,6 +31,8 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
   const { data: productEngine, refetch: refetchEngine } = useProductEngineQuery(token, {
     refetchOnMountOrArgChange: true,
   });
+  const [updateProduct, {}] = useUpdateProductMutation();
+
   const [addProduct, {}] = useAddProductMutation();
   const [loading, setLoading] = useState(false)
   const [formatedCategory, setFormatedCategory] = useState([])
@@ -46,71 +50,71 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [selectedEngine, setSelectedEngine] = useState(null);
 
-  // const schema = yup
-  // .object({
-  //   category: yup
-  //   .object()
-  //   .shape({
-  //     value: yup.string().required("Category value is required"),
-  //     label: yup.string().required("Category label is required"),
-  //   })
-  //   .typeError("Category is required")
-  //   .required("Category is required"),
+  const schema = yup
+  .object({
+    category: yup
+    .object()
+    .shape({
+      value: yup.string().required("Category value is required"),
+      label: yup.string().required("Category label is required"),
+    })
+    .typeError("Category is required")
+    .required("Category is required"),
 
-  //   sub_category: yup
-  //   .object()
-  //   .shape({
-  //     value: yup.string().required("Sub Category value is required"),
-  //     label: yup.string().required("Sub Category label is required"),
-  //   })
-  //   .typeError("Sub Category is required")
-  //   .required("Sub Category is required"),
+    sub_category: yup
+    .object()
+    .shape({
+      value: yup.string().required("Sub Category value is required"),
+      label: yup.string().required("Sub Category label is required"),
+    })
+    .typeError("Sub Category is required")
+    .required("Sub Category is required"),
 
-  //   product_id: yup
-  //   .object()
-  //   .shape({
-  //     value: yup.string().required("Product name value is required"),
-  //     label: yup.string().required("Product name label is required"),
-  //   })
-  //   .typeError("Product name is required")
-  //   .required("Product name is required"),
+    product_id: yup
+    .object()
+    .shape({
+      value: yup.string().required("Product name value is required"),
+      label: yup.string().required("Product name label is required"),
+    })
+    .typeError("Product name is required")
+    .required("Product name is required"),
 
-  //   brand_id: yup
-  //   .object()
-  //   .shape({
-  //     value: yup.string().required("Brand value is required"),
-  //     label: yup.string().required("Brand label is required"),
-  //   })
-  //   .typeError("Brand is required")
-  //   .required("Brand is required"),
+    brand_id: yup
+    .object()
+    .shape({
+      value: yup.string().required("Brand value is required"),
+      label: yup.string().required("Brand label is required"),
+    })
+    .typeError("Brand is required")
+    .required("Brand is required"),
 
-  //   product_model_id: yup
-  //   .object()
-  //   .shape({
-  //     value: yup.string().required("Model value is required"),
-  //     label: yup.string().required("Model label is required"),
-  //   })
-  //   .typeError("Model is required")
-  //   .required("Model is required"),
+    product_model_id: yup
+    .object()
+    .shape({
+      value: yup.string().required("Model value is required"),
+      label: yup.string().required("Model label is required"),
+    })
+    .typeError("Model is required")
+    .required("Model is required"),
 
-  //   engine_id: yup
-  //   .object()
-  //   .shape({
-  //     value: yup.string().required("Engine value is required"),
-  //     label: yup.string().required("Engine label is required"),
-  //   })
-  //   .typeError("Engine is required")
-  //   .required("Engine required"),
+    engine_id: yup
+    .object()
+    .shape({
+      value: yup.string().required("Engine value is required"),
+      label: yup.string().required("Engine label is required"),
+    })
+    .typeError("Engine is required")
+    .required("Engine required"),
 
-  //   delivery_note: yup
-  //   .string()
-  //   .required("Delivery note is required"),
+    delivery_note: yup
+    .string()
+    .required("Delivery note is required"),
 
-  //   product_specification: yup
-  //   .string()
-  //   .required("Production Specification is required"),
-  // })
-  // .required();
+    product_specification: yup
+    .string()
+    .required("Production Specification is required"),
+  })
+  .required();
 
   const {
     control,
@@ -121,7 +125,7 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
     resetField,
     setValue
   } = useForm({
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
     defaultValues: {
       category: null,
       sub_category: null,
@@ -137,53 +141,98 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
     }
   });
 
-  const addProductHandler = async (data) => {
+  const productSubmitHandler = async (data) => {
     console.log("data ==>", data)
-    return
+    // return
     setLoading(true)
 
     const findProduct = selectProductList?.data?.products?.filter((item) => item?.id == data?.product_id?.value)
+    if(paramsId){
+      const requst_body = {
+        product_id: data?.product_id?.value,
+        product_model_id: parseInt(data?.product_model_id?.value),
+        engine_id: parseInt(data?.engine_id?.value),
+        brand_id: parseInt(data?.brand_id?.value),
+        stock_color: "",
+        product_description: "",
+        previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate,
+        stock: data?.stock,
+        delivery_note: data?.delivery_note,
+        product_specification: data?.product_specification,      
+      }
 
-    const requst_body = {
-      ...data,
-      product_id: data?.product_id?.value,
-      product_model_id: parseInt(data?.product_model_id?.value),
-      engine_id: parseInt(data?.engine_id?.value),
-      brand_id: parseInt(data?.brand_id?.value),
-      stock_color: "",
-      product_description: "",
-      previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate
-    }
-    
-    console.log('requst_body ===>', requst_body)
-    const product_add_res = await addProduct({requst_body, token})
+      console.log('requst_body ===>', requst_body)
+      const product_update_res = await updateProduct({requst_body, token: token})
 
-    if(product_add_res?.data?.message == "Request success"){
-      setLoading(false)
-        toast.success("Product added Successfully", {
+      console.log('product_update_res ===>', product_update_res)
+      if(product_update_res?.data?.message == "Request success"){
+        setLoading(false)
+          toast.success("Product updated Successfully", {
+            position: "top-right",
+            duration: 2000,
+          });
+          reset()
+      }
+      else if(product_update_res?.error?.data?.message == "Supplier product already exit"){
+        setLoading(false)
+        toast.error("Supplier product already exit", {
           position: "top-right",
-          duration: 2000,
+          duration: 2500,
         });
-        reset()
-    }
-    else if(product_add_res?.error?.data?.message == "Supplier product already exit"){
-      setLoading(false)
-      toast.error("Supplier product already exit", {
-        position: "top-right",
-        duration: 2500,
-      });
+      }
+      else{
+        setLoading(false)
+          toast.error("Product update failed", {
+            position: "top-right",
+            duration: 2000,
+          });
+      }
     }
     else{
-      setLoading(false)
-        toast.error("Product Adding failed", {
+      const requst_body = {
+        ...data,
+        product_id: data?.product_id?.value,
+        product_model_id: parseInt(data?.product_model_id?.value),
+        engine_id: parseInt(data?.engine_id?.value),
+        brand_id: parseInt(data?.brand_id?.value),
+        stock_color: "",
+        product_description: "",
+        previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate
+      }
+      
+      console.log('requst_body ===>', requst_body)
+      const product_add_res = await addProduct({requst_body, token: token})
+
+      console.log('product_add_res ===>', product_add_res)
+
+
+      if(product_add_res?.data?.message == "Request success"){
+        setLoading(false)
+          toast.success("Product added Successfully", {
+            position: "top-right",
+            duration: 2000,
+          });
+          reset()
+      }
+      else if(product_add_res?.error?.data?.message == "Supplier product already exit"){
+        setLoading(false)
+        toast.error("Supplier product already exit", {
           position: "top-right",
-          duration: 2000,
+          duration: 2500,
         });
+      }
+      else{
+        setLoading(false)
+          toast.error("Product Adding failed", {
+            position: "top-right",
+            duration: 2000,
+          });
+      }
     }
-    console.log('product_add_res ===>', product_add_res)
+   
   }
   const onSubmit = (data) => {
-   addProductHandler(data)
+   productSubmitHandler(data)
   }
   
   useEffect(() => {
@@ -264,6 +313,9 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
     }
   },[productEngine?.data?.engines])
 
+  // console.log('subCategories...',subCategories)
+
+  
 // -------------------Editing Functionlity----------------//
 useEffect(() => {
   console.log('entering 1 prod category...', paramsId, singleProductData?.id)
@@ -276,8 +328,8 @@ useEffect(() => {
     }
     setSelectedCategory(findCate)
 
-    triggerSubCategory({cat_id: singleProductData?.category_id, token})
-    triggerSubCategory({sub_cat_id: singleProductData?.sub_category_id, token})
+    triggerSubCategory({cat_id: singleProductData?.category_id, token: token})
+    triggerSelectProduct({sub_cat_id: singleProductData?.sub_category_id, token: token})
 
     Object.keys(singleProductData).forEach(key => {
       setValue(key, singleProductData[key]);
@@ -318,6 +370,7 @@ useEffect(() => {
     setValue('engine_id', engineObj)
     setValue('product_model_id', modelObj)
     setValue('product_id', productObj)
+    setValue('sub_category', subCatObj)
   }
 },[paramsId, singleProductData?.id])
 
@@ -506,7 +559,14 @@ useEffect(() => {
       <div className="mt-10 mb-[60px]">
         <div className="flex justify-end gap-4">
           <Button
-            onClick={() => setShowForm(false)}
+            onClick={() => {
+              if(paramsId){
+               router.push('/inventory/product-list')
+              }
+              else{
+                setShowForm(false)
+              }
+            }}
             className="text-xl px-6 bg-white text-primary-900 border border-primary-900"
           >
             Cancel

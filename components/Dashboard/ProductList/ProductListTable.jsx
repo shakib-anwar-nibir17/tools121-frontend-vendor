@@ -80,7 +80,7 @@ const ProductListTable = ({productData}) => {
           <TableHead>Category</TableHead>
           <TableHead>Stock</TableHead>
           <TableHead>Price</TableHead>
-          <TableHead>Status</TableHead>
+          {/* <TableHead>Status</TableHead> */}
           <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
@@ -99,14 +99,14 @@ const ProductListTable = ({productData}) => {
             <TableCell className="w-[10%]">{product?.category ? product?.category : '-'}</TableCell>
             <TableCell className="w-[12.5%]">{product?.stock ? product?.stock : '-'}</TableCell>
             <TableCell className="w-[12.5%]">{product?.new_price ? product?.new_price : '-'}</TableCell>
-            <TableCell className="w-[19%]">
+            {/* <TableCell className="w-[19%]">
               <button
                 style={ButtonStyles[product?.status]}
                 className="h-[47px] w-[129px] rounded-xl"
               >
                 {product?.status}
               </button>
-            </TableCell>
+            </TableCell> */}
             <TableCell className="w-[12.5%]">
               <div className="flex items-center justify-center gap-2">
                 {
