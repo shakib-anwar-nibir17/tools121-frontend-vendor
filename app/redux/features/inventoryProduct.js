@@ -1,3 +1,4 @@
+import { GetVendorToken } from "@/utils/GetToken";
 import { api } from "../api/api";
 
 const invenntoryProductApi = api.injectEndpoints({
@@ -7,7 +8,7 @@ const invenntoryProductApi = api.injectEndpoints({
         url: '/supplier/product/v1/list',
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${GetVendorToken()}`,
           'Content-Type': 'application/json',
           "Accept-Language": "en",
         },
@@ -16,11 +17,12 @@ const invenntoryProductApi = api.injectEndpoints({
     }),
 
     getProducRequesttList: builder.query({
-      query: (token) =>({
+      query: (data) =>({
         url: '/supplier/product/v1/requested/list',
+        // `/supplier/product/v1/requested/list${data?.action_type && data?.start_date? `?action_type=${data?.action_type}&start_date=${data?.start_date}&end_date=${data?.end_date}` : data?.action_type ? `?action_type=${data?.action_type}` : data?.start_date ? `?start_date=${data?.start_date}&end_date=${data?.end_date}` : ''}`
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${GetVendorToken()}`,
           'Content-Type': 'application/json',
           "Accept-Language": "en",
         },
@@ -111,7 +113,7 @@ const invenntoryProductApi = api.injectEndpoints({
         url: "/supplier/product/v1/add",
         method: "POST",
         headers: {
-          'Authorization': `Bearer ${data?.token}`,
+          'Authorization': `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -125,7 +127,7 @@ const invenntoryProductApi = api.injectEndpoints({
         url: "/supplier/product/v1/request",
         method: "POST",
         headers: {
-          'Authorization': `Bearer ${data?.token}`,
+          'Authorization': `Bearer ${GetVendorToken()}`,
           // "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -139,7 +141,7 @@ const invenntoryProductApi = api.injectEndpoints({
         url: `/supplier/product/v1/delete/${data?.prod_id}`,
         method: "DELETE", 
         headers: {
-          'Authorization': `Bearer ${data?.token}`,
+          'Authorization': `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -152,7 +154,7 @@ const invenntoryProductApi = api.injectEndpoints({
         url: `/supplier/product/v1/requested/details?product_id=${data?.id}`,
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${data?.token}`,
+          'Authorization': `Bearer ${GetVendorToken()}`,
           'Content-Type': 'application/json',
           "Accept-Language": "en",
         },
@@ -164,7 +166,7 @@ const invenntoryProductApi = api.injectEndpoints({
         url: "/supplier/product/v1/requested/update",
         method: "PUT",
         headers: {
-          'Authorization': `Bearer ${data?.token}`,
+          'Authorization': `Bearer ${GetVendorToken()}`,
           // "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -178,13 +180,52 @@ const invenntoryProductApi = api.injectEndpoints({
         url: `/supplier/product/v1/requested/delete/${data?.prod_id}`,
         method: "DELETE", 
         headers: {
-          'Authorization': `Bearer ${data?.token}`,
+          'Authorization': `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
       }),
         invalidatesTags: ['productrequestlist'],
     }),
+
+    getSingleProduct: builder.query({
+      query: (data) =>({
+        url: `/supplier/product/v1/details?supplier_product_id=${data?.id}`,
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${GetVendorToken()}`,
+          'Content-Type': 'application/json',
+          "Accept-Language": "en",
+        },
+      }),
+    }),
+
+    updateProduct: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/product/v1/update",
+        method: "PUT",
+        headers: {
+          'Authorization': `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data?.requst_body,
+      }),
+        invalidatesTags: ['productlist'],
+    }),
+
+    getProductTags: builder.query({
+      query: (token) =>({
+        url: '/tag/v1/list',
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          "Accept-Language": "en",
+        },
+      }),
+    }),
+
   }),
 });
 
@@ -202,5 +243,9 @@ export const {
     useGetProducRequesttListQuery,
     useLazyGetSingleProductRequestQuery,
     useUpdateReqProductMutation,
-    useDeleteRequstProductMutation
+    useDeleteRequstProductMutation,
+    useLazyGetSingleProductQuery,
+    // useLazyGetProducRequesttListQuery,
+    useUpdateProductMutation,
+    useGetProductTagsQuery
 } = invenntoryProductApi;

@@ -104,10 +104,10 @@ const ListDataTable = ({requestData}) => {
             <TableCell>{product?.product_rate ? product?.product_rate : ''}</TableCell>
             <TableCell className="text-center">
               <button
-                style={ButtonStyles[product.status]}
+                style={ButtonStyles[product?.action_type == 0 ? 'Pending' : product?.action_type == 100 ? 'Approved' : 'Rejected']}
                 className="h-[47px] w-[129px] rounded-xl"
               >
-                {product.status}
+                {product?.action_type == 0 ? 'Pending' : product?.action_type == 100 ? 'Approved' : 'Rejected'}
               </button>
             </TableCell>
             <TableCell>
