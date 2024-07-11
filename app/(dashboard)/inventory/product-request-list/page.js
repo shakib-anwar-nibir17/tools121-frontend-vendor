@@ -149,10 +149,23 @@ const ProductRequestListPage = () => {
         
       } 
       else {
-        const sliceData = productRequestList?.data?.requested_products?.slice(0, 10)
-        console.log(sliceData?.length)
+        const doSlice = (filterVal) => {
+          if(filterVal == 'none'){
+            const sliceData = productRequestList?.data?.requested_products?.slice(0, 10)
+            setStoreRequestProducts(productRequestList?.data?.requested_products)
+            return sliceData
+          }
+          else{
+            const filterData = productRequestList?.data?.requested_products?.filter((item) => item?.action_type == filterVal)
+
+            const sliceData = filterData?.slice(0, 10)
+            setStoreRequestProducts(filterData)
+            return sliceData
+          }
+        }
+        const filterVal = tabVal == 'pending' ? 0 : tabVal == 'approved'  ? 100 :  tabVal == 'approved' ? 200 : 'none'
+        const sliceData = doSlice(filterVal)
         setAllRequestProducts(sliceData);
-        setStoreRequestProducts(productRequestList?.data?.requested_products)
       }
     
   }

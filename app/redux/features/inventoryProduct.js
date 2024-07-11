@@ -214,6 +214,18 @@ const invenntoryProductApi = api.injectEndpoints({
         invalidatesTags: ['productlist'],
     }),
 
+    getProductTags: builder.query({
+      query: (token) =>({
+        url: '/tag/v1/list',
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          "Accept-Language": "en",
+        },
+      }),
+    }),
+
   }),
 });
 
@@ -235,4 +247,5 @@ export const {
     useLazyGetSingleProductQuery,
     // useLazyGetProducRequesttListQuery,
     useUpdateProductMutation,
+    useGetProductTagsQuery
 } = invenntoryProductApi;
