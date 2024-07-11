@@ -50,8 +50,24 @@ const ProductRequestListPage = () => {
 
 
   const dateFilterHandler = () => {
-    const fromD = moment(date?.from).format('DD-MM-YYYY')
-    const toD = moment(date?.to).format('DD-MM-YYYY')
+    const startDateFormate = moment(date?.from).format('YYYY-MM-DD')
+    const endDateFormate = moment(date?.to).format('YYYY-MM-DD')
+
+    const startDate = moment(startDateFormate).startOf('day')
+    const endDate = moment(endDateFormate).endOf('day')
+
+    console.log('start date', startDate)
+    console.log('end date', endDate)
+    console.log('main date ===>', date)
+
+
+    const filteredData = productRequestList?.data?.requested_products?.filter(item => {
+      const itemDate = moment(item?.request_time);
+      return itemDate.isBetween(startDate, endDate, null, '[]');
+    });
+    console.log('filter data --->', filteredData)
+    setAllRequestProducts(filteredData)
+    setStoreRequestProducts(filteredData)
   }
 
   const tabHandler = (val) => {
@@ -110,7 +126,7 @@ const ProductRequestListPage = () => {
     }
   },[productRequestList?.data?.requested_products?.length])
 
-  // console.log('base prod===>', productRequestList?.data?.requested_products?.length)
+  // console.log('base prod===>', productRequestList?.data?.requested_products)
   // console.log("ProdReqestList", allRequestProducts?.length);
   // console.log("storeRequestProducts", storeRequestProducts?.length);
   // console.log("pageData", pageData?.length);
@@ -140,6 +156,7 @@ const ProductRequestListPage = () => {
       }
     
   }
+
   return (
     <div className="mb-20">
       <div className="absolute top-0 right-0">
