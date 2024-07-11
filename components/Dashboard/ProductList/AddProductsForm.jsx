@@ -1,5 +1,5 @@
 "use client"
-import { useAddProductMutation, useLazyProductSubCategoryQuery, useLazySelectProductListQuery, useProductBrandQuery, useProductCategoryQuery, useProductEngineQuery, useProductModelQuery } from "@/app/redux/features/inventoryProduct";
+import { useAddProductMutation, useLazyProductSubCategoryQuery, useLazySelectProductListQuery, useProductBrandQuery, useProductCategoryQuery, useProductEngineQuery, useProductModelQuery, useUpdateProductMutation } from "@/app/redux/features/inventoryProduct";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,9 +10,11 @@ import SingleSelect from "@/components/common/SingleSelect";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-const AddProductsForm = ({ setShowForm }) => {
+const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
   const token = localStorage.getItem("vendorToken");
+  const router = useRouter()
 
   const { data: productCategories, refetch: refetchCategory } = useProductCategoryQuery(token, {
     refetchOnMountOrArgChange: true,
@@ -29,6 +31,8 @@ const AddProductsForm = ({ setShowForm }) => {
   const { data: productEngine, refetch: refetchEngine } = useProductEngineQuery(token, {
     refetchOnMountOrArgChange: true,
   });
+  const [updateProduct, {}] = useUpdateProductMutation();
+
   const [addProduct, {}] = useAddProductMutation();
   const [loading, setLoading] = useState(false)
   const [formatedCategory, setFormatedCategory] = useState([])
@@ -37,6 +41,14 @@ const AddProductsForm = ({ setShowForm }) => {
   const [formatedBrand, setFormatedBrand] = useState([])
   const [formatedModel, setFormatedModel] = useState([])
   const [formatedEngines, setFormatedEngines] = useState([])
+
+  // ----------------Selected Options state -------------//
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedModel, setSelectedModel] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedEngine, setSelectedEngine] = useState(null);
 
   const schema = yup
   .object({
@@ -111,57 +123,116 @@ const AddProductsForm = ({ setShowForm }) => {
     formState: { errors },
     reset,
     resetField,
+    setValue
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      category: null,
+      sub_category: null,
+      product_id: null,
+      brand_id: null,
+      engine_id: null,
+      product_model_id: null,
+      new_price: '',
+      stock: '',
+      previous_price: '',
+      product_specification: '',
+      delivery_note: ''
+    }
   });
 
-  const addProductHandler = async (data) => {
+  const productSubmitHandler = async (data) => {
     console.log("data ==>", data)
     // return
     setLoading(true)
 
     const findProduct = selectProductList?.data?.products?.filter((item) => item?.id == data?.product_id?.value)
+    if(paramsId){
+      const requst_body = {
+        product_id: data?.product_id?.value,
+        product_model_id: parseInt(data?.product_model_id?.value),
+        engine_id: parseInt(data?.engine_id?.value),
+        brand_id: parseInt(data?.brand_id?.value),
+        stock_color: "",
+        product_description: "",
+        previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate,
+        stock: data?.stock,
+        delivery_note: data?.delivery_note,
+        product_specification: data?.product_specification,      
+      }
 
-    const requst_body = {
-      ...data,
-      product_id: data?.product_id?.value,
-      product_model_id: parseInt(data?.product_model_id?.value),
-      engine_id: parseInt(data?.engine_id?.value),
-      brand_id: parseInt(data?.brand_id?.value),
-      stock_color: "",
-      product_description: "",
-      previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate
-    }
-    
-    console.log('requst_body ===>', requst_body)
-    const product_add_res = await addProduct({requst_body, token})
+      console.log('requst_body ===>', requst_body)
+      const product_update_res = await updateProduct({requst_body, token: token})
 
-    if(product_add_res?.data?.message == "Request success"){
-      setLoading(false)
-        toast.success("Product added Successfully", {
+      console.log('product_update_res ===>', product_update_res)
+      if(product_update_res?.data?.message == "Request success"){
+        setLoading(false)
+          toast.success("Product updated Successfully", {
+            position: "top-right",
+            duration: 2000,
+          });
+          reset()
+      }
+      else if(product_update_res?.error?.data?.message == "Supplier product already exit"){
+        setLoading(false)
+        toast.error("Supplier product already exit", {
           position: "top-right",
-          duration: 2000,
+          duration: 2500,
         });
-        reset()
-    }
-    else if(product_add_res?.error?.data?.message == "Supplier product already exit"){
-      setLoading(false)
-      toast.error("Supplier product already exit", {
-        position: "top-right",
-        duration: 2500,
-      });
+      }
+      else{
+        setLoading(false)
+          toast.error("Product update failed", {
+            position: "top-right",
+            duration: 2000,
+          });
+      }
     }
     else{
-      setLoading(false)
-        toast.error("Product Adding failed", {
+      const requst_body = {
+        ...data,
+        product_id: data?.product_id?.value,
+        product_model_id: parseInt(data?.product_model_id?.value),
+        engine_id: parseInt(data?.engine_id?.value),
+        brand_id: parseInt(data?.brand_id?.value),
+        stock_color: "",
+        product_description: "",
+        previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate
+      }
+      
+      console.log('requst_body ===>', requst_body)
+      const product_add_res = await addProduct({requst_body, token: token})
+
+      console.log('product_add_res ===>', product_add_res)
+
+
+      if(product_add_res?.data?.message == "Request success"){
+        setLoading(false)
+          toast.success("Product added Successfully", {
+            position: "top-right",
+            duration: 2000,
+          });
+          reset()
+      }
+      else if(product_add_res?.error?.data?.message == "Supplier product already exit"){
+        setLoading(false)
+        toast.error("Supplier product already exit", {
           position: "top-right",
-          duration: 2000,
+          duration: 2500,
         });
+      }
+      else{
+        setLoading(false)
+          toast.error("Product Adding failed", {
+            position: "top-right",
+            duration: 2000,
+          });
+      }
     }
-    console.log('product_add_res ===>', product_add_res)
+   
   }
   const onSubmit = (data) => {
-   addProductHandler(data)
+   productSubmitHandler(data)
   }
   
   useEffect(() => {
@@ -242,7 +313,66 @@ const AddProductsForm = ({ setShowForm }) => {
     }
   },[productEngine?.data?.engines])
 
-  console.log('formatedProdName ==>', selectProductList)
+  // console.log('subCategories...',subCategories)
+
+  
+// -------------------Editing Functionlity----------------//
+useEffect(() => {
+  console.log('entering 1 prod category...', paramsId, singleProductData?.id)
+
+  if(paramsId && singleProductData?.id){
+   
+    const findCate = {
+      label: singleProductData?.category,
+      value: singleProductData?.category_id,
+    }
+    setSelectedCategory(findCate)
+
+    triggerSubCategory({cat_id: singleProductData?.category_id, token: token})
+    triggerSelectProduct({sub_cat_id: singleProductData?.sub_category_id, token: token})
+
+    Object.keys(singleProductData).forEach(key => {
+      setValue(key, singleProductData[key]);
+    });
+
+    const brandObj = {
+      label: singleProductData?.brand_name,
+      value: singleProductData?.brand_id,
+    }
+    setSelectedBrand(brandObj)
+
+    const modelObj = {
+      label: singleProductData?.model_name,
+      value: singleProductData?.model_id,
+    }
+    setSelectedModel(modelObj)
+
+    const engineObj = {
+      label: singleProductData?.engine_name,
+      value: singleProductData?.engine_id,
+    }
+    setSelectedEngine(engineObj)
+
+    const subCatObj = {
+      label: singleProductData?.sub_category,
+      value: singleProductData?.sub_category_id,
+    }
+    setSelectedSubCategory(subCatObj)
+
+    const productObj = {
+      label: singleProductData?.product_name,
+      value: singleProductData?.product_id,
+    }
+    setSelectedProduct(productObj)
+
+    setValue('category', findCate)
+    setValue('brand_id', brandObj)
+    setValue('engine_id', engineObj)
+    setValue('product_model_id', modelObj)
+    setValue('product_id', productObj)
+    setValue('sub_category', subCatObj)
+  }
+},[paramsId, singleProductData?.id])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
@@ -255,12 +385,14 @@ const AddProductsForm = ({ setShowForm }) => {
           <SingleSelect
             control={control}
             name='category'
-            defaultVal=''
             placeHolderName="Category"
             triggerFunction={triggerSubCategory}
             data={formatedCategory}
             errorMessage={errors.category ? errors.category?.message : ''}
             resetField={resetField}
+            defaultVal={selectedCategory}
+            setSelectedData={setSelectedCategory}
+            setSelectedSubCategory={setSelectedSubCategory}
           />
           
         </div>
@@ -273,11 +405,14 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='sub_category'
             placeHolderName='Sub Category'
-            defaultVal=''
             triggerFunction={triggerSelectProduct}
             data={formatedSubCategory}
             errorMessage={errors.sub_category ? errors.sub_category?.message : ''}
             resetField={resetField}
+            defaultVal={selectedSubCategory}
+            setSelectedSubCategory={setSelectedSubCategory}
+            setSelectedProduct={setSelectedProduct}
+            from={"addProd"}
           />
         </div>
       </div>
@@ -289,9 +424,10 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='product_id'
             placeHolderName='Product Name'
-            defaultVal=''
             data={formatedProdName}
             errorMessage={errors.product_id ? errors.product_id?.message : ''}
+            defaultVal={selectedProduct}
+            setSelectedData={setSelectedProduct}
           />
         </div>
         
@@ -301,9 +437,10 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='brand_id'
             placeHolderName='Brand'
-            defaultVal=''
             data={formatedBrand}
             errorMessage={errors.brand_id ? errors.brand_id?.message : ''}
+            defaultVal={selectedBrand}
+            setSelectedData={setSelectedBrand}
           />
         </div>
       </div>
@@ -333,9 +470,10 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='product_model_id'
             placeHolderName='Model'
-            defaultVal=''
             data={formatedModel}
             errorMessage={errors.product_model_id ? errors.product_model_id?.message : ''}
+            defaultVal={selectedModel}
+            setSelectedData={setSelectedModel}
           />
         </div>
 
@@ -345,9 +483,10 @@ const AddProductsForm = ({ setShowForm }) => {
             control={control}
             name='engine_id'
             placeHolderName='Engine'
-            defaultVal=''
             data={formatedEngines}
             errorMessage={errors.engine_id ? errors.engine_id?.message : ''}
+            defaultVal={selectedEngine}
+            setSelectedData={setSelectedEngine}
           />
         </div>
       </div>
@@ -357,6 +496,7 @@ const AddProductsForm = ({ setShowForm }) => {
           <label className="font-bold">Regular Price</label>
           <input
           {...register("previous_price")}
+            defaultValue={singleProductData?.previous_price ? singleProductData?.previous_price : ''}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="text"
             placeholder="Regular Price"
@@ -367,6 +507,7 @@ const AddProductsForm = ({ setShowForm }) => {
           <label className="font-bold">New Price</label>
           <input
           {...register("new_price")}
+          defaultValue={singleProductData?.new_price ? singleProductData?.new_price : ''}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="text"
             placeholder="....."
@@ -376,6 +517,7 @@ const AddProductsForm = ({ setShowForm }) => {
           <label className="font-bold">Stock</label>
           <input
             {...register("stock")}
+            defaultValue={singleProductData?.stock ? singleProductData?.stock : ''}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
             type="number"
             placeholder="...."
@@ -388,6 +530,7 @@ const AddProductsForm = ({ setShowForm }) => {
           <label className=" text-primary-950 font-bold">Delivery Note*</label>
           <textarea
            {...register("delivery_note")}
+           defaultValue={singleProductData?.delivery_note ? singleProductData?.delivery_note : ''}
             className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
             type="text"
             placeholder="Delivery Note"
@@ -402,6 +545,7 @@ const AddProductsForm = ({ setShowForm }) => {
           </label>
           <textarea
            {...register("product_specification")}
+           defaultValue={singleProductData?.product_specification ? singleProductData?.product_specification : ''}
             className="rounded-lg border border-slate-200 bg-primary-50 px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
             type="text"
             placeholder="Production Specification"
@@ -415,7 +559,14 @@ const AddProductsForm = ({ setShowForm }) => {
       <div className="mt-10 mb-[60px]">
         <div className="flex justify-end gap-4">
           <Button
-            onClick={() => setShowForm(false)}
+            onClick={() => {
+              if(paramsId){
+               router.push('/inventory/product-list')
+              }
+              else{
+                setShowForm(false)
+              }
+            }}
             className="text-xl px-6 bg-white text-primary-900 border border-primary-900"
           >
             Cancel

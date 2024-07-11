@@ -6,18 +6,23 @@ import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm, Controller } from 'react-hook-form';
-import { useAddProductRequestMutation, useLazyGetSingleProductRequestQuery } from "@/app/redux/features/inventoryProduct";
+import { useAddProductRequestMutation, useGetProductTagsQuery, useLazyGetSingleProductRequestQuery } from "@/app/redux/features/inventoryProduct";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-const ProductRequestForm = ({params}) => {
+const ProductRequestForm = () => {
   const token = localStorage.getItem('vendorToken')
   const [addProductRequst, {}] = useAddProductRequestMutation();
   const [prodImg, setProdImg] = useState(null)
   const [imgErr, setImgErr] = useState('')
   const [loader, setLoader] = useState(false)
   const [preview, setPreview] = useState('')
+  const [tags, setTags] = useState([])
+
+  const { data: productTags, refetch: refetchtags } = useGetProductTagsQuery(token, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const schema = yup
   .object({
@@ -79,6 +84,8 @@ const ProductRequestForm = ({params}) => {
       formdata.append("product_rate", parseInt(data?.product_rate))
       formdata.append("file", prodImg)
       formdata.append("product_specification", data?.product_description)
+      formdata.append("tags", JSON.stringify(tags))
+
       console.log('data ==>', data)
 
       const prod_reqest_res = await addProductRequst({requst_body: formdata, token:token})
@@ -130,6 +137,10 @@ const ProductRequestForm = ({params}) => {
     setProdImg(file)
   }
 
+  const tagChangeHandler = (tagObj) => {
+    setTags((prev) => [...prev, tagObj])
+  }
+  console.log('productTags -------->', tags)
   return (
     <div className="max-w-[676px] mb-[102px]">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -138,7 +149,7 @@ const ProductRequestForm = ({params}) => {
         {/* Media Information */}
         <MediaInfo  fileDrop={fileDrop} preview={preview} imgErr={imgErr} setProdImg={setProdImg} prodImg={prodImg}/>
         {/* More Information */}
-        <MoreInfo control={control} errors={errors} register={register}/>
+        <MoreInfo tagChangeHandler={tagChangeHandler} productTags={productTags?.data?.tags} control={control} errors={errors} register={register}/>
         <div className="mt-12 mb-[50px]">
           <div className="flex justify-end gap-4">
             <div className="text-xl px-6 bg-white text-primary-900 border border-primary-900 rounded-md cursor-pointer w-[100px] flex justify-center items-center h-[40px]" >

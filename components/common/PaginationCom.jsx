@@ -104,20 +104,32 @@ const rows = [10, 25, 50, 100];
                   )}
                 </>
               }
+              
               pageCount={pageCount}
               onPageChange={handlePageClick}
+              // containerClassName="relative z-0 flex rounded-md shadow-sm space-x-2 ml-auto"
+              // pageClassName="bg-white text-white hover:bg-[#0d6efd] relative flex items-center text-sm font-medium"
+              // activeClassName={
+              //   pageCount > 1
+              //     ? 'z-10 bg-[#0d6efd] border border-[#0d6efd] text-white relative flex items-center text-sm font-medium'
+              //     : 'hidden'
+              // }
+              // pageLinkClassName={
+              //   pageCount > 1
+              //     ? 'z-10 text-black border border-[#0d6efd] relative flex items-center px-4 py-2 text-sm font-medium'
+              //     : 'hidden'
+              // }
+              // breakLabel="..."
+              // marginPagesDisplayed={2}
+              // pageRangeDisplayed={3}
               containerClassName="relative z-0 flex rounded-md shadow-sm space-x-2 ml-auto"
-              pageClassName="bg-white text-white hover:bg-[#0d6efd] relative flex items-center text-sm font-medium"
-              activeClassName={
-                pageCount > 1
-                  ? 'z-10 bg-[#0d6efd] border border-[#0d6efd] text-white relative flex items-center text-sm font-medium'
-                  : 'hidden'
-              }
-              pageLinkClassName={
-                pageCount > 1
-                  ? 'z-10 text-black border border-[#0d6efd] relative flex items-center px-4 py-2 text-sm font-medium'
-                  : 'hidden'
-              }
+              pageClassName="bg-blue-300 text-black hover:bg-blue-600 relative flex items-center text-sm font-medium"
+              activeClassName="z-10 bg-blue-600 border border-bg-blue-600 text-white relative flex items-center text-sm font-medium"
+              pageLinkClassName="relative flex items-center px-4 py-2 text-sm font-medium"
+              breakLabel="..."
+              breakClassName="z-10 text-black border border-[#0d6efd] relative flex items-center px-4 py-2 text-sm font-medium"
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={3}
             />
           </div>
          

@@ -20,7 +20,6 @@ const ProductRequestForm = ({params}) => {
   const [loader, setLoader] = useState(false)
   const [preview, setPreview] = useState('')
   const router = useRouter()
-  //-------Editng State-----------//
 
   const schema = yup
   .object({
@@ -63,7 +62,8 @@ const ProductRequestForm = ({params}) => {
     formState: { errors },
     reset,
     resetField,
-    setValue
+    setValue,
+    watch
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues:{
@@ -86,19 +86,20 @@ const ProductRequestForm = ({params}) => {
       setLoader(true)
       const formdata = new FormData();
 
-      const imageData = prodImg ? prodImg : preview
-
       formdata.append("product_id", data?.id)
       formdata.append("product_name", data?.product_name)
       formdata.append("sub_cat_id", parseInt(data?.sub_category?.value))
       formdata.append("product_description", data?.product_description)
       formdata.append("purchase_quantity", 0)
       formdata.append("product_rate", parseInt(data?.product_rate))
-      formdata.append("file", imageData)
       formdata.append("product_specification", data?.product_description)
+      if(prodImg){
+        formdata.append("file", prodImg)
+      }
       console.log('data ==>', data)
 
       const prod_reqest_res = await updateProductRequst({requst_body: formdata, token:token})
+      console.log('prod_reqest_res ==>', prod_reqest_res)
 
       if(prod_reqest_res?.data?.message == "Request success"){
         setLoader(false)
@@ -109,6 +110,7 @@ const ProductRequestForm = ({params}) => {
           setPreview('')
           setProdImg(null)
           reset()
+          router.push('/inventory/product-request-list')
       }
       else{
         setLoader(false)
@@ -117,8 +119,6 @@ const ProductRequestForm = ({params}) => {
           duration: 2000,
         });
       }
-
-      
     }
     else{
       
@@ -152,17 +152,17 @@ const ProductRequestForm = ({params}) => {
 
   useEffect(() => {
     if(params?.id){
-      triggerSingleProductReq({id: params?.id, token})
+      triggerSingleProductReq({id: params?.id, token: token})
     }
   },[params?.id])
 
   useEffect(() => {
-    if(singleProductRequestData?.data?.requested_products?.img_url){
-      setPreview(singleProductRequestData?.data?.requested_products?.img_url)
+    if(singleProductRequestData?.data?.requested_product_img?.img_url){
+      setPreview(singleProductRequestData?.data?.requested_product_img?.img_url)
     }
-  },[singleProductRequestData?.data?.requested_products?.img_url])
+  },[singleProductRequestData?.data?.requested_product_img?.img_url])
 
-console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.requested_products)
+console.log('singleProductRequestData ===>' , singleProductRequestData?.data)
 
   return (
     <div className="max-w-[676px] mb-[102px]">
@@ -171,13 +171,13 @@ console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.re
         <GeneralInfo
          paramsId={params?.id}
          setValue={setValue} 
-         singleProductRequestData={singleProductRequestData?.data?.requested_products}
+         singleProductRequestData={singleProductRequestData?.data}
          
          resetField={resetField} control={control} errors={errors} register={register}/>
         {/* Media Information */}
         <MediaInfo  fileDrop={fileDrop} preview={preview} imgErr={imgErr} setProdImg={setProdImg} prodImg={prodImg}/>
         {/* More Information */}
-        <MoreInfo control={control} errors={errors} register={register}/>
+        <MoreInfo  singleProductRequestData={singleProductRequestData?.data?.requested_product} control={control} errors={errors} register={register}/>
         <div className="mt-12 mb-[50px]">
           <div className="flex justify-end gap-4">
             <div className="text-xl px-6 bg-white text-primary-900 border border-primary-900 rounded-md cursor-pointer w-[100px] flex justify-center items-center h-[40px]" >
