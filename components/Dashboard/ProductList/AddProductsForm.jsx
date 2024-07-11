@@ -277,6 +277,7 @@ useEffect(() => {
     setSelectedCategory(findCate)
 
     triggerSubCategory({cat_id: singleProductData?.category_id, token})
+    triggerSubCategory({sub_cat_id: singleProductData?.sub_category_id, token})
 
     Object.keys(singleProductData).forEach(key => {
       setValue(key, singleProductData[key]);
@@ -300,11 +301,23 @@ useEffect(() => {
     }
     setSelectedEngine(engineObj)
 
+    const subCatObj = {
+      label: singleProductData?.sub_category,
+      value: singleProductData?.sub_category_id,
+    }
+    setSelectedSubCategory(subCatObj)
+
+    const productObj = {
+      label: singleProductData?.product_name,
+      value: singleProductData?.product_id,
+    }
+    setSelectedProduct(productObj)
+
     setValue('category', findCate)
     setValue('brand_id', brandObj)
     setValue('engine_id', engineObj)
     setValue('product_model_id', modelObj)
-
+    setValue('product_id', productObj)
   }
 },[paramsId, singleProductData?.id])
 
