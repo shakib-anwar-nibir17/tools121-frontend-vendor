@@ -1,6 +1,7 @@
 "use client";
 
 import {  useLazyGetSingleProductQuery } from "@/app/redux/features/inventoryProduct";
+import Loader from "@/components/common/Loader";
 import AddProductsForm from "@/components/Dashboard/ProductList/AddProductsForm";
 import { useEffect, useState } from "react";
 
@@ -11,7 +12,7 @@ const ProductList = ({params}) => {
 //console.log("product list ==>", productList?.data?.supplier_products)
 // console.log("params ==>", params)
  // ----------Editing Functionality -----------//
- const [triggerSingleProduct, { data: singleProductData, error, isLoading }] = useLazyGetSingleProductQuery();
+ const [triggerSingleProduct, { data: singleProductData, error, isLoading, isFetching}] = useLazyGetSingleProductQuery();
 
  useEffect(() => {
    if(params?.id){
@@ -23,7 +24,9 @@ const ProductList = ({params}) => {
  
   return (
     <div>
-        <AddProductsForm paramsId={params?.id} singleProductData={singleProductData?.data} setShowForm={setShowForm} />
+        {
+          isFetching ? <Loader/> : <AddProductsForm paramsId={params?.id} singleProductData={singleProductData?.data} setShowForm={setShowForm} />
+        }
     </div>
   );
 };
