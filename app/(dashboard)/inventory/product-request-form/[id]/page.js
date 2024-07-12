@@ -162,7 +162,7 @@ const ProductRequestForm = ({params}) => {
     }
   },[singleProductRequestData?.data?.requested_product_img?.img_url])
 
-console.log('singleProductRequestData ===>' , singleProductRequestData?.data)
+// console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.requested_product_tags)
 
   return (
     <div className="max-w-[676px] mb-[102px]">
