@@ -149,7 +149,8 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
     const findProduct = selectProductList?.data?.products?.filter((item) => item?.id == data?.product_id?.value)
     if(paramsId){
       const requst_body = {
-        product_id: data?.product_id?.value,
+        supplier_product_id:paramsId,
+        product_id:  data?.product_id?.value,
         product_model_id: parseInt(data?.product_model_id?.value),
         engine_id: parseInt(data?.engine_id?.value),
         brand_id: parseInt(data?.brand_id?.value),
@@ -159,9 +160,10 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
         stock: data?.stock,
         delivery_note: data?.delivery_note,
         product_specification: data?.product_specification,      
+        new_price: data?.new_price
       }
 
-      console.log('requst_body ===>', requst_body)
+      console.log('requst_body ===>', data)
       const product_update_res = await updateProduct({requst_body, token: token})
 
       console.log('product_update_res ===>', product_update_res)
@@ -172,6 +174,7 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
             duration: 2000,
           });
           reset()
+          router.push('/inventory/product-list')
       }
       else if(product_update_res?.error?.data?.message == "Supplier product already exit"){
         setLoading(false)
@@ -192,12 +195,14 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
       const requst_body = {
         ...data,
         product_id: data?.product_id?.value,
+        supplier_product_id:  data?.product_id?.value,
         product_model_id: parseInt(data?.product_model_id?.value),
         engine_id: parseInt(data?.engine_id?.value),
         brand_id: parseInt(data?.brand_id?.value),
         stock_color: "",
         product_description: "",
-        previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate
+        previous_price: data?.previous_price ? data?.previous_price : findProduct?.purchase_rate,
+        new_price: data?.new_price
       }
       
       console.log('requst_body ===>', requst_body)
@@ -558,7 +563,7 @@ useEffect(() => {
 
       <div className="mt-10 mb-[60px]">
         <div className="flex justify-end gap-4">
-          <Button
+          <p
             onClick={() => {
               if(paramsId){
                router.push('/inventory/product-list')
@@ -567,13 +572,13 @@ useEffect(() => {
                 setShowForm(false)
               }
             }}
-            className="text-xl px-6 bg-white text-primary-900 border border-primary-900"
+            className="text-xl bg-white text-primary-900 border border-primary-900 cursor-pointer py-[4px] px-6 "
           >
             Cancel
-          </Button>
+          </p>
           {
             loading ? <Button className="text-xl px-6">Loading...</Button>
-            : <Button  type="submit" className="text-xl px-6">Add Products</Button>
+            : <Button  type="submit" className="text-xl px-6">{paramsId ? 'Update Product' : 'Add Products'}</Button>
           }
         </div>
       </div>

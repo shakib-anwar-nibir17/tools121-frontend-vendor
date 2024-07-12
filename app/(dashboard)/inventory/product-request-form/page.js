@@ -138,7 +138,22 @@ const ProductRequestForm = () => {
   }
 
   const tagChangeHandler = (tagObj) => {
-    setTags((prev) => [...prev, tagObj])
+    if(tagObj?.tag_values){
+      const isExistTag = tags?.find((item) => item?.id == tagObj?.id)
+      if(isExistTag?.id){
+      const index = tags.findIndex(item => item?.id === tagObj?.id);
+      // Create a new array by copying the existing array
+      const newArrayForm = [...tags];
+      // Replace the existing element at the specific index with the new tag object
+      newArrayForm.splice(index, 1, tagObj);
+
+        console.log(newArrayForm, index)
+        setTags(newArrayForm)
+      }
+      else{
+        setTags((prev) => [...prev, tagObj])
+      }
+    }
   }
   console.log('productTags -------->', tags)
   return (

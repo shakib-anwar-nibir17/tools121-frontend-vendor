@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/common/Loader";
 
 const ProductRequestForm = ({params}) => {
   const token = localStorage.getItem('vendorToken')
@@ -20,7 +21,8 @@ const ProductRequestForm = ({params}) => {
   const [loader, setLoader] = useState(false)
   const [preview, setPreview] = useState('')
   const router = useRouter()
-
+  const [tags, setTags] = useState([])
+  
   const schema = yup
   .object({
     category: yup
@@ -93,6 +95,7 @@ const ProductRequestForm = ({params}) => {
       formdata.append("purchase_quantity", 0)
       formdata.append("product_rate", parseInt(data?.product_rate))
       formdata.append("product_specification", data?.product_description)
+      formdata.append("tags", JSON.stringify(tags))
       if(prodImg){
         formdata.append("file", prodImg)
       }
@@ -148,7 +151,7 @@ const ProductRequestForm = ({params}) => {
   }
 
   // ----------Editing Functionality -----------//
-  const [triggerSingleProductReq, { data: singleProductRequestData, error, isLoading }] = useLazyGetSingleProductRequestQuery();
+  const [triggerSingleProductReq, { data: singleProductRequestData, error, isLoading, isFetching }] = useLazyGetSingleProductRequestQuery();
 
   useEffect(() => {
     if(params?.id){
@@ -159,14 +162,52 @@ const ProductRequestForm = ({params}) => {
   useEffect(() => {
     if(singleProductRequestData?.data?.requested_product_img?.img_url){
       setPreview(singleProductRequestData?.data?.requested_product_img?.img_url)
+      // setTags(singleProductRequestData?.data?.requested_product_tags)
+      if(singleProductRequestData?.data?.requested_product_tags?.length > 0){
+        const formattag = singleProductRequestData?.data?.requested_product_tags?.map((item) => {
+          const formatObj = {
+            tag_name: item?.tag_name,
+            id: item?.product_request_tag_id,
+            tag_values:item?.tag_values
+          }
+          return formatObj
+        })
+        setTags(formattag)
+      }
     }
   },[singleProductRequestData?.data?.requested_product_img?.img_url])
 
-console.log('singleProductRequestData ===>' , singleProductRequestData?.data)
+// console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.requested_product_tags)
+
+const tagChangeHandler = (tagObj) => {
+  console.log('tagObj --->', tagObj)
+  if(tagObj?.tag_values){
+    const isExistTag = tags?.find((item) => item?.id == tagObj?.id)
+
+    // const formatedObj = {
+    //   tag_values: tagObj?.tag_values,
+    //   product_request_tag_id: tagObj?.id
+    // }
+
+    if(isExistTag?.id){
+      const filterTag = tags?.filter((item) => item?.id !== tagObj?.id)
+
+      setTags([...filterTag, tagObj])
+    }
+    else{
+      console.log('not exists')
+      setTags((prev) => [...prev, tagObj])
+    }
+  }
+}
+
+console.log('productTags -------->', tags)
 
   return (
     <div className="max-w-[676px] mb-[102px]">
-      <form onSubmit={handleSubmit(onSubmit)}>
+        {
+          isFetching ? <Loader/> : 
+          <form onSubmit={handleSubmit(onSubmit)}>
         {/* General Information */}
         <GeneralInfo
          paramsId={params?.id}
@@ -177,7 +218,7 @@ console.log('singleProductRequestData ===>' , singleProductRequestData?.data)
         {/* Media Information */}
         <MediaInfo  fileDrop={fileDrop} preview={preview} imgErr={imgErr} setProdImg={setProdImg} prodImg={prodImg}/>
         {/* More Information */}
-        <MoreInfo  singleProductRequestData={singleProductRequestData?.data?.requested_product} control={control} errors={errors} register={register}/>
+        <MoreInfo tagChangeHandler={tagChangeHandler} productTags={singleProductRequestData?.data?.requested_product_tags} singleProductRequestData={singleProductRequestData?.data?.requested_product} control={control} errors={errors} register={register}/>
         <div className="mt-12 mb-[50px]">
           <div className="flex justify-end gap-4">
             <div className="text-xl px-6 bg-white text-primary-900 border border-primary-900 rounded-md cursor-pointer w-[100px] flex justify-center items-center h-[40px]" >
@@ -193,6 +234,7 @@ console.log('singleProductRequestData ===>' , singleProductRequestData?.data)
           </div>
         </div>
       </form>
+        }
     </div>
   );
 };
