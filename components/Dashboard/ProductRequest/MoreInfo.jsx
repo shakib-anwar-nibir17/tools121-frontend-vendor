@@ -28,18 +28,17 @@ const MoreInfo = ({control, errors, register, singleProductRequestData, productT
             <input
               className="rounded-lg border border-slate-300 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
               type="text"
+              defaultValue={item?.tag_values ? item?.tag_values : ''}
               placeholder={`Type product ${item?.tag_name} here`}
               onBlur={(e) => {
                 const obj = {
                   tag_values: e.target.value,
-                  id: item?.id
+                  id: item?.id ? item?.id : item?.product_request_tag_id
                 }
                 tagChangeHandler(obj)
               }}
             />
-            {errors.skue?.message && (
-            <div className="text-red-500">{errors.sku?.message}</div>
-            )}
+          
           </div>
             ))
           }

@@ -85,7 +85,7 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
     }
   },[paramsId, singleProductRequestData?.requested_product?.sub_cat_name])
 
-console.log("singleProductRequestData ==>", singleProductRequestData?.requested_product)
+// console.log("singleProductRequestData from general info ==>", singleProductRequestData?.requested_product)
 
   return (
     <div className="p-6 border border-slate-300 rounded-lg mt-6">
