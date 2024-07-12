@@ -1,5 +1,6 @@
+"use client";
 import { IoSearchOutline } from "react-icons/io5";
-const SearchInput = ({onSearchHandler}) => {
+const SearchInput = ({ onSearchHandler }) => {
   return (
     <div className="h-10 border border-slate-200 rounded-xl px-3 py-2 flex items-center justify-between w-full">
       <input
