@@ -138,7 +138,17 @@ const ProductRequestForm = () => {
   }
 
   const tagChangeHandler = (tagObj) => {
-    setTags((prev) => [...prev, tagObj])
+    if(tagObj?.tag_values){
+      const isExistTag = tags?.find((item) => item?.id == tagObj?.id)
+      if(isExistTag?.id){
+        const filterTag = tags?.filter((item) => item?.id !== tagObj?.id)
+
+        setTags([...filterTag, tagObj])
+      }
+      else{
+        setTags((prev) => [...prev, tagObj])
+      }
+    }
   }
   console.log('productTags -------->', tags)
   return (
