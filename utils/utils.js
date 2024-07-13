@@ -38,3 +38,10 @@ export const determinePasswordStrength = (password) => {
       return "Strong";
   }
 };
+
+export const capitalizeFirstTwo = (str) => {
+  if (!str) {
+    return "N/A";
+  }
+  return str.slice(0, 2).toUpperCase();
+};

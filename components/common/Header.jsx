@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { capitalizeFirstTwo } from "@/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -23,6 +24,7 @@ const Header = () => {
     refetchOnMountOrArgChange: true,
   });
   console.log(profileInfo);
+
   const router = useRouter();
   const logOutHandler = () => {
     localStorage.clear();
@@ -49,9 +51,28 @@ const Header = () => {
           <div className="flex space-x-6">
             <DropdownMenu>
               <DropdownMenuTrigger className="group inline-flex justify-center items-center text-sm font-medium text-gray-900 hover:text-primary-950 outline-none">
-                <UserProfileIcon className="h-12 w-12 text-gray-300 border rounded-full hover:ring-2" />{" "}
+                {profileInfo?.data?.logo_url ? (
+                  <div className="h-12 w-12 border rounded-full hover:ring-2 relative">
+                    <Image
+                      fill
+                      src={profileInfo?.data?.logo_url}
+                      alt="profile"
+                      className="rounded-full"
+                    />
+                  </div>
+                ) : (
+                  <UserProfileIcon className="h-12 w-12 text-gray-300 border rounded-full hover:ring-2" />
+                )}
+
                 <span className="ml-2 text-lg mr-2 font-medium">Hi,</span>
-                <span className="text-lg font-bold mr-3">Test User</span>
+                {profileInfo?.data?.name ? (
+                  <span className="text-lg font-bold mr-3">
+                    {profileInfo?.data?.name}
+                  </span>
+                ) : (
+                  <span className="text-lg font-bold mr-3">Test User</span>
+                )}
+
                 <MdArrowDropDown size={20} className="mt-1" />
               </DropdownMenuTrigger>
 
@@ -61,10 +82,21 @@ const Header = () => {
               >
                 <div className="p-6 flex items-center gap-2 border-b-2 border-slate-200">
                   <div className="w-12 h-12 rounded-full bg-slate-500 flex items-center justify-center text-white">
-                    <p>TY</p>
+                    {profileInfo?.data?.name ? (
+                      <p>{capitalizeFirstTwo(profileInfo?.data?.name)}</p>
+                    ) : (
+                      <p>N/A</p>
+                    )}
                   </div>
                   <div>
-                    <h2 className="font-bold text-black">Test User</h2>
+                    {profileInfo?.data?.name ? (
+                      <h2 className="font-bold text-black">
+                        {profileInfo?.data?.name}
+                      </h2>
+                    ) : (
+                      <h2 className="font-bold text-black">Test User</h2>
+                    )}
+
                     <p className="text-sm">General Account</p>
                   </div>
                 </div>

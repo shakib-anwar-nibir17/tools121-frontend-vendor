@@ -6,8 +6,7 @@ import { usePathname } from "next/navigation";
 
 const HeaderLinkWrapper2 = () => {
   const pathname = usePathname();
-  const paths = convertRoute(pathname);
-  console.log(paths);
+  const paths = convertRoute(pathname).slice(0, -1);
 
   return (
     <>
