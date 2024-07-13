@@ -9,20 +9,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { GrLogout } from "react-icons/gr";
 import { MdArrowDropDown } from "react-icons/md";
 import { PiSquaresFour } from "react-icons/pi";
-import { useRouter } from 'next/navigation';
 
 const Header = () => {
   const [authToken, setAuthToken] = useState(true);
   const router = useRouter();
-
   const logOutHandler = () => {
-    localStorage.clear()
-    setTimeout(() => { router.push("/signin")}, 500)
-  }
+    localStorage.clear();
+    setTimeout(() => {
+      router.push("/signin");
+    }, 500);
+  };
 
   return (
     <nav className="xl:border-b  border-primary-200 pb-6 mt-6">
@@ -64,16 +65,19 @@ const Header = () => {
                   </div>
                   <DropdownMenuItem>
                     <Link
-                      href={"/eshop-application"}
+                      href={"/profile-settings/profile"}
                       className="px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left flex items-center gap-6 text-medium text-lg"
                     >
-                      <PiSquaresFour size={24} /> Apply as a Seller
+                      <PiSquaresFour size={24} /> Account Settings
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <div onClick={() => {
-                      logOutHandler()
-                    }} className="flex items-center text-lg text-medium gap-6 px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left cursor-pointer">
+                    <div
+                      onClick={() => {
+                        logOutHandler();
+                      }}
+                      className="flex items-center text-lg text-medium gap-6 px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left cursor-pointer"
+                    >
                       <GrLogout size={20} /> Logout
                     </div>
                   </DropdownMenuItem>
@@ -116,7 +120,12 @@ const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">
+                  <div
+                    onClick={() => {
+                      logOutHandler();
+                    }}
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+                  >
                     Logout
                   </div>
                 </DropdownMenuItem>
