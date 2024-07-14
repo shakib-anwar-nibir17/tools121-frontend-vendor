@@ -48,23 +48,23 @@ const DataTable = ({ data }) => {
               } font-medium w-[17.5%]`}
             >
               <Link href={`/quotation-request/all-request/${product._id}`}>
-                {product.product_name}
+                {product?.product_name}
               </Link>
             </TableCell>
             <TableCell className=" text-gray-500 w-[13%]">
-              {product.product_quantity} pieces
+              {product?.product_quantity} pieces
             </TableCell>
             <TableCell className="w-[25%] text-justify">
-              {product.request_note}
+              {product?.request_note?.slice(0, 250)}
             </TableCell>
             <TableCell className=" text-gray-500 w-[10%]">
-              {product.customer_name}
+              {product?.customer_name}
             </TableCell>
             <TableCell>
               <button className="text-[#FF1E7C] w-[3%]">spam</button>
             </TableCell>
             <TableCell className=" text-black font-bold w-[22%]">
-              {formatTimestamp(product.created)}
+              {formatTimestamp(product?.created)}
             </TableCell>
             <TableCell className="">
               <div className="flex items-center justify-center gap-2">
