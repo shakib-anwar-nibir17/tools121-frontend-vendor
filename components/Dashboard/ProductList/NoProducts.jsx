@@ -11,10 +11,12 @@ const NoProducts = ({ buttonHandler, title, suggestion, buttonShow = true }) => 
         <p className="text-center">
           {suggestion}
         </p>
-        <Button onClick={() => buttonHandler()} className="gap-4">
+        {
+          buttonShow && <Button onClick={() => buttonHandler()} className="gap-4">
           <FiPlus size={20} />
           Add Products
         </Button>
+        }
       </div>
     </div>
   );

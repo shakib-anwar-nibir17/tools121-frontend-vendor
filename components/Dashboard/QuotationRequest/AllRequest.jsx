@@ -34,9 +34,9 @@ const AllRequest = ({tableData, options, tabVal, tabHandler, totalData}) => {
         </div>
       </div>
       {
-       totalData?.length > 0 ?  <TabsContent value={tabVal}>
+       tableData?.length > 0 ?  <TabsContent value={tabVal}>
        <AllRequestDataTable tableData={tableData} />
-     </TabsContent> : <NoProducts  title="You Have No quotation yet" suggestion=""  />
+     </TabsContent> : <NoProducts  title="You Have No quotation yet" suggestion="" buttonShow={false}/>
       }
      
     </Tabs>

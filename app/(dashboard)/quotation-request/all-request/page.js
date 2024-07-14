@@ -164,8 +164,10 @@ const AllRequestPage = () => {
     }
   }
 
-  console.log("Supplier Quotation =====>", supplierQuotationList?.data?.quotations);
-  // console.log(tableData);
+  // console.log("Supplier Quotation =====>", supplierQuotationList?.data?.quotations);
+  console.log('allQuatationRq --->', allQuatationRq);
+  console.log('allQuatationRqStore --->', allQuatationRqStore);
+
 
   return (
     <div className="mb-20">

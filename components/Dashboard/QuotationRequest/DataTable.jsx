@@ -13,7 +13,7 @@ import { IoEye } from "react-icons/io5";
 import { MdModeEditOutline } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 
-const DataTable = ({ data }) => {
+const DataTable = ({ tableData }) => {
   return (
     <Table className="mt-6">
       <TableHeader>
@@ -34,7 +34,7 @@ const DataTable = ({ data }) => {
         </TableRow>
       </TableHeader>
       <TableBody className="border-b-2 border-slate-200">
-        {data?.map((product) => (
+        {tableData?.map((product) => (
           <TableRow
             className="text-black border-b-2 border-slate-200"
             key={product.id}
@@ -55,7 +55,7 @@ const DataTable = ({ data }) => {
               {product?.product_quantity} pieces
             </TableCell>
             <TableCell className="w-[25%] text-justify">
-              {product?.request_note?.slice(0, 250)}
+              {product?.request_note?.slice(0, 120) + '.....'}
             </TableCell>
             <TableCell className=" text-gray-500 w-[10%]">
               {product?.customer_name}
