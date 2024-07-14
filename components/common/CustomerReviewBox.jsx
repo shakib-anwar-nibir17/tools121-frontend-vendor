@@ -5,7 +5,7 @@ import { useState } from "react";
 import { GrEmoji } from "react-icons/gr";
 import { LiaEdit } from "react-icons/lia";
 
-const CustomerReviewBox = () => {
+const CustomerReviewBox = ({ review }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="mb-6">
@@ -26,11 +26,7 @@ const CustomerReviewBox = () => {
         </div>
         {/* user review and reply options */}
         <div className=" col-span-4 pl-6">
-          <p>
-            Very Good Products!...Their service is marked by efficiency and
-            punctuality. They’ve helped us stay ahead of the curve in our
-            industry. Flexible and adaptable.
-          </p>
+          <p className="text-justify">{review.review}</p>
           <div className="flex gap-2 mt-4">
             <button>Approve</button>
             <span>|</span>

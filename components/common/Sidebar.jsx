@@ -7,7 +7,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { loadDashboardMenu, loadSettingsMenu } from "@/utils";
 import Link from "next/link";
-import { SlLogout } from "react-icons/sl";
+import LogoutButtonSidebar from "./LogoutButtonSidebar";
 const Sidebar = async () => {
   const generalMenuArray = await loadDashboardMenu();
   const settingsMenuArray = await loadSettingsMenu();
@@ -84,14 +84,7 @@ const Sidebar = async () => {
               </>
             ))}
 
-            <Link
-              href="/signin"
-              className="w-full px-6 flex items-center gap-3"
-            >
-              <SlLogout size={24} color="#0d6efd" />
-
-              <button className="text-primary-900 font-medium">Logout</button>
-            </Link>
+            <LogoutButtonSidebar />
           </TabsList>
         </div>
       </Tabs>

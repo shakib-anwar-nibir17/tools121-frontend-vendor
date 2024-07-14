@@ -199,12 +199,21 @@ export default function ChangePasswordForm() {
           )}
         </div>
       </div>
-      <Button
-        type="submit"
-        className="py-3 h-12 px-12 text-white bg-primary-900 rounded-lg w-full  mb-6"
-      >
-        Reset Password
-      </Button>
+      {loading ? (
+        <Button
+          disabled
+          className="py-3 h-12 px-12 text-white bg-primary-900 rounded-lg w-full mb-6"
+        >
+          Loading.....
+        </Button>
+      ) : (
+        <Button
+          type="submit"
+          className="py-3 h-12 px-12 text-white bg-primary-900 rounded-lg w-full  mb-6"
+        >
+          Reset Password
+        </Button>
+      )}
     </form>
   );
 }

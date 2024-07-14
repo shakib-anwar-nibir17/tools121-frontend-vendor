@@ -6,12 +6,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { PopoverClose } from "@radix-ui/react-popover";
 import { format } from "date-fns";
 import { SlCalender } from "react-icons/sl";
 import { cn } from "/lib/utils";
 
-export function CalendarDateRangePicker({ className, date, setDate , dateFilterHandler}) {
-
+export function CalendarDateRangePicker({
+  className,
+  date,
+  setDate,
+  dateFilterHandler,
+}) {
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -53,8 +58,11 @@ export function CalendarDateRangePicker({ className, date, setDate , dateFilterH
               <p className="text-[14px]">1 May 2024 - 22 May 2024</p>
               <p className="text-[12px]">Dhaka Time</p>
             </div>
-            <Button className="bg-slate-200 text-black">Cancel</Button>
-            <Button  onClick={() => dateFilterHandler()}>Update</Button>
+            <PopoverClose asChild>
+              <Button className="bg-slate-200 text-black">Cancel</Button>
+            </PopoverClose>
+
+            <Button onClick={() => dateFilterHandler()}>Update</Button>
           </div>
         </PopoverContent>
       </Popover>
