@@ -13,7 +13,7 @@ import { IoEye } from "react-icons/io5";
 import { MdModeEditOutline } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 
-const DataTable = ({ data }) => {
+const DataTable = ({ tableData }) => {
   return (
     <Table className="mt-6">
       <TableHeader>
@@ -34,7 +34,7 @@ const DataTable = ({ data }) => {
         </TableRow>
       </TableHeader>
       <TableBody className="border-b-2 border-slate-200">
-        {data.map((product) => (
+        {tableData?.map((product) => (
           <TableRow
             className="text-black border-b-2 border-slate-200"
             key={product.id}
@@ -48,23 +48,23 @@ const DataTable = ({ data }) => {
               } font-medium w-[17.5%]`}
             >
               <Link href={`/quotation-request/all-request/${product._id}`}>
-                {product.product_name}
+                {product?.product_name}
               </Link>
             </TableCell>
             <TableCell className=" text-gray-500 w-[13%]">
-              {product.product_quantity} pieces
+              {product?.product_quantity} pieces
             </TableCell>
             <TableCell className="w-[25%] text-justify">
-              {product.request_note}
+              {product?.request_note?.slice(0, 120) + '.....'}
             </TableCell>
             <TableCell className=" text-gray-500 w-[10%]">
-              {product.customer_name}
+              {product?.customer_name}
             </TableCell>
             <TableCell>
               <button className="text-[#FF1E7C] w-[3%]">spam</button>
             </TableCell>
             <TableCell className=" text-black font-bold w-[22%]">
-              {formatTimestamp(product.created)}
+              {formatTimestamp(product?.created)}
             </TableCell>
             <TableCell className="">
               <div className="flex items-center justify-center gap-2">

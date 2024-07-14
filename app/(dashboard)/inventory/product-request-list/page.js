@@ -23,10 +23,7 @@ const ProductRequestListPage = () => {
   const [searchText, setSearchText] = useState('');
   const [options, setOptions] = useState([])
 
-  const [date, setDate] = useState({
-    from: new Date(2023, 0, 20),
-    to: addDays(new Date(2023, 0, 20), 20),
-  });
+  const [date, setDate] = useState({});
   
   // const [triggerProductRequestList, { data: productRequestList, error, isLoading }] = useLazyGetProducRequesttListQuery();
   const { data: productRequestList, refetch: refetchReqProduct, isLoading, isFetching } = useGetProducRequesttListQuery(token, {
@@ -37,7 +34,6 @@ const ProductRequestListPage = () => {
   useEffect(() => {
     refetchReqProduct()
   },[token])
-
 
   /// --- page data setup from pagination--- ///
   useEffect(() => {
@@ -56,10 +52,9 @@ const ProductRequestListPage = () => {
     const startDate = moment(startDateFormate).startOf('day')
     const endDate = moment(endDateFormate).endOf('day')
 
-    console.log('start date', startDate)
-    console.log('end date', endDate)
-    console.log('main date ===>', date)
-
+    // console.log('start date', startDate)
+    // console.log('end date', endDate)
+    // console.log('main date ===>', date)
 
     const filteredData = productRequestList?.data?.requested_products?.filter(item => {
       const itemDate = moment(item?.request_time);
@@ -127,7 +122,7 @@ const ProductRequestListPage = () => {
   },[productRequestList?.data?.requested_products?.length])
 
   // console.log('base prod===>', productRequestList?.data?.requested_products)
-  // console.log("ProdReqestList", allRequestProducts?.length);
+  console.log("ProdReqestList", allRequestProducts?.length);
   // console.log("storeRequestProducts", storeRequestProducts?.length);
   // console.log("pageData", pageData?.length);
 

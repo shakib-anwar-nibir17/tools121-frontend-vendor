@@ -23,7 +23,7 @@ const Header = () => {
   const { data: profileInfo, refetch } = useUserDataQuery(token, {
     refetchOnMountOrArgChange: true,
   });
-  console.log(profileInfo);
+  // console.log(profileInfo);
 
   const router = useRouter();
   const logOutHandler = () => {

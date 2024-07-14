@@ -36,7 +36,7 @@ const ListTabs = ({requestData, totalData, tabHandler, tabVal, options,buttonHan
       {
         requestData?.length > 0 ?  <TabsContent value={tabVal}>
         <ListDataTable requestData={requestData} />
-      </TabsContent> :<NoProducts buttonHandler={buttonHandler} />
+      </TabsContent> : <NoProducts title="No Product requested Yet?" suggestion="Request new products from your store and start selling." buttonHandler={buttonHandler} />
       }
      
       <div className="flex justify-end">
