@@ -47,16 +47,10 @@ const CustomerReview = () => {
       </div>
       <div className="px-6">
         {/* reviews */}
-        <CustomerReviewBox />
-        <CustomerReviewBox />
-        <CustomerReviewBox />
-        <CustomerReviewBox />
-        <CustomerReviewBox />
-        <CustomerReviewBox />
-        <CustomerReviewBox />
-        <CustomerReviewBox />
-        <CustomerReviewBox />
-        <CustomerReviewBox />
+        {supplierReviewList?.data?.reviews?.length > 0 &&
+          supplierReviewList.data.reviews.map((review) => (
+            <CustomerReviewBox key={review.id} review={review} />
+          ))}
         <div>
           <p className="flex items-center text-primary-900 cursor-pointer">
             see more <BsChevronDown />

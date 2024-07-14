@@ -9,12 +9,11 @@ const AllRequestDataTable = () => {
     refetchOnMountOrArgChange: true,
   });
 
+  const tableData = supplierQuotationList?.data?.quotations;
+
   console.log("Supplier Quotation =====>", supplierQuotationList);
-  return (
-    <div>
-      <DataTable />
-    </div>
-  );
+  console.log(tableData);
+  return <div>{tableData.length > 0 && <DataTable data={tableData} />}</div>;
 };
 
 export default AllRequestDataTable;

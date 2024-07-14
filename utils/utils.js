@@ -1,4 +1,5 @@
 /* eslint-disable no-useless-escape */
+import moment from "moment";
 export const convertRoute = (route) => {
   return route
     .split("/")
@@ -44,4 +45,8 @@ export const capitalizeFirstTwo = (str) => {
     return "N/A";
   }
   return str.slice(0, 2).toUpperCase();
+};
+
+export const formatTimestamp = (timestamp) => {
+  return moment(timestamp).format("MM/DD/YYYY; hh:mm A");
 };
