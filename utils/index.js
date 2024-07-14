@@ -1,4 +1,4 @@
-import "server-only";
+// import "server-only";
 
 const dashboardMenu = {
   menus: () => import("./GeneralMenu.js").then((module) => module.default),

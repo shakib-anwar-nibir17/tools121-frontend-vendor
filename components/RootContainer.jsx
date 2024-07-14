@@ -8,26 +8,29 @@ import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { ContextProvider } from "@/utils/contexProvider";
+import Loader from "./common/Loader";
 
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true)
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const isToken = localStorage.getItem("vendorToken")
-  //   if(isToken){
-  //     setLoading(false)
-  //   }
-  //   else{
-  //     setLoading(false)
-  //     router.push('/signin'); 
-  //   }
-  // },[])
+  useEffect(() => {
+    const isToken = localStorage.getItem("vendorToken")
+    if(isToken){
+      setLoading(false)
+    }
+    else{
+      setLoading(false)
+      router.push('/signin'); 
+    }
+  },[])
 
   return (
     <>
       {
-         !loading ? <h1 className="text-3xl font-bold">Loading...</h1> :
+         loading ? <div className="w-full h-screen flex flex-row justify-center items-center">
+          <Loader/>
+         </div> :
          <ReCaptchaProvider>
          <Provider store={store}>
           <ContextProvider>

@@ -34,7 +34,7 @@ const DataTable = ({ data }) => {
         </TableRow>
       </TableHeader>
       <TableBody className="border-b-2 border-slate-200">
-        {data.map((product) => (
+        {data?.map((product) => (
           <TableRow
             className="text-black border-b-2 border-slate-200"
             key={product.id}
