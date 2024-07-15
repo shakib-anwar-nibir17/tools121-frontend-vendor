@@ -47,7 +47,7 @@ const DataTable = ({ tableData }) => {
                 product.status === "unread" ? "text-primary-900" : "text-black"
               } font-medium w-[17.5%]`}
             >
-              <Link href={`/quotation-request/all-request/${product._id}`}>
+              <Link href={`/quotation-request/all-request/${product.id}`}>
                 {product?.product_name}
               </Link>
             </TableCell>
@@ -55,7 +55,7 @@ const DataTable = ({ tableData }) => {
               {product?.product_quantity} pieces
             </TableCell>
             <TableCell className="w-[25%] text-justify">
-              {product?.request_note?.slice(0, 120) + '.....'}
+              {product?.request_note?.slice(0, 120) + "....."}
             </TableCell>
             <TableCell className=" text-gray-500 w-[10%]">
               {product?.customer_name}
@@ -68,7 +68,9 @@ const DataTable = ({ tableData }) => {
             </TableCell>
             <TableCell className="">
               <div className="flex items-center justify-center gap-2">
-                <IoEye className="cursor-pointer" size={20} color="#7B7C80" />
+                <Link href={`/quotation-request/all-request/${product.id}`}>
+                  <IoEye className="cursor-pointer" size={20} color="#7B7C80" />
+                </Link>
 
                 <MdModeEditOutline
                   className="cursor-pointer"

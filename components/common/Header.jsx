@@ -16,9 +16,11 @@ import { useState } from "react";
 import { GrLogout } from "react-icons/gr";
 import { MdArrowDropDown } from "react-icons/md";
 import { PiSquaresFour } from "react-icons/pi";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [authToken, setAuthToken] = useState(false);
+  const loginName = useSelector((state) => state.authStore.loginName);
   const token = localStorage.getItem("vendorToken");
   const { data: profileInfo, refetch } = useUserDataQuery(token, {
     refetchOnMountOrArgChange: true,
@@ -67,7 +69,7 @@ const Header = () => {
                 <span className="ml-2 text-lg mr-2 font-medium">Hi,</span>
                 {profileInfo?.data?.name ? (
                   <span className="text-lg font-bold mr-3">
-                    {profileInfo?.data?.name}
+                    {loginName.loginName}
                   </span>
                 ) : (
                   <span className="text-lg font-bold mr-3">Test User</span>
