@@ -1,5 +1,5 @@
 'use client'
-import { useSupplierQuotationListQuery } from "@/app/redux/features/supplierQuotation";
+import { useQuotationActionMutation, useSupplierQuotationListQuery } from "@/app/redux/features/supplierQuotation";
 import AllRequest from "@/components/Dashboard/QuotationRequest/AllRequest";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
 import HeaderLinkWrapper from "@/components/common/HeaderLinkWrapper";
@@ -8,6 +8,7 @@ import { useStateContext } from "@/utils/contexProvider";
 import { useEffect, useState } from "react";
 import moment from 'moment';
 import Loader from "@/components/common/Loader";
+import toast from "react-hot-toast";
 
 const AllRequestPage = () => {
   const token = localStorage.getItem("vendorToken");
@@ -21,6 +22,7 @@ const AllRequestPage = () => {
   const [options, setOptions] = useState([])
   const [searchText, setSearchText] = useState('');
   const [date, setDate] = useState({});
+  const [quotationActionHandler, {}] = useQuotationActionMutation();
 
   useEffect(() => {
     refetchQuotationReq()
@@ -164,10 +166,33 @@ const AllRequestPage = () => {
     }
   }
 
+  const quotationActionSubmit = async(action, id) => {
+    console.log('id here ===>', id)
+    const request_obj ={
+      actions: [
+        {
+          "action_type": action,
+          "quotation_id": id
+        }
+      ]
+    }
+    
+    const actionRes = await quotationActionHandler(request_obj)
+    console.log('Action Response ===>', actionRes)
+
+    if(actionRes?.data?.message == "Request success"){
+      if(action == 200){
+        toast.success("Quotation pinned Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
+    }
+
+  }
   // console.log("Supplier Quotation =====>", supplierQuotationList?.data?.quotations);
   console.log('allQuatationRq --->', allQuatationRq);
-  console.log('allQuatationRqStore --->', allQuatationRqStore);
-
+  // console.log('allQuatationRqStore --->', allQuatationRqStore);
 
   return (
     <div className="mb-20">
@@ -186,6 +211,7 @@ const AllRequestPage = () => {
             options={options}
             totalData={allQuatationRqStore}
             tabHandler={tabHandler}
+            quotationActionSubmit={quotationActionSubmit}
             />
           </>
       }

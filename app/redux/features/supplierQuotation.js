@@ -13,7 +13,7 @@ const supplierQuotation = api.injectEndpoints({
           "Accept-Language": "en",
         },
       }),
-      providesTags: ["supplierReview"],
+      providesTags: ["quotationlist"],
     }),
 
     singleQuotationList: builder.query({
@@ -40,6 +40,21 @@ const supplierQuotation = api.injectEndpoints({
         body: data,
       }),
     }),
+
+    quotationAction: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/quotation/v1/action",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
+      invalidatesTags: ['quotationlist'],
+    }),
+
   }),
 });
 
@@ -48,4 +63,5 @@ export const {
   useLazySingleQuotationListQuery,
   useSingleQuotationListQuery,
   useSingleQuotationReplyMutation,
+  useQuotationActionMutation
 } = supplierQuotation;
