@@ -132,7 +132,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation }) => {
             </div>
           )}
         </div>
-        {data?.is_replied ? (
+        {!data?.is_replied ? (
           <div className="px-[60px] py-8">
             <div className="mt-[72px]">
               <div className="bg-primary-50 h-[146px] rounded-2xl w-full">
