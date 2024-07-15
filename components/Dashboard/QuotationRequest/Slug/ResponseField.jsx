@@ -21,18 +21,17 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation }) => {
   const [singleQuotationReply, {}] = useSingleQuotationReplyMutation();
   console.log(data);
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState("");
+  const [response1, setResponse1] = useState("");
 
   const handleChange = (event) => {
-    setResponse(event.target.value);
+    setResponse1(event.target.value);
   };
 
   const componentRef = useRef();
   const handleSubmit = async (e) => {
-    e.preventDefault();
     setLoading(true);
-    const form = e.target;
-    const textareaValue = form.elements.response.value;
+
+    const textareaValue = response1;
     const request_Obj = {
       quotation_id: data?.id,
       reply_txt: textareaValue,
@@ -76,7 +75,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation }) => {
           <div className="w-1/2 border-r border-slate-300 pl-[60px] pt-10">
             <h1 className="text-xl font-bold text-black">Summary</h1>
             <div className="mt-3 space-y-3">
-              <p>Order number: {data.id}</p>
+              <p>Order number: {data?.id}</p>
               <p>Order time: {formatTimestamp(data?.created)}</p>
             </div>
           </div>
@@ -133,15 +132,15 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation }) => {
             </div>
           )}
         </div>
-        {!data?.is_replied ? (
+        {data?.is_replied ? (
           <div className="px-[60px] py-8">
-            <form onSubmit={handleSubmit} className="mt-[72px]">
+            <div className="mt-[72px]">
               <div className="bg-primary-50 h-[146px] rounded-2xl w-full">
                 <textarea
                   className="h-[70%] bg-transparent focus:outline-none w-full p-4 relative"
                   placeholder="Type your response here..."
                   name="response"
-                  value={response}
+                  value={response1}
                   onChange={handleChange}
                 />
                 <div className="flex items-center justify-end gap-2 px-4">
@@ -152,7 +151,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation }) => {
                   <FaEdit />
                 </div>
               </div>
-              {response.length < 20 && (
+              {response1.length < 20 && (
                 <p className="text-red-500 px-2 mt-2">
                   You reply must have at least 20 characters{" "}
                 </p>
@@ -162,14 +161,18 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation }) => {
                   Cancel
                 </Button>
                 <Button
-                  disabled={response.length < 20}
-                  type="submit"
+                  disabled={response1.length < 20}
+                  onClick={handleSubmit}
                   className="text-xl px-8 py-2.5"
                 >
-                  {loading ? <Loader height="20" width="20" /> : "Response"}
+                  {loading ? (
+                    <Loader height="20" width="20" />
+                  ) : (
+                    "Quick Response"
+                  )}
                 </Button>
               </div>
-            </form>
+            </div>
           </div>
         ) : (
           <div className="my-10 flex justify-end px-6">

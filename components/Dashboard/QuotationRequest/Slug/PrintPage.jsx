@@ -19,7 +19,7 @@ const PrintPage = React.forwardRef(({ data }, ref) => {
         <div className="w-1/2 border-r border-slate-300 pl-[60px] pt-10">
           <h1 className="text-xl font-bold text-black">Summary</h1>
           <div className="mt-3 space-y-3">
-            <p>Order number: {data.id}</p>
+            <p>Order number: {data?.id}</p>
             <p>Order time: {formatTimestamp(data?.created)}</p>
           </div>
         </div>
