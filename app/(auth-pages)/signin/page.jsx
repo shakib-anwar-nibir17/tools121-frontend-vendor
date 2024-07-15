@@ -70,6 +70,10 @@ export default function SignIn() {
       setLoading(false);
       dispatch(setLoginName({ loginName: data?.username }));
       localStorage.setItem("vendorToken", loginRes?.data?.data?.token);
+      const token = loginRes?.data?.data?.token;
+      document.cookie = `vendorToken=${token}; path=/; max-age=86400; ${
+        window.location.protocol === "https:" ? "secure;" : ""
+      }`;
       router.push("/dashboard");
     } else if (
       loginRes?.error?.data?.message ==

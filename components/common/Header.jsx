@@ -16,9 +16,11 @@ import { useState } from "react";
 import { GrLogout } from "react-icons/gr";
 import { MdArrowDropDown } from "react-icons/md";
 import { PiSquaresFour } from "react-icons/pi";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [authToken, setAuthToken] = useState(false);
+  const loginName = useSelector((state) => state.authStore.loginName);
   const token = localStorage.getItem("vendorToken");
   const { data: profileInfo, refetch } = useUserDataQuery(token, {
     refetchOnMountOrArgChange: true,
@@ -27,12 +29,13 @@ const Header = () => {
 
   const router = useRouter();
   const logOutHandler = () => {
+    document.cookie = "vendorToken=; path=/; max-age=0; secure";
     localStorage.clear();
     setTimeout(() => {
       router.push("/signin");
     }, 500);
   };
-
+  console.log(loginName);
   return (
     <nav className="xl:border-b  border-primary-200 pb-6 mt-6">
       <div className="sm:px-8 px-12">
@@ -67,7 +70,7 @@ const Header = () => {
                 <span className="ml-2 text-lg mr-2 font-medium">Hi,</span>
                 {profileInfo?.data?.name ? (
                   <span className="text-lg font-bold mr-3">
-                    {profileInfo?.data?.name}
+                    {loginName.loginName}
                   </span>
                 ) : (
                   <span className="text-lg font-bold mr-3">Test User</span>

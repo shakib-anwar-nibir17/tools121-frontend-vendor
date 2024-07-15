@@ -7,6 +7,7 @@ const LogoutButtonSidebar = () => {
   const router = useRouter();
 
   const logOutHandler = () => {
+    document.cookie = "vendorToken=; path=/; max-age=0; secure";
     localStorage.clear();
     setTimeout(() => {
       router.push("/signin");
