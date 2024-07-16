@@ -40,10 +40,10 @@ const AllRequestPage = () => {
   useEffect(() => {
     setTabVal('all-request')
     if( supplierQuotationList?.data?.quotations?.length > 0){
-      setAllQuatationRqStore( supplierQuotationList?.data?.quotations)
+      setAllQuatationRqStore(supplierQuotationList?.data?.quotations)
       const unreadData =supplierQuotationList?.data?.quotations?.filter((item) => item?.supplier_action_type == 0)
       const spamData =supplierQuotationList?.data?.quotations?.filter((item) => item?.supplier_action_type == 400)
-      const respondedData =supplierQuotationList?.data?.quotations?.filter((item) => item?.supplier_action_type == 100)
+      const respondedData =supplierQuotationList?.data?.quotations?.filter((item) => item?.is_replied)
       const pinnedData =supplierQuotationList?.data?.quotations?.filter((item) => item?.supplier_action_type == 200)
 
       const OpData = [
@@ -65,7 +65,7 @@ const AllRequestPage = () => {
         {
           key: "Pinned",
           value: "pinned",
-          amount: pinnedData?.pinnedData,
+          amount: pinnedData?.length,
         },
         {
           key: "Spam",
@@ -76,13 +76,13 @@ const AllRequestPage = () => {
 
       setOptions(OpData)
     }
-  },[supplierQuotationList?.data?.quotations?.length])
+  },[supplierQuotationList?.data?.quotations?.length,supplierQuotationList?.data?.quotations])
 
    const tabHandler = (val) => {
     setTabVal(val)
    if(supplierQuotationList?.data?.quotations?.length > 0){
     if(val == 'responded'){
-      const respondedData =supplierQuotationList?.data?.quotations?.filter((item) => item?.supplier_action_type == 100)
+      const respondedData =supplierQuotationList?.data?.quotations?.filter((item) => item?.is_replied)
       setAllQuatationRq(respondedData)
       setAllQuatationRqStore(respondedData)
     }
@@ -167,7 +167,6 @@ const AllRequestPage = () => {
   }
 
   const quotationActionSubmit = async(action, id) => {
-    console.log('id here ===>', id)
     const request_obj ={
       actions: [
         {
@@ -181,17 +180,35 @@ const AllRequestPage = () => {
     console.log('Action Response ===>', actionRes)
 
     if(actionRes?.data?.message == "Request success"){
+      // setTimeout(() => refetchQuotationReq(), 1000)
       if(action == 200){
         toast.success("Quotation pinned Successfully", {
           position: "top-right",
           duration: 2000,
         });
       }
+      if(action == 300){
+        toast.success("Quotation delete Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
+      if(action == 400){
+        toast.success("Quotation spam Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
     }
-
+    else{
+      toast.error("Quotation Action", {
+        position: "top-right",
+        duration: 2000,
+      });
+    }
   }
   // console.log("Supplier Quotation =====>", supplierQuotationList?.data?.quotations);
-  console.log('allQuatationRq --->', allQuatationRq);
+  // console.log('allQuatationRq --->', allQuatationRq);
   // console.log('allQuatationRqStore --->', allQuatationRqStore);
 
   return (

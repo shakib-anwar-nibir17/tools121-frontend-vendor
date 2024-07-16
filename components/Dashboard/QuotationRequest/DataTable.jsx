@@ -13,6 +13,7 @@ import { IoEye } from "react-icons/io5";
 import { MdModeEditOutline } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { RiPushpinFill } from "react-icons/ri";
+import { LuAlertTriangle } from "react-icons/lu";
 
 const DataTable = ({ tableData, quotationActionSubmit }) => {
   return (
@@ -62,7 +63,10 @@ const DataTable = ({ tableData, quotationActionSubmit }) => {
               {product?.customer_name}
             </TableCell>
             <TableCell>
-              <button className="text-[#FF1E7C] w-[3%]">spam</button>
+                {
+                  product?.supplier_action_type == 400 ? '': <button onClick={() =>  quotationActionSubmit(400,product.id)} className="text-[#FF1E7C] w-[3%]">spam</button>
+                }
+              
             </TableCell>
             <TableCell className=" text-black font-bold w-[22%]">
               {formatTimestamp(product?.created)}
@@ -76,15 +80,19 @@ const DataTable = ({ tableData, quotationActionSubmit }) => {
                 <RiPushpinFill
                   className="cursor-pointer"
                   size={20}
-                  color="#7B7C80"
-                  onClick={() => quotationActionSubmit(200,product.id)}
+                  color={product?.supplier_action_type == 200 ? 'blue' : '#7B7C80'}
+                  onClick={() => {
+                    if(product?.supplier_action_type !== 200){
+                      quotationActionSubmit(200,product.id)
+                    }
+                  }}
                 />
                 
                 <RiDeleteBin5Fill
                   className="cursor-pointer"
                   size={20}
                   color="#7B7C80"
-                  
+                  onClick={() => quotationActionSubmit(400,product.id)}
                 />
               </div>
             </TableCell>

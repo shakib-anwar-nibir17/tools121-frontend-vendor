@@ -1,5 +1,5 @@
 "use client";
-import { useLazySingleQuotationListQuery } from "@/app/redux/features/supplierQuotation";
+import { useLazySingleQuotationListQuery, useQuotationActionMutation } from "@/app/redux/features/supplierQuotation";
 import ResponseField from "@/components/Dashboard/QuotationRequest/Slug/ResponseField";
 import HeaderLinkWrapper2 from "@/components/common/HeaderLinkWrapper2";
 import Loader from "@/components/common/Loader";
@@ -10,13 +10,28 @@ const QuotationResponsePage = ({ params }) => {
   const token = localStorage.getItem("vendorToken");
   const [triggerSingleQuotation, { data: singleQuotationList, isFetching }] =
     useLazySingleQuotationListQuery();
+    const [quotationActionHandler, {}] = useQuotationActionMutation();
 
+    const quotationActionSubmit = async() => {
+      const request_obj ={
+        actions: [
+          {
+            "action_type": 100,
+            "quotation_id": params?.id
+          }
+        ]
+      }
+      
+      const actionRes = await quotationActionHandler(request_obj)
+      
+    }
   useEffect(() => {
     if (params?.id) {
       triggerSingleQuotation({ id: params?.id, token: token });
+      quotationActionSubmit()
     }
   }, [params?.id, token, triggerSingleQuotation]);
-
+  
   return (
     <main>
       <HeaderLinkWrapper2 />
