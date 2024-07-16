@@ -85,7 +85,7 @@ const ProductList = () => {
       {
         isFetching ? <Loader/> : <div className="w-full py-2">
             {
-              productList?.data?.supplier_products?.length > 0 ?<ProductListTable productData={allProduct}/> : <NoProducts buttonHandler={buttonHandler} />
+              productList?.data?.supplier_products?.length > 0 ?<ProductListTable productData={allProduct}/> : <NoProducts  title="No Inventory Yet?" suggestion="Add new products from your store and start selling."  buttonHandler={buttonHandler} />
             }
             <PaginationCom array={productList?.data?.supplier_products}/>
         </div>

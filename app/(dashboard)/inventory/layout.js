@@ -1,10 +1,10 @@
-import HeaderLinkWrapper from "@/components/common/HeaderLinkWrapper";
+import HeaderLinkWrapper2 from "@/components/common/HeaderLinkWrapper2";
 
 export default function InventoryLayout({ children }) {
   return (
     <>
       <main className="relative">
-        <HeaderLinkWrapper />
+        <HeaderLinkWrapper2 />
         {children}
       </main>
     </>
