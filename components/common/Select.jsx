@@ -16,7 +16,7 @@ const SelectOptions = ({ placeholder , options, onChangHandler, defaultValue}) =
          {/* <option>{placeholder}</option> */}
           {
             options?.map((item) => (
-              <option value={item?.value}>{item?.label}</option>
+              <option key={item?.value} value={item?.value}>{item?.label}</option>
             ))
           }
       </select>

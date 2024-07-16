@@ -8,6 +8,7 @@ import { useStateContext } from "@/utils/contexProvider";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BsChevronDown } from "react-icons/bs";
+import moment from 'moment'
 
 const filterOption = [
   
@@ -21,9 +22,16 @@ const filterOption = [
 const bulkOptions = [
   {value: 'action', label: 'Select Action'},
   {value: 'all', label: 'Select All'},
-  {value: 'approve', label: 'Approve All'},
-  {value: 'spam', label: 'Move To Spam'},
-  {value: 'trash', label: 'Move To Trash'},
+  {value: 100, label: 'Approve All'},
+  {value: 400, label: 'Move To Spam'},
+  {value: 300, label: 'Move To Trash'},
+]
+
+const sortOptions = [
+  {value: 'op', label: 'Select option'},
+  {value: 'recent', label: 'Most Recent'},
+  {value: 'week', label: 'Last Week'},
+  {value: 'month', label: 'Last Month'},
 ]
 
 const CustomerReview = () => {
@@ -66,20 +74,8 @@ const CustomerReview = () => {
     setReplyTrack(id)
   }
 
-  const reviewActionSubmit = async(action, id) => {
-    const request_obj ={
-      actions: [
-        {
-          "action_type": action,
-          "review_id": id
-        }
-      ]
-    }
-    
-    const actionRes = await reviewAction(request_obj)
-    console.log('Action Response ===>', actionRes)
-
-      if(actionRes?.data?.message == "Request success"){
+  const actionApiResonseMessageHandler = (res, action) => {
+      if(res == "Request success"){
         
         if(action == 100){
           toast.success("Review approved Successfully", {
@@ -106,6 +102,22 @@ const CustomerReview = () => {
           duration: 2000,
         });
       }
+  }
+
+  const reviewActionSubmit = async(action, id) => {
+    const request_obj = {
+      actions: [
+        {
+          "action_type": action,
+          "review_id": id
+        }
+      ]
+    }
+    
+    const actionRes = await reviewAction(request_obj)
+    console.log('Action Response ===>', actionRes)
+    actionApiResonseMessageHandler(actionRes?.data?.message, action)
+
   }
 
   const replyHandler = async () => {
@@ -172,7 +184,7 @@ const CustomerReview = () => {
   const selectHandler = (select_action, id) => {
     if(select_action == 'single'){
       const isExists = selectedReviewArr?.find((item) => item == id)
-      console.log('idss ', id)
+      
       if(isExists){
         console.log('exists')
         const filterArr = selectedReviewArr?.filter((item) => item !== id)
@@ -186,7 +198,7 @@ const CustomerReview = () => {
       const allSelectedId = allReviewStore?.map((item) => {
         return item?.id
       })
-      console.log('allSelectedId', allSelectedId)
+      
       setSelectedReviewArr(allSelectedId)
     }
   }
@@ -195,13 +207,92 @@ const CustomerReview = () => {
     if(action_type == 'all'){
       selectHandler('all')
     }
-    else if(action_type == 'approve'){
+    else if (action_type !== 'action' && action_type !== 'all' && selectedReviewArr?.length > 0){
+      
+      const reqArray = selectedReviewArr?.map((item) => {
+        const reqObj =  {
+          "action_type": action_type,
+          "review_id": item
+        }
+        return reqObj
+      })
 
+      const req_body = {
+        actions: reqArray
+      }
+      const actionRes = await reviewAction(req_body)
+      actionApiResonseMessageHandler(actionRes?.data?.message, action_type)
+      setSelectedReviewArr([])
     }
   }
 
-  // console.log("Supplier Review =====>", supplierReviewList?.data?.reviews);
-  console.log("Selected data =====>", selectedReviewArr);
+  const sortHandler = (sort_type) => {
+    console.log('sort type ===>', sort_type)
+
+    if(sort_type == 'recent'){
+      const data = [
+        { id: 1, created: "2024-07-13T16:59:35.709882Z" },
+        { id: 2, created: "2024-07-07T10:45:12.123456Z" },
+        { id: 3, created: "2024-07-08T12:30:45.789123Z" },
+        { id: 4, created: "2024-07-01T09:00:00.000000Z" },
+        { id: 5, created: "2024-07-10T14:15:22.654321Z" },
+        { id: 12, created: "2024-07-14T16:59:35.709882Z" },
+        { id: 22, created: "2024-07-09T10:45:12.123456Z" },
+        { id: 23, created: "2024-07-05T12:30:45.789123Z" },
+        { id: 24, created: "2024-07-15T09:00:00.000000Z" },
+        { id: 53, created: "2024-07-16T14:15:22.654321Z" },
+      ];
+        // Get the current date and the date 6 days ago
+        const endDate = moment();
+        const startDate = moment().subtract(7, 'days');
+
+        // Filter the data supplierReviewList?.data?.reviews?
+        const recentData =  supplierReviewList?.data?.reviews?.filter(item => {
+          const createdDate = moment(item?.created);
+          return createdDate.isBetween(startDate, endDate, null, '[]');
+        });
+
+        console.log('recentData data ===> ', recentData)
+
+        setAllReview(recentData)
+        setAllReviewStore(recentData)
+    }
+    else if(sort_type == 'week'){
+       // Get the start and end dates for the last week
+        const endDate = moment().subtract(7, 'days').endOf('day'); // End of yesterday
+        const startDate = moment().subtract(14, 'days').startOf('day'); // Start of the day 7 days ago
+
+        // Filter the data
+        const weekData = supplierReviewList?.data?.reviews?.filter(item => {
+          const createdDate = moment(item.created);
+          return createdDate.isBetween(startDate, endDate, null, '[]');
+        });
+
+        console.log('weekData data ===> ', weekData)
+
+        setAllReview(weekData)
+        setAllReviewStore(weekData)
+    }
+    else if(sort_type == 'month'){
+       // Get the start and end of the previous month
+       const startOfLastMonth = moment().subtract(1, 'months').startOf('month');
+       const endOfLastMonth = moment().subtract(1, 'months').endOf('month');
+     
+       // Filter the data
+       const filterMonthData = supplierReviewList?.data?.reviews?.filter(item => {
+         const createdDate = moment(item?.created);
+         return createdDate.isBetween(startOfLastMonth, endOfLastMonth, null, '[]');
+       });
+
+       console.log('Month data', filterMonthData)
+          
+       setAllReview(filterMonthData)
+       setAllReviewStore(filterMonthData)
+    }
+  }
+
+  console.log("Supplier Review =====>", supplierReviewList?.data?.reviews);
+  // console.log("Selected data =====>", selectedReviewArr);
 
   return (
     <div className="border border-slate-200 rounded-2xl max-w-[1387px] mt-6 pb-8 mb-20">
@@ -232,9 +323,10 @@ const CustomerReview = () => {
         <div>
         <p className="text-sm font-bold text-black mb-1">Sort By</p>
           <Select
-            options={[]}
-            defaultValue="All reviewers"
+            options={sortOptions}
+            defaultValue="op"
             placeholder="Most Recent"
+            onChangHandler={sortHandler}
           />
         </div>
       </div>
@@ -243,19 +335,19 @@ const CustomerReview = () => {
         {supplierReviewList?.data?.reviews?.length > 0 &&
           allReview?.map((review) => (
             <CustomerReviewBox
-            readTrack={readTrack}
-            readMoreHandler={readMoreHandler}
-            key={review.id} 
-            review={review} 
-            replyTrackHandler={replyTrackHandler}
-            replyTrack={replyTrack}
-            setReplyText={setReplyText}
-            replyHandler={replyHandler}
-            replyErr= {replyErr}
-            setReplyErr={setReplyErr}
-            reviewActionSubmit={reviewActionSubmit}
-            selectHandler={selectHandler}
-            selectedReviewArr={selectedReviewArr}
+                readTrack={readTrack}
+                readMoreHandler={readMoreHandler}
+                key={review.id} 
+                review={review} 
+                replyTrackHandler={replyTrackHandler}
+                replyTrack={replyTrack}
+                setReplyText={setReplyText}
+                replyHandler={replyHandler}
+                replyErr= {replyErr}
+                setReplyErr={setReplyErr}
+                reviewActionSubmit={reviewActionSubmit}
+                selectHandler={selectHandler}
+                selectedReviewArr={selectedReviewArr}
             />
           ))}
         <div>

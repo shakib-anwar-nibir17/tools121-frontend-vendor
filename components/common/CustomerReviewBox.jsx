@@ -12,7 +12,7 @@ const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandl
 }) => {
  
   return (
-    <div className="mb-6">
+    <div key={review?.id} className="mb-6">
       <div className="grid grid-cols-12 w-full gap-14">
         <div className=" col-span-4 flex gap-3">
           {/* {
@@ -28,7 +28,7 @@ const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandl
             />
           </div>
           <p className="text-black font-bold">
-            RIG-BS-6025RF Research Upright Metallurgical Microscope
+            {review?.product_name}
           </p>
         </div>
         {/* user review and reply options */}
