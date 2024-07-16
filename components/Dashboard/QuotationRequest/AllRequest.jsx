@@ -7,7 +7,7 @@ import NoProducts from "../ProductList/NoProducts";
 
 
 
-const AllRequest = ({tableData, options, tabVal, tabHandler, totalData}) => {
+const AllRequest = ({tableData, options, tabVal, tabHandler, totalData,quotationActionSubmit}) => {
 
   return (
     <Tabs defaultValue={tabVal}>
@@ -35,7 +35,7 @@ const AllRequest = ({tableData, options, tabVal, tabHandler, totalData}) => {
       </div>
       {
        tableData?.length > 0 ?  <TabsContent value={tabVal}>
-       <AllRequestDataTable tableData={tableData} />
+       <AllRequestDataTable quotationActionSubmit={quotationActionSubmit} tableData={tableData} />
      </TabsContent> : <NoProducts  title="You Have No quotation yet" suggestion="" buttonShow={false}/>
       }
      

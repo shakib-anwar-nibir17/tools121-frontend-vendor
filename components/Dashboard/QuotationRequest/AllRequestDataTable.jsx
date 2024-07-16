@@ -1,12 +1,11 @@
 "use client";
 
-import { useSupplierQuotationListQuery } from "@/app/redux/features/supplierQuotation";
 import DataTable from "./DataTable";
 
-const AllRequestDataTable = ({tableData}) => {
+const AllRequestDataTable = ({tableData, quotationActionSubmit}) => {
   
   return <div>
-    <DataTable tableData={tableData} />
+    <DataTable tableData={tableData} quotationActionSubmit={quotationActionSubmit} />
   </div>;
 };
 

@@ -95,10 +95,21 @@ const ProductRequestForm = ({params}) => {
       formdata.append("purchase_quantity", 0)
       formdata.append("product_rate", parseInt(data?.product_rate))
       formdata.append("product_specification", data?.product_description)
-      formdata.append("tags", JSON.stringify(tags))
+     
       if(prodImg){
         formdata.append("file", prodImg)
       }
+      if(tags?.length > 0){
+          const fortamtedTags = tags?.map((item) => {
+          const formatObj = {
+            id: item?.id,
+            tag_values:item?.tag_values
+          }
+          return formatObj
+        })
+        formdata.append("request_tags", JSON.stringify(fortamtedTags))
+      }
+
       console.log('data ==>', data)
 
       const prod_reqest_res = await updateProductRequst({requst_body: formdata, token:token})
@@ -162,7 +173,7 @@ const ProductRequestForm = ({params}) => {
   useEffect(() => {
     if(singleProductRequestData?.data?.requested_product_img?.img_url){
       setPreview(singleProductRequestData?.data?.requested_product_img?.img_url)
-      // setTags(singleProductRequestData?.data?.requested_product_tags)
+
       if(singleProductRequestData?.data?.requested_product_tags?.length > 0){
         const formattag = singleProductRequestData?.data?.requested_product_tags?.map((item) => {
           const formatObj = {
@@ -177,17 +188,12 @@ const ProductRequestForm = ({params}) => {
     }
   },[singleProductRequestData?.data?.requested_product_img?.img_url])
 
-// console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.requested_product_tags)
+console.log('singleProductRequestData ===>' , singleProductRequestData?.data?.requested_product_tags)
 
 const tagChangeHandler = (tagObj) => {
   console.log('tagObj --->', tagObj)
   if(tagObj?.tag_values){
     const isExistTag = tags?.find((item) => item?.id == tagObj?.id)
-
-    // const formatedObj = {
-    //   tag_values: tagObj?.tag_values,
-    //   product_request_tag_id: tagObj?.id
-    // }
 
     if(isExistTag?.id){
       const filterTag = tags?.filter((item) => item?.id !== tagObj?.id)
@@ -196,6 +202,7 @@ const tagChangeHandler = (tagObj) => {
     }
     else{
       console.log('not exists')
+
       setTags((prev) => [...prev, tagObj])
     }
   }
