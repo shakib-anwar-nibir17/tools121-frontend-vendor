@@ -10,12 +10,22 @@ import toast from "react-hot-toast";
 import { BsChevronDown } from "react-icons/bs";
 
 const filterOption = [
+  
   {value: 'all', label: 'All Review'},
   {value: 100, label: 'Approved'},
   {value: 200, label: 'Replies'},
   {value: 400, label: 'Spam'},
   {value: 300, label: 'Trash'},
 ]
+
+const bulkOptions = [
+  {value: 'action', label: 'Select Action'},
+  {value: 'all', label: 'Select All'},
+  {value: 'approve', label: 'Approve All'},
+  {value: 'spam', label: 'Move To Spam'},
+  {value: 'trash', label: 'Move To Trash'},
+]
+
 const CustomerReview = () => {
   const token = localStorage.getItem("vendorToken");
   const { data: supplierReviewList } = useSupplierReviewListQuery(token, {
@@ -30,6 +40,8 @@ const CustomerReview = () => {
   const [replyErr, setReplyErr] = useState('')
   const [reviewReply, {}] = useSingleReviewReplyMutation();
   const [reviewAction, {}] = useReviewActionMutation();
+  
+  const [selectedReviewArr, setSelectedReviewArr] = useState([])
   
     /// --- page data setup from pagination--- ///
     useEffect(() => {
@@ -156,7 +168,40 @@ const CustomerReview = () => {
     }
     console.log(item)
   }
-  console.log("Supplier Review =====>", supplierReviewList?.data?.reviews);
+
+  const selectHandler = (select_action, id) => {
+    if(select_action == 'single'){
+      const isExists = selectedReviewArr?.find((item) => item == id)
+      console.log('idss ', id)
+      if(isExists){
+        console.log('exists')
+        const filterArr = selectedReviewArr?.filter((item) => item !== id)
+        setSelectedReviewArr(filterArr)
+      }
+      else{
+        setSelectedReviewArr((prev) => [...prev, id])
+      }
+    }
+    else{
+      const allSelectedId = allReviewStore?.map((item) => {
+        return item?.id
+      })
+      console.log('allSelectedId', allSelectedId)
+      setSelectedReviewArr(allSelectedId)
+    }
+  }
+
+  const bulkActionHandler = async (action_type) => {
+    if(action_type == 'all'){
+      selectHandler('all')
+    }
+    else if(action_type == 'approve'){
+
+    }
+  }
+
+  // console.log("Supplier Review =====>", supplierReviewList?.data?.reviews);
+  console.log("Selected data =====>", selectedReviewArr);
 
   return (
     <div className="border border-slate-200 rounded-2xl max-w-[1387px] mt-6 pb-8 mb-20">
@@ -169,9 +214,10 @@ const CustomerReview = () => {
         <div>
           <p className="text-sm font-bold text-black mb-1">All Action</p>
           <Select
-            options={[]}
-            defaultValue="Most Recent"
+            options={bulkOptions}
+            defaultValue="action"
             placeholder="All Mark"
+            onChangHandler={bulkActionHandler}
           />
         </div>
         <div>
@@ -208,6 +254,8 @@ const CustomerReview = () => {
             replyErr= {replyErr}
             setReplyErr={setReplyErr}
             reviewActionSubmit={reviewActionSubmit}
+            selectHandler={selectHandler}
+            selectedReviewArr={selectedReviewArr}
             />
           ))}
         <div>

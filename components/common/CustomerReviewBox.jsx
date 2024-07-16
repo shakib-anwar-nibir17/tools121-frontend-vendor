@@ -4,14 +4,21 @@ import Image from "next/image";
 import { useState } from "react";
 import { GrEmoji } from "react-icons/gr";
 import { LiaEdit } from "react-icons/lia";
+import { MdOutlineCircle } from "react-icons/md";
+import { TbCircleCheckFilled } from "react-icons/tb";
 
-const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandler, replyTrack, setReplyText, replyHandler, setReplyErr, replyErr, reviewActionSubmit}) => {
+const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandler, replyTrack, setReplyText, replyHandler, setReplyErr, replyErr, reviewActionSubmit,
+  selectHandler, selectedReviewArr
+}) => {
  
   return (
     <div className="mb-6">
       <div className="grid grid-cols-12 w-full gap-14">
         <div className=" col-span-4 flex gap-3">
-          <Checkbox className="w-4 h-4 border border-black rounded-md" />
+          {/* {
+              selectedReviewArr?.includes(review?.id) ? <TbCircleCheckFilled size={25} onClick={() => selectHandler('single', review?.id)} color="blue"/> : <MdOutlineCircle size={25} onClick={() => selectHandler('single', review?.id)} />
+          } */}
+          <Checkbox checked={selectedReviewArr?.includes(review?.id)} onClick={() => selectHandler('single', review?.id)} className="w-4 h-4 border border-black rounded-md" />
           <div className="w-12 h-12">
             <Image
               width={48}
