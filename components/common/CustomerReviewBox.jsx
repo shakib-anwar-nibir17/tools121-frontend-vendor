@@ -5,8 +5,8 @@ import { useState } from "react";
 import { GrEmoji } from "react-icons/gr";
 import { LiaEdit } from "react-icons/lia";
 
-const CustomerReviewBox = ({ review }) => {
-  const [open, setOpen] = useState(false);
+const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandler, replyTrack, setReplyText, replyHandler, setReplyErr, replyErr, reviewActionSubmit}) => {
+ 
   return (
     <div className="mb-6">
       <div className="grid grid-cols-12 w-full gap-14">
@@ -26,39 +26,61 @@ const CustomerReviewBox = ({ review }) => {
         </div>
         {/* user review and reply options */}
         <div className=" col-span-4 pl-6">
-          <p className="text-justify">{review.review}</p>
+          <p className="text-justify">{readTrack == review?.id ? review?.review : review.review?.slice(0, 150)}</p>
+          {
+           readTrack == review?.id  ? <p onClick={() => readMoreHandler('')} className="text-blue-600 cursor-pointer font-bold">Less</p> : <p onClick={() => readMoreHandler(review?.id)} className="text-blue-600 cursor-pointer font-bold">Read More</p>
+          }
           <div className="flex gap-2 mt-4">
-            <button>Approve</button>
+            <button
+            className={`${review?.review_action_type == 100 ? 'text-green-600' : 'text-gray-700'}`}
+            onClick={() => {
+              if(review?.review_action_type !== 100){
+                reviewActionSubmit(100, review?.id)
+              }
+            }}
+            >Approve</button>
             <span>|</span>
             <button
-              onClick={() => setOpen(!open)}
-              className={`${open ? "text-slate-200" : "text-primary-900"}`}
+              onClick={() => replyTrackHandler(review?.id)}
+              className={`${review?.id == replyTrack ? "text-slate-200" : "text-primary-900"}`}
             >
               Reply
             </button>
             <span>|</span>
-            <button className="text-[#FF1E7C]">Spam</button>
+            {
+              review?.review_action_type == 400 ? '' : <button  onClick={() => reviewActionSubmit(400, review?.id)} className="text-[#FF1E7C]">Spam</button>
+            }
             <span>|</span>
-            <button className="text-[#FF1E7C]">Trash</button>
+            {
+              review?.review_action_type == 300 ? '' : <button  onClick={() => reviewActionSubmit(300, review?.id)} className="text-[#FF1E7C]">Trash</button>
+            }
+            
           </div>
           {/* reply box */}
-          {open && (
+          {review?.id == replyTrack && (
             <div className="mt-6">
               <div className="h-14 border border-slate-200 rounded-lg flex justify-between px-4 py-1">
                 <textarea
                   type="text"
                   className="w-full h-full border-none focus:outline-none text-sm"
-                  defaultValue={"Thanks for your valuable review"}
+                  placeholder="write reply"
+                  onChange={(e) => {
+                    setReplyText(e.target.value)
+                    setReplyErr('')
+                  }}
                 />
                 <LiaEdit />
               </div>
+              <p className="text-[13px] font-medium text-red-600">{replyErr}</p>
               <div className="flex justify-end gap-6 mt-3">
                 <div className="flex items-center gap-2">
-                  <GrEmoji className="mt-1" />
-                  <span>|</span>
+                  {/* <GrEmoji className="mt-1" />
+                  <span>|</span> */}
                 </div>
-                <button>Cancel</button>
-                <button className="bg-gray-200 rounded-2xl px-3 py-0.5">
+                <button
+                onClick={() => replyTrackHandler('')}
+                >Cancel</button>
+                <button onClick={() => replyHandler()} className="bg-gray-200 rounded-2xl px-3 py-0.5">
                   Reply
                 </button>
               </div>

@@ -201,7 +201,7 @@ const AllRequestPage = () => {
       }
     }
     else{
-      toast.error("Quotation Action", {
+      toast.error("Quotation Action Failed", {
         position: "top-right",
         duration: 2000,
       });

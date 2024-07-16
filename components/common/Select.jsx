@@ -7,22 +7,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const SelectOptions = ({ placeholder }) => {
+const SelectOptions = ({ placeholder , options, onChangHandler, defaultValue}) => {
   return (
-    <Select>
-      <SelectTrigger className="bg-white">
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent className="bg-white">
-        <SelectGroup>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+      <select
+      onChange={(e) => onChangHandler(e.target.value)}
+      defaultValue={defaultValue}
+      className="px-2 border border-1 border-gray-400 rounded-md py-2">
+         {/* <option>{placeholder}</option> */}
+          {
+            options?.map((item) => (
+              <option value={item?.value}>{item?.label}</option>
+            ))
+          }
+      </select>
   );
 };
 
