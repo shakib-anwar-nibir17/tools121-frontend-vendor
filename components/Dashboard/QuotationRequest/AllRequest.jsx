@@ -1,14 +1,16 @@
-import CustomSelect from "@/components/common/CustomSelect";
-import PaginationComponent from "@/components/common/Pagination";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AllRequestDataTable from "./AllRequestDataTable";
 import PaginationCom from "@/components/common/PaginationCom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NoProducts from "../ProductList/NoProducts";
+import AllRequestDataTable from "./AllRequestDataTable";
 
-
-
-const AllRequest = ({tableData, options, tabVal, tabHandler, totalData,quotationActionSubmit}) => {
-
+const AllRequest = ({
+  tableData,
+  options,
+  tabVal,
+  tabHandler,
+  totalData,
+  quotationActionSubmit,
+}) => {
   return (
     <Tabs defaultValue={tabVal}>
       <div className="flex items-center mt-10 justify-between">
@@ -22,23 +24,33 @@ const AllRequest = ({tableData, options, tabVal, tabHandler, totalData,quotation
                 onClick={() => tabHandler(option.value)}
               >
                 <p className="py-4">{option?.key}</p>
-                <span className="py-4 text-primary-900">({option?.amount})</span>
+                <span className="py-4 text-primary-900">
+                  ({option?.amount})
+                </span>
               </TabsTrigger>
             ))}
           </TabsList>
         </div>
         <div className="flex flex-row justify-end">
           <div>
-              <PaginationCom array={totalData}/>
+            <PaginationCom array={totalData} />
           </div>
         </div>
       </div>
-      {
-       tableData?.length > 0 ?  <TabsContent value={tabVal}>
-       <AllRequestDataTable quotationActionSubmit={quotationActionSubmit} tableData={tableData} />
-     </TabsContent> : <NoProducts  title="You Have No quotation yet" suggestion="" buttonShow={false}/>
-      }
-     
+      {tableData?.length > 0 ? (
+        <TabsContent value={tabVal}>
+          <AllRequestDataTable
+            quotationActionSubmit={quotationActionSubmit}
+            tableData={tableData}
+          />
+        </TabsContent>
+      ) : (
+        <NoProducts
+          title="You Have No quotation yet"
+          suggestion=""
+          buttonShow={false}
+        />
+      )}
     </Tabs>
   );
 };

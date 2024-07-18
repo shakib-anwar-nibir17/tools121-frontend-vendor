@@ -98,7 +98,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation }) => {
               <div className="rounded-xl border border-slate-300 shadow-custom-shadow h-16 w-16 relative">
                 <Image
                   fill
-                  src={"/item-pic.png"}
+                  src={data?.product_img_ref}
                   alt="reviewed_product_img"
                   className="rounded-xl"
                 />
