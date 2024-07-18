@@ -1,11 +1,9 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
-import { useState } from "react";
-import { GrEmoji } from "react-icons/gr";
 import { LiaEdit } from "react-icons/lia";
-import { MdOutlineCircle } from "react-icons/md";
-import { TbCircleCheckFilled } from "react-icons/tb";
+import { CgProfile } from "react-icons/cg";
+import { PiImageSquareLight } from "react-icons/pi";
 
 const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandler, replyTrack, setReplyText, replyHandler, setReplyErr, replyErr, reviewActionSubmit,
   selectHandler, selectedReviewArr
@@ -20,12 +18,13 @@ const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandl
           } */}
           <Checkbox checked={selectedReviewArr?.includes(review?.id)} onClick={() => selectHandler('single', review?.id)} className="w-4 h-4 border border-black rounded-md" />
           <div className="w-12 h-12">
-            <Image
+            {/* <Image
               width={48}
               height={48}
               alt="user_avatar"
               src={"/item-pic2.png"}
-            />
+            /> */}
+            <PiImageSquareLight size={28}/>
           </div>
           <p className="text-black font-bold">
             {review?.product_name}
@@ -98,18 +97,19 @@ const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandl
         <div className=" col-span-4">
           <div className="flex gap-2">
             <div className="w-10 h-10 rounded-full">
-              <Image
+              {/* <Image
                 width={40}
                 height={40}
                 className="rounded-full"
                 alt="user_avatar"
                 src={"/avatar.png"}
-              />
+              /> */}
+              <CgProfile size={35} />
             </div>
             <div>
-              <p className="text-black">Bryane Crape</p>
+              <p className="text-black">{review?.reviewer_details?.full_name}</p>
               <p className="text-[14px] text-primary-900">
-                branecrape@gmail.com
+              {review?.reviewer_details?.email}
               </p>
             </div>
           </div>
