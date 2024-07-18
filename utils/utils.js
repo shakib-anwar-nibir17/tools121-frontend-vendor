@@ -50,3 +50,18 @@ export const capitalizeFirstTwo = (str) => {
 export const formatTimestamp = (timestamp) => {
   return moment(timestamp).format("MM/DD/YYYY; hh:mm A");
 };
+
+export const filterQuotationsByDate = (data, date) => {
+  if (!data || !data.quotations) {
+    return [];
+  }
+  // Convert the provided date to ISO format to match the format in the quotations
+  const currentDate = new Date(date).toISOString().split("T")[0];
+
+  // Filter the quotations based on the created date
+  const filteredQuotations = data.quotations.filter((quotation) => {
+    return quotation.created.split("T")[0] === currentDate;
+  });
+
+  return filteredQuotations;
+};

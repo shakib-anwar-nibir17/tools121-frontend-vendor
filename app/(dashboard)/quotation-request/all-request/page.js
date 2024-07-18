@@ -207,7 +207,7 @@ const AllRequestPage = () => {
       });
     }
   }
-  // console.log("Supplier Quotation =====>", supplierQuotationList?.data?.quotations);
+  console.log("Supplier Quotation =====>", supplierQuotationList?.data?.quotations);
   // console.log('allQuatationRq --->', allQuatationRq);
   // console.log('allQuatationRqStore --->', allQuatationRqStore);
 
