@@ -133,6 +133,7 @@ const CustomerReview = () => {
         reviewActionSubmit(200, replyTrack)
         setReadTrack('')
         setReplyText('')
+        setReplyTrack('')
         toast.success("Replied Successfully", {
           position: "top-right",
           duration: 2000,
@@ -227,21 +228,8 @@ const CustomerReview = () => {
   }
 
   const sortHandler = (sort_type) => {
-    console.log('sort type ===>', sort_type)
 
     if(sort_type == 'recent'){
-      const data = [
-        { id: 1, created: "2024-07-13T16:59:35.709882Z" },
-        { id: 2, created: "2024-07-07T10:45:12.123456Z" },
-        { id: 3, created: "2024-07-08T12:30:45.789123Z" },
-        { id: 4, created: "2024-07-01T09:00:00.000000Z" },
-        { id: 5, created: "2024-07-10T14:15:22.654321Z" },
-        { id: 12, created: "2024-07-14T16:59:35.709882Z" },
-        { id: 22, created: "2024-07-09T10:45:12.123456Z" },
-        { id: 23, created: "2024-07-05T12:30:45.789123Z" },
-        { id: 24, created: "2024-07-15T09:00:00.000000Z" },
-        { id: 53, created: "2024-07-16T14:15:22.654321Z" },
-      ];
         // Get the current date and the date 6 days ago
         const endDate = moment();
         const startDate = moment().subtract(7, 'days');

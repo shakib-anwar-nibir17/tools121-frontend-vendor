@@ -26,12 +26,15 @@ export default function RootLayout({ children }) {
   },[])
 
   return (
-    <>
-      {
-         loading ? <div className="w-full h-screen flex flex-row justify-center items-center">
-          <Loader/>
-         </div> :
-         <ReCaptchaProvider>
+    // <>
+    //   {
+    //      loading ? <div className="w-full h-screen flex flex-row justify-center items-center">
+    //       <Loader/>
+    //      </div> :
+         
+    //   }
+    // </>
+    <ReCaptchaProvider>
          <Provider store={store}>
           <ContextProvider>
             <PersistGate loading={null} persistor={persistor}>
@@ -41,9 +44,6 @@ export default function RootLayout({ children }) {
        </Provider>
        <Toaster position="bottom-right" reverseOrder={false} />
        </ReCaptchaProvider>
-      }
-    </>
-    
     
   );
 }
