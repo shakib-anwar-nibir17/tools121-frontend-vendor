@@ -1,4 +1,6 @@
-'use clien'
+/* eslint-disable no-empty-pattern */
+/* eslint-disable no-unused-vars */
+"use client";
 import { useDeleteProductMutation } from "@/app/redux/features/inventoryProduct";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -36,38 +38,37 @@ const ButtonStyles = {
   },
 };
 
-const ProductListTable = ({productData}) => {
-  const token = localStorage.getItem('vendorToken')
+const ProductListTable = ({ productData }) => {
+  const token = localStorage.getItem("vendorToken");
   const [deleteProduct, {}] = useDeleteProductMutation();
-  const [deleteId, setDeleteId] = useState('')
-  const router = useRouter()
+  const [deleteId, setDeleteId] = useState("");
+  const router = useRouter();
 
   const productDeleteHandler = async (prod_id) => {
-    setDeleteId(prod_id)
-    const delete_res = await deleteProduct({prod_id, token})
+    setDeleteId(prod_id);
+    const delete_res = await deleteProduct({ prod_id, token });
 
-    if(delete_res?.data?.message == "Request success"){
-      setDeleteId('')
+    if (delete_res?.data?.message == "Request success") {
+      setDeleteId("");
       toast.success("Product Deleted Successfully", {
         position: "top-right",
         duration: 2000,
       });
-    }
-    else{
-      setDeleteId('')
+    } else {
+      setDeleteId("");
       toast.error("Product Deleted Failed", {
         position: "top-right",
         duration: 2000,
       });
     }
-    
-    console.log('delete response ===>', delete_res)
-  }
+
+    console.log("delete response ===>", delete_res);
+  };
 
   const editHandler = (id) => {
-    console.log('id -->', id)
-    router.push(`/inventory/product-list/${id}`)
-  }
+    console.log("id -->", id);
+    router.push(`/inventory/product-list/${id}`);
+  };
 
   return (
     <Table className="max-w-[1189px] mt-10 mb-7">
@@ -96,9 +97,15 @@ const ProductListTable = ({productData}) => {
             <TableCell className="font-medium w-[27%]">
               {product?.product_name}
             </TableCell>
-            <TableCell className="w-[10%]">{product?.category ? product?.category : '-'}</TableCell>
-            <TableCell className="w-[12.5%]">{product?.stock ? product?.stock : '-'}</TableCell>
-            <TableCell className="w-[12.5%]">{product?.new_price ? product?.new_price : '-'}</TableCell>
+            <TableCell className="w-[10%]">
+              {product?.category ? product?.category : "-"}
+            </TableCell>
+            <TableCell className="w-[12.5%]">
+              {product?.stock ? product?.stock : "-"}
+            </TableCell>
+            <TableCell className="w-[12.5%]">
+              {product?.new_price ? product?.new_price : "-"}
+            </TableCell>
             {/* <TableCell className="w-[19%]">
               <button
                 style={ButtonStyles[product?.status]}
@@ -109,19 +116,20 @@ const ProductListTable = ({productData}) => {
             </TableCell> */}
             <TableCell className="w-[12.5%]">
               <div className="flex items-center justify-center gap-2">
-                {
-                  deleteId == product?.id ? <TbCircleDashed
-                  className="cursor-pointer"
-                  size={20}
-                  color="#7B7C80"
-                /> :
-                <RiDeleteBin5Fill
-                  className="cursor-pointer"
-                  size={20}
-                  color="#7B7C80"
-                  onClick={() => productDeleteHandler(product?.id)}
-                />
-                }
+                {deleteId == product?.id ? (
+                  <TbCircleDashed
+                    className="cursor-pointer"
+                    size={20}
+                    color="#7B7C80"
+                  />
+                ) : (
+                  <RiDeleteBin5Fill
+                    className="cursor-pointer"
+                    size={20}
+                    color="#7B7C80"
+                    onClick={() => productDeleteHandler(product?.id)}
+                  />
+                )}
                 <MdModeEditOutline
                   className="cursor-pointer"
                   size={20}

@@ -1,14 +1,23 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
-import Image from "next/image";
-import { LiaEdit } from "react-icons/lia";
 import { CgProfile } from "react-icons/cg";
+import { LiaEdit } from "react-icons/lia";
 import { PiImageSquareLight } from "react-icons/pi";
 
-const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandler, replyTrack, setReplyText, replyHandler, setReplyErr, replyErr, reviewActionSubmit,
-  selectHandler, selectedReviewArr
+const CustomerReviewBox = ({
+  review,
+  readMoreHandler,
+  readTrack,
+  replyTrackHandler,
+  replyTrack,
+  setReplyText,
+  replyHandler,
+  setReplyErr,
+  replyErr,
+  reviewActionSubmit,
+  selectHandler,
+  selectedReviewArr,
 }) => {
- 
   return (
     <div key={review?.id} className="mb-6">
       <div className="grid grid-cols-12 w-full gap-14">
@@ -16,7 +25,11 @@ const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandl
           {/* {
               selectedReviewArr?.includes(review?.id) ? <TbCircleCheckFilled size={25} onClick={() => selectHandler('single', review?.id)} color="blue"/> : <MdOutlineCircle size={25} onClick={() => selectHandler('single', review?.id)} />
           } */}
-          <Checkbox checked={selectedReviewArr?.includes(review?.id)} onClick={() => selectHandler('single', review?.id)} className="w-4 h-4 border border-black rounded-md" />
+          <Checkbox
+            checked={selectedReviewArr?.includes(review?.id)}
+            onClick={() => selectHandler("single", review?.id)}
+            className="w-4 h-4 border border-black rounded-md"
+          />
           <div className="w-12 h-12">
             {/* <Image
               width={48}
@@ -24,43 +37,78 @@ const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandl
               alt="user_avatar"
               src={"/item-pic2.png"}
             /> */}
-            <PiImageSquareLight size={28}/>
+            <PiImageSquareLight size={28} />
           </div>
-          <p className="text-black font-bold">
-            {review?.product_name}
-          </p>
+          <p className="text-black font-bold">{review?.product_name}</p>
         </div>
         {/* user review and reply options */}
         <div className=" col-span-4 pl-6">
-          <p className="text-justify">{readTrack == review?.id ? review?.review : review.review?.slice(0, 150)}</p>
-          {
-           readTrack == review?.id  ? <p onClick={() => readMoreHandler('')} className="text-blue-600 cursor-pointer font-bold">Less</p> : <p onClick={() => readMoreHandler(review?.id)} className="text-blue-600 cursor-pointer font-bold">Read More</p>
-          }
+          <p className="text-justify">
+            {readTrack == review?.id
+              ? review?.review
+              : review.review?.slice(0, 150)}
+          </p>
+          {readTrack == review?.id ? (
+            <p
+              onClick={() => readMoreHandler("")}
+              className="text-blue-600 cursor-pointer font-bold"
+            >
+              Less
+            </p>
+          ) : (
+            <p
+              onClick={() => readMoreHandler(review?.id)}
+              className="text-blue-600 cursor-pointer font-bold"
+            >
+              Read More
+            </p>
+          )}
           <div className="flex gap-2 mt-4">
             <button
-            className={`${review?.review_action_type == 100 ? 'text-green-600' : 'text-gray-700'}`}
-            onClick={() => {
-              if(review?.review_action_type !== 100){
-                reviewActionSubmit(100, review?.id)
-              }
-            }}
-            >Approve</button>
+              className={`${
+                review?.review_action_type == 100
+                  ? "text-green-600"
+                  : "text-gray-700"
+              }`}
+              onClick={() => {
+                if (review?.review_action_type !== 100) {
+                  reviewActionSubmit(100, review?.id);
+                }
+              }}
+            >
+              Approve
+            </button>
             <span>|</span>
             <button
               onClick={() => replyTrackHandler(review?.id)}
-              className={`${review?.id == replyTrack ? "text-slate-200" : "text-primary-900"}`}
+              className={`${
+                review?.id == replyTrack ? "text-slate-200" : "text-primary-900"
+              }`}
             >
               Reply
             </button>
             <span>|</span>
-            {
-              review?.review_action_type == 400 ? '' : <button  onClick={() => reviewActionSubmit(400, review?.id)} className="text-[#FF1E7C]">Spam</button>
-            }
+            {review?.review_action_type == 400 ? (
+              ""
+            ) : (
+              <button
+                onClick={() => reviewActionSubmit(400, review?.id)}
+                className="text-[#FF1E7C]"
+              >
+                Spam
+              </button>
+            )}
             <span>|</span>
-            {
-              review?.review_action_type == 300 ? '' : <button  onClick={() => reviewActionSubmit(300, review?.id)} className="text-[#FF1E7C]">Trash</button>
-            }
-            
+            {review?.review_action_type == 300 ? (
+              ""
+            ) : (
+              <button
+                onClick={() => reviewActionSubmit(300, review?.id)}
+                className="text-[#FF1E7C]"
+              >
+                Trash
+              </button>
+            )}
           </div>
           {/* reply box */}
           {review?.id == replyTrack && (
@@ -71,8 +119,8 @@ const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandl
                   className="w-full h-full border-none focus:outline-none text-sm"
                   placeholder="write reply"
                   onChange={(e) => {
-                    setReplyText(e.target.value)
-                    setReplyErr('')
+                    setReplyText(e.target.value);
+                    setReplyErr("");
                   }}
                 />
                 <LiaEdit />
@@ -83,10 +131,11 @@ const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandl
                   {/* <GrEmoji className="mt-1" />
                   <span>|</span> */}
                 </div>
+                <button onClick={() => replyTrackHandler("")}>Cancel</button>
                 <button
-                onClick={() => replyTrackHandler('')}
-                >Cancel</button>
-                <button onClick={() => replyHandler()} className="bg-gray-200 rounded-2xl px-3 py-0.5">
+                  onClick={() => replyHandler()}
+                  className="bg-gray-200 rounded-2xl px-3 py-0.5"
+                >
                   Reply
                 </button>
               </div>
@@ -107,9 +156,11 @@ const CustomerReviewBox = ({ review, readMoreHandler, readTrack, replyTrackHandl
               <CgProfile size={35} />
             </div>
             <div>
-              <p className="text-black">{review?.reviewer_details?.full_name}</p>
+              <p className="text-black">
+                {review?.reviewer_details?.full_name}
+              </p>
               <p className="text-[14px] text-primary-900">
-              {review?.reviewer_details?.email}
+                {review?.reviewer_details?.email}
               </p>
             </div>
           </div>

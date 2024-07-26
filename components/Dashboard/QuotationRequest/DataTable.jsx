@@ -10,10 +10,7 @@ import {
 import { formatTimestamp } from "@/utils/utils";
 import Link from "next/link";
 import { IoEye } from "react-icons/io5";
-import { MdModeEditOutline } from "react-icons/md";
-import { RiDeleteBin5Fill } from "react-icons/ri";
-import { RiPushpinFill } from "react-icons/ri";
-import { LuAlertTriangle } from "react-icons/lu";
+import { RiDeleteBin5Fill, RiPushpinFill } from "react-icons/ri";
 
 const DataTable = ({ tableData, quotationActionSubmit }) => {
   return (
@@ -46,7 +43,9 @@ const DataTable = ({ tableData, quotationActionSubmit }) => {
             </TableCell>
             <TableCell
               className={`${
-                product?.supplier_action_type == 0 ? "text-primary-900" :  "text-black" 
+                product?.supplier_action_type == 0
+                  ? "text-primary-900"
+                  : "text-black"
               } font-medium w-[17.5%]`}
             >
               <Link href={`/quotation-request/all-request/${product?.id}`}>
@@ -63,10 +62,16 @@ const DataTable = ({ tableData, quotationActionSubmit }) => {
               {product?.customer_name}
             </TableCell>
             <TableCell>
-                {
-                  product?.supplier_action_type == 400 ? '': <button onClick={() =>  quotationActionSubmit(400,product.id)} className="text-[#FF1E7C] w-[3%]">spam</button>
-                }
-              
+              {product?.supplier_action_type == 400 ? (
+                ""
+              ) : (
+                <button
+                  onClick={() => quotationActionSubmit(400, product.id)}
+                  className="text-[#FF1E7C] w-[3%]"
+                >
+                  spam
+                </button>
+              )}
             </TableCell>
             <TableCell className=" text-black font-bold w-[22%]">
               {formatTimestamp(product?.created)}
@@ -80,19 +85,21 @@ const DataTable = ({ tableData, quotationActionSubmit }) => {
                 <RiPushpinFill
                   className="cursor-pointer"
                   size={20}
-                  color={product?.supplier_action_type == 200 ? 'blue' : '#7B7C80'}
+                  color={
+                    product?.supplier_action_type == 200 ? "blue" : "#7B7C80"
+                  }
                   onClick={() => {
-                    if(product?.supplier_action_type !== 200){
-                      quotationActionSubmit(200,product.id)
+                    if (product?.supplier_action_type !== 200) {
+                      quotationActionSubmit(200, product.id);
                     }
                   }}
                 />
-                
+
                 <RiDeleteBin5Fill
                   className="cursor-pointer"
                   size={20}
                   color="#7B7C80"
-                  onClick={() => quotationActionSubmit(400,product.id)}
+                  onClick={() => quotationActionSubmit(400, product.id)}
                 />
               </div>
             </TableCell>
