@@ -1,3 +1,5 @@
+/* eslint-disable no-empty-pattern */
+/* eslint-disable no-unused-vars */
 "use client";
 import {
   useDeleteUserDocsMutation,

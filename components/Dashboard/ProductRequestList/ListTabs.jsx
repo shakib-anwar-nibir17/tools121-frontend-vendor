@@ -1,14 +1,16 @@
-import CustomSelect from "@/components/common/CustomSelect";
-import PaginationComponent from "@/components/common/Pagination";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ListDataTable from "./ListDataTable";
 import PaginationCom from "@/components/common/PaginationCom";
-import { useStateContext } from "@/utils/contexProvider";
-import { useEffect, useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NoProducts from "../ProductList/NoProducts";
+import ListDataTable from "./ListDataTable";
 
-const ListTabs = ({requestData, totalData, tabHandler, tabVal, options,buttonHandler}) => {
-  
+const ListTabs = ({
+  requestData,
+  totalData,
+  tabHandler,
+  tabVal,
+  options,
+  buttonHandler,
+}) => {
   return (
     <Tabs defaultValue={tabVal}>
       <div className="flex items-center mt-10 justify-between">
@@ -22,25 +24,33 @@ const ListTabs = ({requestData, totalData, tabHandler, tabVal, options,buttonHan
                 value={option.value}
               >
                 <p className="py-4">{option.key}</p>
-                <span className="py-4 text-primary-900">({option?.amount})</span>
+                <span className="py-4 text-primary-900">
+                  ({option?.amount})
+                </span>
               </TabsTrigger>
             ))}
           </TabsList>
         </div>
         <div>
           <div className="flex items-center gap-3">
-            <PaginationCom array={totalData}/>
+            <PaginationCom array={totalData} />
           </div>
         </div>
       </div>
-      {
-        requestData?.length > 0 ?  <TabsContent value={tabVal}>
-        <ListDataTable requestData={requestData} />
-      </TabsContent> : <NoProducts title="No Product requested Yet?" suggestion="Request new products from your store and start selling." buttonHandler={buttonHandler} />
-      }
-     
+      {requestData?.length > 0 ? (
+        <TabsContent value={tabVal}>
+          <ListDataTable requestData={requestData} />
+        </TabsContent>
+      ) : (
+        <NoProducts
+          title="No Product requested Yet?"
+          suggestion="Request new products from your store and start selling."
+          buttonHandler={buttonHandler}
+        />
+      )}
+
       <div className="flex justify-end">
-      <PaginationCom array={totalData}/>
+        <PaginationCom array={totalData} />
       </div>
     </Tabs>
   );

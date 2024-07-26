@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-pattern */
 /* eslint-disable no-unused-vars */
 import {
   useUploadImgMutation,
