@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-empty-pattern */
 "use client";
-import { useGetUsernameListByPhoneQuery, useLazyGetUsernameListByPhoneQuery, useUserNamesQuery } from "@/app/redux/features/authApi";
+import { useLazyGetUsernameListByPhoneQuery } from "@/app/redux/features/authApi";
 import { setUsernames } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -27,9 +28,10 @@ export default function ChangeLoginNameForm() {
 
   const [loading, setLoading] = useState();
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const [trigger, { data, error, isLoading }] = useLazyGetUsernameListByPhoneQuery();
+  const [trigger, { data, error, isLoading }] =
+    useLazyGetUsernameListByPhoneQuery();
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
@@ -46,24 +48,22 @@ export default function ChangeLoginNameForm() {
       token: token,
     };
     trigger(queryObj);
-    if(data?.data?.usernames?.length > 0){
-      setLoading(false)
-      dispatch(setUsernames(data))
-      router.push('/user-names/auth')
+    if (data?.data?.usernames?.length > 0) {
+      setLoading(false);
+      dispatch(setUsernames(data));
+      router.push("/user-names/auth");
       console.log("getUserList by phon res ====>", data, loading, error);
-    }
-    else{
-      setLoading(false)
+    } else {
+      setLoading(false);
       toast.error("No user exists with this phone number", {
         position: "top-right",
         duration: 2500,
       });
     }
-  
   };
 
   const onSubmit = (data) => {
-    setLoading(true)
+    setLoading(true);
     formHandler(data);
     console.log(data);
   };
@@ -120,19 +120,21 @@ export default function ChangeLoginNameForm() {
           <div className="text-red-500">{errors.phone.message}</div>
         )}
       </div>
-      {
-        loading ? <Button
-        // type="submit"
-        className="h-16 text-lg rounded-lg  mb-6 w-full mt-5"
-      >
-        Loading...
-      </Button> :<Button
-        type="submit"
-        className="h-16 text-lg rounded-lg  mb-6 w-full mt-5"
-      >
-        Send Verification Code
-      </Button>
-      }
+      {loading ? (
+        <Button
+          // type="submit"
+          className="h-16 text-lg rounded-lg  mb-6 w-full mt-5"
+        >
+          Loading...
+        </Button>
+      ) : (
+        <Button
+          type="submit"
+          className="h-16 text-lg rounded-lg  mb-6 w-full mt-5"
+        >
+          Send Verification Code
+        </Button>
+      )}
     </form>
   );
 }

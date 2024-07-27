@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UserNamesPages = () => {
   const dispatch = useDispatch();
-  const [userNameOtpSend, {}] = useUserNameOtpSendMutation();
+  const [userNameOtpSend] = useUserNameOtpSendMutation();
   const userNames = useSelector((state) => state.authStore.userNames);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();

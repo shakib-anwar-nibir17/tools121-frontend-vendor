@@ -1,91 +1,125 @@
-import { useLazyProductSubCategoryQuery, useProductCategoryQuery } from "@/app/redux/features/inventoryProduct";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+import {
+  useLazyProductSubCategoryQuery,
+  useProductCategoryQuery,
+} from "@/app/redux/features/inventoryProduct";
 import SingleSelect from "@/components/common/SingleSelect";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const GeneralInfo = ({control, errors, register,  resetField, singleProductRequestData,setValue, paramsId}) => {
-  const token = localStorage.getItem('vendorToken')
-  const { data: productCategories, refetch: refetchCategory } = useProductCategoryQuery(token, {
-    refetchOnMountOrArgChange: true,
-  });
-  const [triggerSubCategory, { data: subCategories, error, isLoading }] = useLazyProductSubCategoryQuery();
-  const [formatedCategory, setFormatedCategory] = useState([])
-  const [formatedSubCategory, setFormatedSubCategory] = useState([])
+const GeneralInfo = ({
+  control,
+  errors,
+  register,
+  resetField,
+  singleProductRequestData,
+  setValue,
+  paramsId,
+}) => {
+  const token = localStorage.getItem("vendorToken");
+  const { data: productCategories, refetch: refetchCategory } =
+    useProductCategoryQuery(token, {
+      refetchOnMountOrArgChange: true,
+    });
+  const [triggerSubCategory, { data: subCategories, error, isLoading }] =
+    useLazyProductSubCategoryQuery();
+  const [formattedCategory, setFormattedCategory] = useState([]);
+  const [formattedSubCategory, setFormattedSubCategory] = useState([]);
 
   // ----------------Editing State------------//
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
   useEffect(() => {
-    refetchCategory()
-  },[paramsId])
+    refetchCategory();
+  }, [paramsId]);
 
   useEffect(() => {
-    if(productCategories?.data?.categories?.length > 0){
+    if (productCategories?.data?.categories?.length > 0) {
       const format = productCategories?.data?.categories?.map((item) => {
         const obj = {
           label: item?.category_name,
-          value: item?.id
-        }
-        return obj
-      })
-      setFormatedCategory(format)
+          value: item?.id,
+        };
+        return obj;
+      });
+      setFormattedCategory(format);
     }
-  },[productCategories?.data?.categories, productCategories?.data?.categories?.length])
+  }, [
+    productCategories?.data?.categories,
+    productCategories?.data?.categories?.length,
+  ]);
 
   useEffect(() => {
-    if(subCategories?.data?.sub_categories?.length > 0){
+    if (subCategories?.data?.sub_categories?.length > 0) {
       const format = subCategories?.data?.sub_categories?.map((item) => {
         const obj = {
           label: item?.sub_category_name,
-          value: item?.id
-        }
-        return obj
-      })
-      setFormatedSubCategory(format)
+          value: item?.id,
+        };
+        return obj;
+      });
+      setFormattedSubCategory(format);
     }
-  },[subCategories?.data?.sub_categories])
+  }, [subCategories?.data?.sub_categories]);
 
   // -----------Editing Functionality----------//
-  const singleProductRequest = useSelector((state) => state.inventoryStore.singleProductRequest)
+  const singleProductRequest = useSelector(
+    (state) => state.inventoryStore.singleProductRequest
+  );
 
   useEffect(() => {
-    console.log('entering 1 category...', paramsId, formatedCategory?.length, singleProductRequestData?.requested_product?.id)
+    console.log(
+      "entering 1 category...",
+      paramsId,
+      formattedCategory?.length,
+      singleProductRequestData?.requested_product?.id
+    );
 
-    if(paramsId && singleProductRequestData?.requested_product?.id){
-     
+    if (paramsId && singleProductRequestData?.requested_product?.id) {
       const findCate = {
         label: singleProductRequestData?.requested_product?.cat_name,
         value: singleProductRequestData?.requested_product?.cat_id,
-      }
+      };
 
-      setSelectedCategory(findCate)
+      setSelectedCategory(findCate);
 
-      triggerSubCategory({cat_id: findCate?.value, token})
+      triggerSubCategory({ cat_id: findCate?.value, token });
 
-      Object.keys(singleProductRequestData?.requested_product).forEach(key => {
-        setValue(key, singleProductRequestData?.requested_product[key]);
-      });
-      setValue('category', findCate)
+      Object.keys(singleProductRequestData?.requested_product).forEach(
+        (key) => {
+          setValue(key, singleProductRequestData?.requested_product[key]);
+        }
+      );
+      setValue("category", findCate);
     }
-  },[paramsId, formatedCategory?.length, singleProductRequestData?.requested_product?.id])
-  
+  }, [
+    paramsId,
+    formattedCategory?.length,
+    singleProductRequestData?.requested_product?.id,
+  ]);
+
   useEffect(() => {
-    console.log('entering 2 sub cat...', paramsId, formatedSubCategory?.length, singleProductRequestData?.requested_product?.sub_cat_name)
+    console.log(
+      "entering 2 sub cat...",
+      paramsId,
+      formattedSubCategory?.length,
+      singleProductRequestData?.requested_product?.sub_cat_name
+    );
 
-    if(paramsId && singleProductRequestData?.requested_product?.sub_cat_name){
-
+    if (paramsId && singleProductRequestData?.requested_product?.sub_cat_name) {
       const findSubCate = {
         label: singleProductRequestData?.requested_product?.sub_cat_name,
         value: singleProductRequestData?.requested_product?.sub_cat_id,
-      }
-      
-      setSelectedSubCategory(findSubCate)
-      setValue('sub_category', findSubCate)
-    }
-  },[paramsId, singleProductRequestData?.requested_product?.sub_cat_name])
+      };
 
-// console.log("singleProductRequestData from general info ==>", singleProductRequestData?.requested_product)
+      setSelectedSubCategory(findSubCate);
+      setValue("sub_category", findSubCate);
+    }
+  }, [paramsId, singleProductRequestData?.requested_product?.sub_cat_name]);
+
+  // console.log("singleProductRequestData from general info ==>", singleProductRequestData?.requested_product)
 
   return (
     <div className="p-6 border border-slate-300 rounded-lg mt-6">
@@ -98,11 +132,11 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
           </label>
           <SingleSelect
             control={control}
-            name='category'
+            name="category"
             placeHolderName="Category"
             triggerFunction={triggerSubCategory}
-            data={formatedCategory}
-            errorMessage={errors.category ? errors.category?.message : ''}
+            data={formattedCategory}
+            errorMessage={errors.category ? errors.category?.message : ""}
             bgPrimary={false}
             resetField={resetField}
             defaultVal={selectedCategory}
@@ -116,16 +150,17 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
           </label>
           <SingleSelect
             control={control}
-            name='sub_category'
+            name="sub_category"
             placeHolderName="Sub Category"
             triggerFunction={triggerSubCategory}
-            data={formatedSubCategory}
-            errorMessage={errors.sub_category ? errors.sub_category?.message : ''}
+            data={formattedSubCategory}
+            errorMessage={
+              errors.sub_category ? errors.sub_category?.message : ""
+            }
             bgPrimary={false}
             resetField={resetField}
             defaultVal={selectedSubCategory}
             setSelectedSubCategory={setSelectedSubCategory}
-            
           />
         </div>
       </div>
@@ -134,29 +169,39 @@ const GeneralInfo = ({control, errors, register,  resetField, singleProductReque
         <label className="font-bold text-black">Product Name</label>
         <input
           {...register("product_name")}
-          defaultValue={singleProductRequestData?.requested_product?.product_name ? singleProductRequestData?.requested_product?.product_name : ''}
+          defaultValue={
+            singleProductRequestData?.requested_product?.product_name
+              ? singleProductRequestData?.requested_product?.product_name
+              : ""
+          }
           className="rounded-lg border border-slate-300 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-12"
           type="text"
           placeholder="Type product name"
         />
         {errors.product_name?.message && (
-            <div className="text-red-500">{errors.product_name?.message}</div>
-          )}
+          <div className="text-red-500">{errors.product_name?.message}</div>
+        )}
       </div>
       <div className="w-full">
         <label className=" text-primary-950 font-bold">
           Product Description
         </label>
         <textarea
-        {...register("product_description")}
-        defaultValue={singleProductRequestData?.requested_product?.product_description ? singleProductRequestData?.requested_product?.product_description : ''}
+          {...register("product_description")}
+          defaultValue={
+            singleProductRequestData?.requested_product?.product_description
+              ? singleProductRequestData?.requested_product?.product_description
+              : ""
+          }
           className="rounded-lg border border-slate-300 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
           type="text"
           placeholder=" Product Description"
         />
-         {errors.product_description?.message && (
-            <div className="text-red-500">{errors.product_description?.message}</div>
-          )}
+        {errors.product_description?.message && (
+          <div className="text-red-500">
+            {errors.product_description?.message}
+          </div>
+        )}
       </div>
     </div>
   );

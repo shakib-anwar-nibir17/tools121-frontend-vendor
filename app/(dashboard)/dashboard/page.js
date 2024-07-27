@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 "use client";
 import {
   useQuotationActionMutation,
@@ -35,11 +36,11 @@ const DashboradPage = () => {
   const [searchText, setSearchText] = useState("");
   const { pageData, setCurrentPage } = useStateContext();
   const [options, setOptions] = useState([]);
-  const [quotationActionHandler, {}] = useQuotationActionMutation();
+  const [quotationActionHandler] = useQuotationActionMutation();
 
   useEffect(() => {
     refetchQuotationReq();
-  }, [token]);
+  }, [token, refetchQuotationReq]);
 
   /// --- page data setup from pagination--- ///
   useEffect(() => {

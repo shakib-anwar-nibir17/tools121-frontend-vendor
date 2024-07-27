@@ -1,12 +1,17 @@
+/* eslint-disable no-empty-pattern */
+/* eslint-disable no-unused-vars */
 "use client";
-import { useUpdateProfileInfoMutation, useUserDataQuery } from "@/app/redux/features/userInfo";
+import {
+  useUpdateProfileInfoMutation,
+  useUserDataQuery,
+} from "@/app/redux/features/userInfo";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as yup from "yup";
 import MultiSelect from "./MultiSelect";
-import toast from "react-hot-toast";
 
 const ShopInfoForm = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -53,7 +58,7 @@ const ShopInfoForm = () => {
   });
   const [optionsData, setOptionsData] = useState([]);
   const [updateProfileInfo, {}] = useUpdateProfileInfoMutation();
-  const [catErr, setCatErr] = useState('')
+  const [catErr, setCatErr] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -67,9 +72,11 @@ const ShopInfoForm = () => {
       });
       setOptionsData(optionFormat);
 
-      const selectedData = profileInfo?.data?.categories?.filter((item) => item?.is_assigned == true);
-      
-      if(selectedData?.length > 0){
+      const selectedData = profileInfo?.data?.categories?.filter(
+        (item) => item?.is_assigned == true
+      );
+
+      if (selectedData?.length > 0) {
         const selectedOptionFormat = selectedData?.map((item) => {
           const formatObj = {
             label: item?.category_name,
@@ -77,78 +84,78 @@ const ShopInfoForm = () => {
           };
           return formatObj;
         });
-        setSelectedOptions(selectedOptionFormat)
+        setSelectedOptions(selectedOptionFormat);
       }
     }
   }, [profileInfo?.data?.categories, profileInfo?.data?.categories?.length]);
 
   const profileInfoUpdateHandler = async (data) => {
-    if(selectedOptions?.length > 0){
-      setLoading(true)
-      setCatErr('')
-      const categories_ids = selectedOptions?.map((item) => item?.value)
+    if (selectedOptions?.length > 0) {
+      setLoading(true);
+      setCatErr("");
+      const categories_ids = selectedOptions?.map((item) => item?.value);
 
       const profileInfoData = {
-        "name": data?.shop_name,
-        "address": data?.address,
-        "phone": "01845702501",
-        "email": "aa@gmail.com",
-        "shop_name": data?.shop_name,
-        "website": "",
-        "description": '',
-        "about_us": data?.about_us,
-        "business_number": data?.business_number,
-        "business_email": data?.business_email,
-        "verify_status": 0,
-        "verify_request_time": "",
-        "is_active": true,
-        "categories_id": categories_ids,
-        "ratings": 4.5,
-        "total_ratings": 400,
-        "total_reviews": 12345,
-        "logo_url": "https://picsum.photos/200/300",
-        "banner_url": "https://picsum.photos/200/300"
-    }
-      const request_Obj = {requst_body: profileInfoData, token}
+        name: data?.shop_name,
+        address: data?.address,
+        phone: "01845702501",
+        email: "aa@gmail.com",
+        shop_name: data?.shop_name,
+        website: "",
+        description: "",
+        about_us: data?.about_us,
+        business_number: data?.business_number,
+        business_email: data?.business_email,
+        verify_status: 0,
+        verify_request_time: "",
+        is_active: true,
+        categories_id: categories_ids,
+        ratings: 4.5,
+        total_ratings: 400,
+        total_reviews: 12345,
+        logo_url: "https://picsum.photos/200/300",
+        banner_url: "https://picsum.photos/200/300",
+      };
+      const request_Obj = { requst_body: profileInfoData, token };
 
-      const update_res = await updateProfileInfo(request_Obj)
+      const update_res = await updateProfileInfo(request_Obj);
 
-      console.log("Update req body ==>", request_Obj)
-      console.log("update_res ==>", update_res) 
+      console.log("Update req body ==>", request_Obj);
+      console.log("update_res ==>", update_res);
 
-      if(update_res?.data?.message == "Request success"){
-        setLoading(false)
+      if (update_res?.data?.message == "Request success") {
+        setLoading(false);
         toast.success("Profile updated Successfully", {
           position: "top-right",
           duration: 2000,
         });
       }
-
+    } else {
+      setCatErr("Please Select Shop Category");
     }
-    else{
-      setCatErr('Please Select Shop Category')
-    }
-  }
+  };
 
   const onSubmit = (data) => {
-    profileInfoUpdateHandler(data)
+    profileInfoUpdateHandler(data);
   };
 
   const resetHandler = () => {
-    reset()
-    const selectedData = profileInfo?.data?.categories?.filter((item) => item?.is_assigned == true);
-      
-      if(selectedData?.length > 0){
-        const selectedOptionFormat = selectedData?.map((item) => {
-          const formatObj = {
-            label: item?.category_name,
-            value: item?.category_id,
-          };
-          return formatObj;
-        });
-        setSelectedOptions(selectedOptionFormat)
-      }
-  }
+    reset();
+    const selectedData = profileInfo?.data?.categories?.filter(
+      (item) => item?.is_assigned == true
+    );
+
+    if (selectedData?.length > 0) {
+      const selectedOptionFormat = selectedData?.map((item) => {
+        const formatObj = {
+          label: item?.category_name,
+          value: item?.category_id,
+        };
+        return formatObj;
+      });
+      setSelectedOptions(selectedOptionFormat);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-4 mb-20">
@@ -175,14 +182,14 @@ const ShopInfoForm = () => {
             register={register}
             errors={errors}
           />
-          {catErr && (
-            <div className="text-red-500">{catErr}</div>
-          )}
+          {catErr && <div className="text-red-500">{catErr}</div>}
         </div>
       </div>
       <div className="flex justify-between gap-6">
         <div className="w-full mt-6">
-          <label className=" text-primary-950 font-bold">Business Contact Number*</label>
+          <label className=" text-primary-950 font-bold">
+            Business Contact Number*
+          </label>
           <input
             defaultValue={profileInfo?.data?.phone}
             {...register("business_number")}
@@ -227,36 +234,38 @@ const ShopInfoForm = () => {
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">About Us*</label>
           <textarea
-          defaultValue={profileInfo?.data?.about_us ? profileInfo?.data?.about_us : ''}
+            defaultValue={
+              profileInfo?.data?.about_us ? profileInfo?.data?.about_us : ""
+            }
             {...register("about_us")}
             className="rounded-lg border border-slate-200 bg-transparent px-4 py-2 text-primary-950 focus:outline-none w-full mt-2 h-32"
             type="text"
             placeholder="Write something about your shop within 100 words... "
           />
           {errors.about_us && (
-            <div className="text-red-500">
-              {errors.about_us.message}
-            </div>
+            <div className="text-red-500">{errors.about_us.message}</div>
           )}
         </div>
       </div>
 
       <div className="mt-6 flex justify-end gap-4">
-        <div className="text-xl px-6 bg-white text-primary-900 border border-primary-900 rounded-md cursor-pointer w-[100px] flex justify-center items-center h-[40px]" >
-        <p onClick={() => {
-          resetHandler()
-        }}>
+        <div className="text-xl px-6 bg-white text-primary-900 border border-primary-900 rounded-md cursor-pointer w-[100px] flex justify-center items-center h-[40px]">
+          <p
+            onClick={() => {
+              resetHandler();
+            }}
+          >
             Reset
-        </p>
+          </p>
         </div>
-       
-        {
-          loading ? <Button className="text-xl px-6">
-          Loading...
-        </Button> : <Button type="submit" className="text-xl px-6">
-          Save
-        </Button>
-        }
+
+        {loading ? (
+          <Button className="text-xl px-6">Loading...</Button>
+        ) : (
+          <Button type="submit" className="text-xl px-6">
+            Save
+          </Button>
+        )}
       </div>
     </form>
   );
