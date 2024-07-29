@@ -7,6 +7,7 @@ import {
 } from "@/app/redux/features/supplierReview";
 import CustomerReviewBox from "@/components/common/CustomerReviewBox";
 import PaginationCom from "@/components/common/PaginationCom";
+import PaginationServerside from "@/components/common/PaginationServerside";
 import Select from "@/components/common/Select";
 import { CustomerReviewSVG } from "@/components/icons/Icons";
 import { useStateContext } from "@/utils/contexProvider";
@@ -60,8 +61,8 @@ const CustomerReview = () => {
   }, [setCurrentPage, supplierReviewList?.data?.reviews?.length]);
 
   useEffect(() => {
-    setAllReview(pageData);
-  }, [pageData]);
+    setAllReview(supplierReviewList?.data?.reviews);
+  }, [supplierReviewList?.data?.reviews, supplierReviewList?.data?.reviews?.length]);
 
   useEffect(() => {
     if (supplierReviewList?.data?.reviews?.length > 0) {
@@ -161,8 +162,7 @@ const CustomerReview = () => {
       setAllReviewStore(filterData);
     } else if (item == 200) {
       const filterData = supplierReviewList?.data?.reviews?.filter(
-        (item) => item?.review_action_type == 200
-      );
+        (item) => item?.is_replied);
       setAllReview(filterData);
       setAllReviewStore(filterData);
     } else if (item == 300) {
@@ -347,7 +347,8 @@ const CustomerReview = () => {
           ))}
         <div>
           <p className="flex items-end text-primary-900 cursor-pointer">
-            <PaginationCom array={allReviewStore} />
+            {/* <PaginationCom array={allReviewStore} /> */}
+            <PaginationServerside totalPage={100}/>
           </p>
         </div>
       </div>
