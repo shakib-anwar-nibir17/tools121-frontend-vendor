@@ -1,6 +1,7 @@
 /* eslint-disable no-empty-pattern */
 "use client";
 import {
+  useLazySupplierReviewListQuery,
   useReviewActionMutation,
   useSingleReviewReplyMutation,
   useSupplierReviewListQuery,
@@ -40,9 +41,9 @@ const sortOptions = [
 
 const CustomerReview = () => {
   const token = localStorage.getItem("vendorToken");
-  const { data: supplierReviewList } = useSupplierReviewListQuery(token, {
-    refetchOnMountOrArgChange: true,
-  });
+  const [triggerSuplierReview, { data: supplierReviewList, error, isLoading }] =
+  useLazySupplierReviewListQuery();
+  
   const { pageData, setCurrentPage } = useStateContext();
   const [allReview, setAllReview] = useState([]);
   const [allReviewStore, setAllReviewStore] = useState([]);
@@ -58,7 +59,8 @@ const CustomerReview = () => {
   /// --- page data setup from pagination--- ///
   useEffect(() => {
     setCurrentPage(0);
-  }, [setCurrentPage, supplierReviewList?.data?.reviews?.length]);
+    triggerSuplierReview({querys:`limit=${10}&&offset=${0}`})
+  }, []);
 
   useEffect(() => {
     setAllReview(supplierReviewList?.data?.reviews);

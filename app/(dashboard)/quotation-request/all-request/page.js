@@ -41,7 +41,7 @@ const AllRequestPage = () => {
   /// --- page data setup from pagination--- ///
   useEffect(() => {
     setCurrentPage(0);
-  }, [setCurrentPage, supplierQuotationList?.data?.quotations?.length]);
+  }, [setCurrentPage, supplierQuotationList?.data?.page?.length]);
 
   useEffect(() => {
     setAllQuatationRq(pageData);
@@ -49,8 +49,8 @@ const AllRequestPage = () => {
 
   useEffect(() => {
     setTabVal("all-request");
-    if (supplierQuotationList?.data?.quotations?.length > 0) {
-      setAllQuatationRqStore(supplierQuotationList?.data?.quotations);
+    if (supplierQuotationList?.data?.page?.length > 0) {
+      setAllQuatationRqStore(supplierQuotationList?.data?.page);
       const unreadData = supplierQuotationList?.data?.quotations?.filter(
         (item) => item?.supplier_action_type == 0
       );
@@ -248,7 +248,7 @@ const AllRequestPage = () => {
   };
   console.log(
     "Supplier Quotation =====>",
-    supplierQuotationList?.data?.quotations
+    supplierQuotationList?.data
   );
   // console.log('allQuatationRq --->', allQuatationRq);
   // console.log('allQuatationRqStore --->', allQuatationRqStore);

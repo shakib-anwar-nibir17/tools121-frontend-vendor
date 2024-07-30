@@ -50,7 +50,7 @@ const ListTabs = ({
       )}
 
       <div className="flex justify-end">
-        <PaginationCom array={totalData} />
+        {/* <PaginationCom array={totalData} /> */}
       </div>
     </Tabs>
   );

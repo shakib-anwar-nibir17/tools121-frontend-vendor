@@ -4,11 +4,12 @@ import { api } from "../api/api";
 const supplierReview = api.injectEndpoints({
   endpoints: (builder) => ({
     supplierReviewList: builder.query({
-      query: (token) => ({
-        url: "/supplier/review/v1/list",
+      query: (data) => ({
+        // url: `/supplier/review/v1/list?limit-${data?.limit}&&offset=${data?.offset}&&action_type=${data?.action_type}&&start_date=${data?.start_date ? data?.start_date : null}&&end_date=${data?.start_date ? data?.end_date : null}`,
+        url: `/supplier/review/v1/list?${data?.querys}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -48,7 +49,8 @@ const supplierReview = api.injectEndpoints({
 });
 
 export const {
-   useSupplierReviewListQuery,
+  //  useSupplierReviewListQuery,
+  useLazySupplierReviewListQuery,
    useSingleReviewReplyMutation,
    useReviewActionMutation,
   } = supplierReview;

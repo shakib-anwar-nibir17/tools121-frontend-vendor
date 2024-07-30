@@ -19,8 +19,8 @@ const invenntoryProductApi = api.injectEndpoints({
 
     getProducRequesttList: builder.query({
       query: (data) => ({
-        url: "/supplier/product/v1/requested/list",
-        // `/supplier/product/v1/requested/list${data?.action_type && data?.start_date? `?action_type=${data?.action_type}&start_date=${data?.start_date}&end_date=${data?.end_date}` : data?.action_type ? `?action_type=${data?.action_type}` : data?.start_date ? `?start_date=${data?.start_date}&end_date=${data?.end_date}` : ''}`
+        // url: "/supplier/product/v1/requested/list",
+        url: `/supplier/product/v1/requested/list?limit=${data?.limit ? data?.limit : 10}&&offset=${data?.offset ? data?.offset : 0}&&action_type=${data?.action_type ? data?.action_type : null}&&start_date=${data?.start_date ? data?.start_date : null}&&end_date=${data?.start_date ? data?.end_date : null}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${GetVendorToken()}`,
@@ -240,12 +240,12 @@ export const {
   useAddProductRequestMutation,
   useGetProductListQuery,
   useDeleteProductMutation,
-  useGetProducRequesttListQuery,
+  // useGetProducRequesttListQuery,
   useLazyGetSingleProductRequestQuery,
   useUpdateReqProductMutation,
   useDeleteRequstProductMutation,
   useLazyGetSingleProductQuery,
-  // useLazyGetProducRequesttListQuery,
+  useLazyGetProducRequesttListQuery,
   useUpdateProductMutation,
   useGetProductTagsQuery,
 } = invenntoryProductApi;

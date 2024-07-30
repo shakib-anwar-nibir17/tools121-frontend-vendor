@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client";
-import { useGetProducRequesttListQuery } from "@/app/redux/features/inventoryProduct";
+import { useLazyGetProducRequesttListQuery } from "@/app/redux/features/inventoryProduct";
 import ListTabs from "@/components/Dashboard/ProductRequestList/ListTabs";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
 import Loader from "@/components/common/Loader";
@@ -25,29 +25,22 @@ const ProductRequestListPage = () => {
 
   const [date, setDate] = useState({});
 
-  // const [triggerProductRequestList, { data: productRequestList, error, isLoading }] = useLazyGetProducRequesttListQuery();
-  const {
-    data: productRequestList,
-    refetch: refetchReqProduct,
-    isLoading,
-    isFetching,
-  } = useGetProducRequesttListQuery(token, {
-    refetchOnMountOrArgChange: true,
-  });
+  const [triggerProductRequestList, { data: productRequestList, error, isLoading , isFetching}] = useLazyGetProducRequesttListQuery();
+ 
   const [tabVal, setTabVal] = useState("");
 
   useEffect(() => {
-    refetchReqProduct();
-  }, [token, refetchReqProduct]);
+    triggerProductRequestList();
+  }, [token]);
 
   /// --- page data setup from pagination--- ///
   useEffect(() => {
     setCurrentPage(0);
-  }, [setCurrentPage, productRequestList?.data?.requested_products?.length]);
+  }, [setCurrentPage,productRequestList?.data?.page?.length]);
 
   useEffect(() => {
-    setAllRequestProducts(pageData);
-  }, [pageData]);
+    setAllRequestProducts(productRequestList?.data?.page);
+  }, [productRequestList?.data?.page?.length]);
 
   const dateFilterHandler = () => {
     const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
@@ -79,20 +72,23 @@ const ProductRequestListPage = () => {
       );
       setAllRequestProducts(pendingProd);
       setStoreRequestProducts(pendingProd);
-    } else if (val == "approved") {
+    } 
+    else if (val == "approved") {
       const approvedProd = productRequestList?.data?.requested_products?.filter(
         (item) => item?.action_type == 100
       );
       setAllRequestProducts(approvedProd);
       setStoreRequestProducts(approvedProd);
       console.log("approved data", approvedProd);
-    } else if (val == "rejected") {
+    } 
+    else if (val == "rejected") {
       const rejectProd = productRequestList?.data?.requested_products?.filter(
         (item) => item?.action_type == 200
       );
       setStoreRequestProducts(rejectProd);
       setAllRequestProducts(rejectProd);
-    } else {
+    } 
+    else {
       setAllRequestProducts(productRequestList?.data?.requested_products);
       setStoreRequestProducts(productRequestList?.data?.requested_products);
     }
@@ -100,47 +96,47 @@ const ProductRequestListPage = () => {
 
   useEffect(() => {
     setTabVal("all-products");
-    if (productRequestList?.data?.requested_products?.length > 0) {
-      setStoreRequestProducts(productRequestList?.data?.requested_products);
-      const pendingProd = productRequestList?.data?.requested_products?.filter(
-        (item) => item?.action_type == 0
-      );
-      const rejectProd = productRequestList?.data?.requested_products?.filter(
-        (item) => item?.action_type == 200
-      );
-      const approvedProd = productRequestList?.data?.requested_products?.filter(
-        (item) => item?.action_type == 100
-      );
-      setOptions([
-        {
-          key: "All Products",
-          value: "all-products",
-          amount: productRequestList?.data?.requested_products?.length,
-        },
-        {
-          key: "Approved",
-          value: "approved",
-          amount: approvedProd?.length,
-        },
-        {
-          key: "Pending",
-          value: "pending",
-          amount: pendingProd?.length,
-        },
-        {
-          key: "Rejected",
-          value: "rejected",
-          amount: rejectProd?.length,
-        },
-      ]);
+    if (productRequestList?.data?.page?.length > 0) {
+      setStoreRequestProducts(productRequestList?.data?.page);
+      // const pendingProd = productRequestList?.data?.requested_products?.filter(
+      //   (item) => item?.action_type == 0
+      // );
+      // const rejectProd = productRequestList?.data?.requested_products?.filter(
+      //   (item) => item?.action_type == 200
+      // );
+      // const approvedProd = productRequestList?.data?.requested_products?.filter(
+      //   (item) => item?.action_type == 100
+      // );
+      // setOptions([
+      //   {
+      //     key: "All Products",
+      //     value: "all-products",
+      //     amount: productRequestList?.data?.requested_products?.length,
+      //   },
+      //   {
+      //     key: "Approved",
+      //     value: "approved",
+      //     amount: approvedProd?.length,
+      //   },
+      //   {
+      //     key: "Pending",
+      //     value: "pending",
+      //     amount: pendingProd?.length,
+      //   },
+      //   {
+      //     key: "Rejected",
+      //     value: "rejected",
+      //     amount: rejectProd?.length,
+      //   },
+      // ]);
     }
   }, [
-    productRequestList?.data?.requested_products?.length,
-    productRequestList?.data?.requested_products,
+    productRequestList?.data?.page?.length,
+    productRequestList?.data?.page,
   ]);
 
-  // console.log('base prod===>', productRequestList?.data?.requested_products)
-  console.log("ProdReqestList", allRequestProducts?.length);
+  console.log('base prod===>', productRequestList)
+  // console.log("ProdReqestList", allRequestProducts?.length);
   // console.log("storeRequestProducts", storeRequestProducts?.length);
   // console.log("pageData", pageData?.length);
 
