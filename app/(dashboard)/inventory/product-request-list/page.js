@@ -29,7 +29,7 @@ const ProductRequestListPage = () => {
   const [totalPage, setTotalPage] = useState(0)
   
   useEffect(() => {
-    triggerProductRequestList();
+    triggerProductRequestList({querys: `limit=${10}&&offset=${0}`});
   }, [token]);
 
   /// --- page data setup from pagination--- ///
@@ -42,8 +42,7 @@ const ProductRequestListPage = () => {
     const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
     const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
 
-    const startDate = moment(startDateFormate).startOf("day");
-    const endDate = moment(endDateFormate).endOf("day");
+    triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
 
     console.log('start date', startDateFormate)
     console.log('end date', endDateFormate)
@@ -53,10 +52,11 @@ const ProductRequestListPage = () => {
   const tabHandler = (val) => {
     setTabVal(val);
     const findTabData = options?.find((item) => item?.value == val)
-    console.log(findTabData)
+
     if (val == "pending") {
       if(findTabData?.amount > 0){
-        triggerProductRequestList({limit: 10, offset: 1, action_type: 0})
+        // triggerProductRequestList({limit: 10, offset: 1, action_type: 0})
+        triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&action_type=${0}`})
         setActionVal(0)
         setCurrentPage(0)
         setPerpageCount(10)
@@ -69,7 +69,8 @@ const ProductRequestListPage = () => {
     } 
     else if (val == "approved") {
       if(findTabData?.amount > 0){
-        triggerProductRequestList({limit: 10, offset: 1, action_type: 100})
+        // triggerProductRequestList({limit: 10, offset: 1, action_type: 100})
+        triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&action_type=${100}`})
         setActionVal(100)
         setCurrentPage(0)
         setPerpageCount(10)
@@ -82,7 +83,8 @@ const ProductRequestListPage = () => {
     } 
     else if (val == "rejected") {
       if(findTabData?.amount > 0){
-        triggerProductRequestList({limit: 10, offset: 1, action_type: 200})
+        // triggerProductRequestList({limit: 10, offset: 1, action_type: 200})
+        triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
         setActionVal(200)
         setCurrentPage(0)
         setPerpageCount(10)
@@ -148,10 +150,13 @@ const ProductRequestListPage = () => {
 
   const onSearchHandler = (text) => {
     if (text?.length > 2) {
+
       console.log("calling --->", text);
+      
       setSearchText(text);
       setTimeout(() => {
-        triggerProductRequestList({limit: 10, offset: 1 , querys: `&&search_key=${text}`})
+        // triggerProductRequestList({limit: 10, offset: 1 , querys: `&&search_key=${text}`})
+        triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&search_key=${text}`})
       },500)
     } else {
       console.log('called')
@@ -160,7 +165,8 @@ const ProductRequestListPage = () => {
   };
   
   const pagiNateHandler = (pageNo, perpageCount) => {
-    triggerProductRequestList({limit: perpageCount, offset: pageNo , action_type: actionVal })
+    // triggerProductRequestList({limit: perpageCount, offset: pageNo , action_type: actionVal })
+    triggerProductRequestList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
   }
   
   useEffect(() => {
@@ -168,8 +174,10 @@ const ProductRequestListPage = () => {
       setTabVal("all-products")
     }
   },[options?.length])
+
   // console.log('base prod===>', allRequestProducts?.length)
   console.log('api call ==>', productRequestList)
+
   const onFocusHandler = () => {
     setCurrentPage(0);
     setPerpageCount(10)
