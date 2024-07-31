@@ -2,15 +2,20 @@ import PaginationCom from "@/components/common/PaginationCom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NoProducts from "../ProductList/NoProducts";
 import ListDataTable from "./ListDataTable";
+import PaginationServerside from "@/components/common/PaginationServerside";
+import Loader from "@/components/common/Loader";
 
 const ListTabs = ({
   requestData,
-  totalData,
+  totalPage,
   tabHandler,
   tabVal,
   options,
   buttonHandler,
+  pagiNateHandler,
+  isFetching
 }) => {
+  
   return (
     <Tabs defaultValue={tabVal}>
       <div className="flex items-center mt-10 justify-between">
@@ -33,24 +38,37 @@ const ListTabs = ({
         </div>
         <div>
           <div className="flex items-center gap-3">
-            <PaginationCom array={totalData} />
+            {
+              totalPage > 0 && <PaginationServerside pagiNateHandler={pagiNateHandler} totalPage={totalPage}/>
+            }
           </div>
         </div>
       </div>
-      {requestData?.length > 0 ? (
-        <TabsContent value={tabVal}>
-          <ListDataTable requestData={requestData} />
-        </TabsContent>
-      ) : (
-        <NoProducts
-          title="No Product requested Yet?"
-          suggestion="Request new products from your store and start selling."
-          buttonHandler={buttonHandler}
-        />
-      )}
-
+      {
+        isFetching ?  <div className=" w-full flex flex-row justify-center items-center h-screen">
+          <Loader />
+        </div> :
+        <div className="w-full">
+          
+          {requestData?.length > 0 ? (
+            <TabsContent value={tabVal}>
+              <ListDataTable requestData={requestData} />
+            </TabsContent>
+          ) : (
+            <NoProducts
+              title="No Product requested Yet?"
+              suggestion="Request new products from your store and start selling."
+              buttonHandler={buttonHandler}
+            />
+          )}
+      </div>
+      }
+      
       <div className="flex justify-end">
-        {/* <PaginationCom array={totalData} /> */}
+        {
+          totalPage > 0 &&  <PaginationServerside pagiNateHandler={pagiNateHandler} totalPage={totalPage}/>
+        }
+      
       </div>
     </Tabs>
   );

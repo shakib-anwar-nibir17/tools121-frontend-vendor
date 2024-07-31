@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 const ProductRequestListPage = () => {
   const token = localStorage.getItem("vendorToken");
   const router = useRouter();
-  const { pageData, setCurrentPage } = useStateContext();
+  const { pageData, setCurrentPage , setPerpageCount} = useStateContext();
   const [allRequestProducts, setAllRequestProducts] = useState([]);
   const [storeRequestProducts, setStoreRequestProducts] = useState([]);
 
@@ -28,6 +28,7 @@ const ProductRequestListPage = () => {
   const [triggerProductRequestList, { data: productRequestList, error, isLoading , isFetching}] = useLazyGetProducRequesttListQuery();
  
   const [tabVal, setTabVal] = useState("");
+  const [actionVal, setActionVal] = useState(null)
 
   useEffect(() => {
     triggerProductRequestList();
@@ -36,11 +37,8 @@ const ProductRequestListPage = () => {
   /// --- page data setup from pagination--- ///
   useEffect(() => {
     setCurrentPage(0);
-  }, [setCurrentPage,productRequestList?.data?.page?.length]);
-
-  useEffect(() => {
-    setAllRequestProducts(productRequestList?.data?.page);
-  }, [productRequestList?.data?.page?.length]);
+    setPerpageCount(10)
+  }, []);
 
   const dateFilterHandler = () => {
     const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
@@ -49,96 +47,72 @@ const ProductRequestListPage = () => {
     const startDate = moment(startDateFormate).startOf("day");
     const endDate = moment(endDateFormate).endOf("day");
 
-    // console.log('start date', startDate)
-    // console.log('end date', endDate)
-    // console.log('main date ===>', date)
+    console.log('start date', startDateFormate)
+    console.log('end date', endDateFormate)
 
-    const filteredData = productRequestList?.data?.requested_products?.filter(
-      (item) => {
-        const itemDate = moment(item?.request_time);
-        return itemDate.isBetween(startDate, endDate, null, "[]");
-      }
-    );
-    console.log("filter data --->", filteredData);
-    setAllRequestProducts(filteredData);
-    setStoreRequestProducts(filteredData);
   };
 
   const tabHandler = (val) => {
     setTabVal(val);
     if (val == "pending") {
-      const pendingProd = productRequestList?.data?.requested_products?.filter(
-        (item) => item?.action_type == 0
-      );
-      setAllRequestProducts(pendingProd);
-      setStoreRequestProducts(pendingProd);
+      triggerProductRequestList({limit: 10, offset: 1, action_type: 0})
+      setActionVal(0)
+      setCurrentPage(0)
+      setPerpageCount(10)
     } 
     else if (val == "approved") {
-      const approvedProd = productRequestList?.data?.requested_products?.filter(
-        (item) => item?.action_type == 100
-      );
-      setAllRequestProducts(approvedProd);
-      setStoreRequestProducts(approvedProd);
-      console.log("approved data", approvedProd);
+      triggerProductRequestList({limit: 10, offset: 1, action_type: 100})
+      setActionVal(100)
+      setCurrentPage(0)
+      setPerpageCount(10)
     } 
     else if (val == "rejected") {
-      const rejectProd = productRequestList?.data?.requested_products?.filter(
-        (item) => item?.action_type == 200
-      );
-      setStoreRequestProducts(rejectProd);
-      setAllRequestProducts(rejectProd);
+      triggerProductRequestList({limit: 10, offset: 1, action_type: 200})
+      setActionVal(200)
+      setCurrentPage(0)
+      setPerpageCount(10)
     } 
     else {
-      setAllRequestProducts(productRequestList?.data?.requested_products);
-      setStoreRequestProducts(productRequestList?.data?.requested_products);
+      triggerProductRequestList();
+      setActionVal(null)
+      setCurrentPage(0)
+      setPerpageCount(10)
     }
   };
 
   useEffect(() => {
-    setTabVal("all-products");
     if (productRequestList?.data?.page?.length > 0) {
       setStoreRequestProducts(productRequestList?.data?.page);
-      // const pendingProd = productRequestList?.data?.requested_products?.filter(
-      //   (item) => item?.action_type == 0
-      // );
-      // const rejectProd = productRequestList?.data?.requested_products?.filter(
-      //   (item) => item?.action_type == 200
-      // );
-      // const approvedProd = productRequestList?.data?.requested_products?.filter(
-      //   (item) => item?.action_type == 100
-      // );
-      // setOptions([
-      //   {
-      //     key: "All Products",
-      //     value: "all-products",
-      //     amount: productRequestList?.data?.requested_products?.length,
-      //   },
-      //   {
-      //     key: "Approved",
-      //     value: "approved",
-      //     amount: approvedProd?.length,
-      //   },
-      //   {
-      //     key: "Pending",
-      //     value: "pending",
-      //     amount: pendingProd?.length,
-      //   },
-      //   {
-      //     key: "Rejected",
-      //     value: "rejected",
-      //     amount: rejectProd?.length,
-      //   },
-      // ]);
+      setAllRequestProducts(productRequestList?.data?.page);
+    
+      setOptions([
+        {
+          key: "All Products",
+          value: "all-products",
+          amount: productRequestList?.data?.paginate?.total,
+        },
+        {
+          key: "Approved",
+          value: "approved",
+          amount: productRequestList?.data?.action_types[100] ? productRequestList?.data?.action_types[100] : 0
+        },
+        {
+          key: "Pending",
+          value: "pending",
+          amount: productRequestList?.data?.action_types[0] ? productRequestList?.data?.action_types[0] : 0,
+        },
+        {
+          key: "Rejected",
+          value: "rejected",
+          amount: 0,
+        },
+      ]);
+     setTimeout(() =>  setTabVal("all-products"), 500)
     }
   }, [
     productRequestList?.data?.page?.length,
     productRequestList?.data?.page,
   ]);
-
-  console.log('base prod===>', productRequestList)
-  // console.log("ProdReqestList", allRequestProducts?.length);
-  // console.log("storeRequestProducts", storeRequestProducts?.length);
-  // console.log("pageData", pageData?.length);
 
   const buttonHandler = () => {
     router.push("/inventory/product-request-form");
@@ -189,6 +163,13 @@ const ProductRequestListPage = () => {
       setAllRequestProducts(sliceData);
     }
   };
+  
+  const pagiNateHandler = (pageNo, perpageCount) => {
+    triggerProductRequestList({limit: perpageCount, offset: pageNo + 1, action_type: actionVal })
+  }
+  
+  // console.log('base prod===>', allRequestProducts?.length)
+  console.log('api call ==>', productRequestList)
 
   return (
     <div className="mb-20">
@@ -202,20 +183,18 @@ const ProductRequestListPage = () => {
       <div className="max-w-[540px]">
         <SearchInput onSearchHandler={onSearchHandler} />
       </div>
-      <div>
-        {isFetching ? (
-          <Loader />
-        ) : (
-          <ListTabs
+      
+         <ListTabs
             buttonHandler={buttonHandler}
             options={options}
             tabVal={tabVal}
             tabHandler={tabHandler}
             requestData={allRequestProducts}
-            totalData={storeRequestProducts}
+            totalPage={productRequestList?.data?.paginate?.total}
+            pagiNateHandler={pagiNateHandler}
+            isFetching={isFetching}
           />
-        )}
-      </div>
+      
     </div>
   );
 };

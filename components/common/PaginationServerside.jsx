@@ -6,32 +6,24 @@ import { FaChevronLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa6";
 import ReactPaginate from "react-paginate";
 
-const PaginationServerside = ({ totalPage }) => {
+const PaginationServerside = ({ totalPage,
+  pagiNateHandler }) => {
   // console.log('pagination totalPage', totalPage);
-  const { pageData, setPageData, currentPage, setCurrentPage } =
+  const { perpageCount, setPerpageCount, currentPage, setCurrentPage, pageCount, setPageCount } =
     useStateContext();
-  const [perPageCount, setPerPageCount] = useState(10);
+  // const [perPageCount, setPerPageCount] = useState(10);
 
-  const offset = currentPage * perPageCount;
+  // const offset = currentPage * perPageCount;
   // console.log('offset', offset);
 
-  const [pageCount, setPageCount] = useState(0);
-
   useEffect(() => {
-    setPageCount(Math.ceil(parseInt(totalPage) / perPageCount));
-  }, [totalPage, perPageCount]);
+    setPageCount(Math.ceil(parseInt(totalPage) / perpageCount));
+  }, [totalPage, perpageCount]);
 
-  useEffect(() => {
-    if (totalPage >= 10) {
-      
-      // console.log('pageItems', pageItems);
-    } else {
-      
-    }
-  }, [totalPage, totalPage, offset, perPageCount, setPageData]);
-
+  
   function handlePageClick({ selected: selectedPage }) {
     console.log("Selected Page", selectedPage);
+    pagiNateHandler(selectedPage, perpageCount)
     setCurrentPage(selectedPage);
   }
 
@@ -52,10 +44,11 @@ const PaginationServerside = ({ totalPage }) => {
             type="number"
             name=""
             id=""
-            value={perPageCount}
+            value={perpageCount}
             onChange={(e) => {
-              setPerPageCount(parseInt(e.target.value));
+              setPerpageCount(parseInt(e.target.value));
               setCurrentPage(0);
+              pagiNateHandler(currentPage, parseInt(e.target.value))
             }}
             className="w-25 text-left px-2 mx-2 h-10"
           >
