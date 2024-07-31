@@ -20,7 +20,20 @@ const invenntoryProductApi = api.injectEndpoints({
     getProducRequesttList: builder.query({
       query: (data) => ({
         // url: "/supplier/product/v1/requested/list",
-        url: `/supplier/product/v1/requested/list?limit=${data?.limit ? data?.limit : 10}&&offset=${data?.offset ? data?.offset : 1}&&action_type=${data?.action_type ? data?.action_type : null}&&start_date=${data?.start_date ? data?.start_date : null}&&end_date=${data?.start_date ? data?.end_date : null}`,
+        url: `/supplier/product/v1/requested/list?limit=${data?.limit ? data?.limit : 10}&&offset=${data?.offset ? data?.offset : 0}&&action_type=${data?.action_type ? data?.action_type : null}&&start_date=${data?.start_date ? data?.start_date : null}&&end_date=${data?.start_date ? data?.end_date : null}${data?.querys ? data?.querys : ''}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+      providesTags: ["productrequestlist"],
+    }),
+
+    searchProdReqList: builder.query({
+      query: (data) => ({
+        url: `/supplier/product/v1/requested/list?limit=${data?.limit ? data?.limit : 10}&&offset=${data?.offset ? data?.offset : 1}&&search_key=${data?.search_key ? data?.search_key : null}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${GetVendorToken()}`,
@@ -248,4 +261,5 @@ export const {
   useLazyGetProducRequesttListQuery,
   useUpdateProductMutation,
   useGetProductTagsQuery,
+  useLazySearchProdReqListQuery
 } = invenntoryProductApi;

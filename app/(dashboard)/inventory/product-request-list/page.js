@@ -17,19 +17,17 @@ const ProductRequestListPage = () => {
   const [allRequestProducts, setAllRequestProducts] = useState([]);
   const [storeRequestProducts, setStoreRequestProducts] = useState([]);
 
-  const [pendingData, setPendingData] = useState([]);
-  const [rejectData, setRejectData] = useState([]);
-  const [approvedData, setApprovedData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [options, setOptions] = useState([]);
 
   const [date, setDate] = useState({});
 
   const [triggerProductRequestList, { data: productRequestList, error, isLoading , isFetching}] = useLazyGetProducRequesttListQuery();
- 
+  
   const [tabVal, setTabVal] = useState("");
   const [actionVal, setActionVal] = useState(null)
-
+  const [totalPage, setTotalPage] = useState(0)
+  
   useEffect(() => {
     triggerProductRequestList();
   }, [token]);
@@ -54,29 +52,53 @@ const ProductRequestListPage = () => {
 
   const tabHandler = (val) => {
     setTabVal(val);
+    const findTabData = options?.find((item) => item?.value == val)
+    console.log(findTabData)
     if (val == "pending") {
-      triggerProductRequestList({limit: 10, offset: 1, action_type: 0})
-      setActionVal(0)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      if(findTabData?.amount > 0){
+        triggerProductRequestList({limit: 10, offset: 1, action_type: 0})
+        setActionVal(0)
+        setCurrentPage(0)
+        setPerpageCount(10)
+      }
+      else{
+        setStoreRequestProducts([]);
+        setAllRequestProducts([]);
+        setTotalPage(0)
+      }
     } 
     else if (val == "approved") {
-      triggerProductRequestList({limit: 10, offset: 1, action_type: 100})
-      setActionVal(100)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      if(findTabData?.amount > 0){
+        triggerProductRequestList({limit: 10, offset: 1, action_type: 100})
+        setActionVal(100)
+        setCurrentPage(0)
+        setPerpageCount(10)
+      }
+      else{
+        setStoreRequestProducts([]);
+        setAllRequestProducts([]);
+        setTotalPage(0)
+      }
     } 
     else if (val == "rejected") {
-      triggerProductRequestList({limit: 10, offset: 1, action_type: 200})
-      setActionVal(200)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      if(findTabData?.amount > 0){
+        triggerProductRequestList({limit: 10, offset: 1, action_type: 200})
+        setActionVal(200)
+        setCurrentPage(0)
+        setPerpageCount(10)
+      }
+      else{
+        setStoreRequestProducts([]);
+        setAllRequestProducts([]);
+        setTotalPage(0)
+      }
     } 
-    else {
+    else if (val == "all-products") {
       triggerProductRequestList();
       setActionVal(null)
       setCurrentPage(0)
       setPerpageCount(10)
+      console.log('cllad')
     }
   };
 
@@ -84,7 +106,8 @@ const ProductRequestListPage = () => {
     if (productRequestList?.data?.page?.length > 0) {
       setStoreRequestProducts(productRequestList?.data?.page);
       setAllRequestProducts(productRequestList?.data?.page);
-    
+      setTotalPage(productRequestList?.data?.paginate?.total)
+
       setOptions([
         {
           key: "All Products",
@@ -107,11 +130,16 @@ const ProductRequestListPage = () => {
           amount: 0,
         },
       ]);
-     setTimeout(() =>  setTabVal("all-products"), 500)
+    }
+    else{
+      setStoreRequestProducts([]);
+      setAllRequestProducts([]);
+      setTotalPage(0)
     }
   }, [
     productRequestList?.data?.page?.length,
     productRequestList?.data?.page,
+   
   ]);
 
   const buttonHandler = () => {
@@ -122,55 +150,30 @@ const ProductRequestListPage = () => {
     if (text?.length > 2) {
       console.log("calling --->", text);
       setSearchText(text);
-      const searchData = productRequestList?.data?.requested_products?.filter(
-        (item) => {
-          const searchItem = text.toLocaleLowerCase();
-          return (
-            item?.product_name?.toLocaleLowerCase()?.indexOf(searchItem) > -1
-          );
-        }
-      );
-      setAllRequestProducts(searchData);
+      setTimeout(() => {
+        triggerProductRequestList({limit: 10, offset: 1 , querys: `&&search_key=${text}`})
+      },500)
     } else {
-      const doSlice = (filterVal) => {
-        if (filterVal == "none") {
-          const sliceData = productRequestList?.data?.requested_products?.slice(
-            0,
-            10
-          );
-          setStoreRequestProducts(productRequestList?.data?.requested_products);
-          return sliceData;
-        } else {
-          const filterData =
-            productRequestList?.data?.requested_products?.filter(
-              (item) => item?.action_type == filterVal
-            );
-
-          const sliceData = filterData?.slice(0, 10);
-          setStoreRequestProducts(filterData);
-          return sliceData;
-        }
-      };
-      const filterVal =
-        tabVal == "pending"
-          ? 0
-          : tabVal == "approved"
-          ? 100
-          : tabVal == "approved"
-          ? 200
-          : "none";
-      const sliceData = doSlice(filterVal);
-      setAllRequestProducts(sliceData);
+      console.log('called')
+      tabHandler(tabVal)
     }
   };
   
   const pagiNateHandler = (pageNo, perpageCount) => {
-    triggerProductRequestList({limit: perpageCount, offset: pageNo + 1, action_type: actionVal })
+    triggerProductRequestList({limit: perpageCount, offset: pageNo , action_type: actionVal })
   }
   
+  useEffect(() => {
+    if(options?.length > 0){
+      setTabVal("all-products")
+    }
+  },[options?.length])
   // console.log('base prod===>', allRequestProducts?.length)
   console.log('api call ==>', productRequestList)
-
+  const onFocusHandler = () => {
+    setCurrentPage(0);
+    setPerpageCount(10)
+  }
   return (
     <div className="mb-20">
       <div className="absolute top-0 right-0">
@@ -181,7 +184,7 @@ const ProductRequestListPage = () => {
         />
       </div>
       <div className="max-w-[540px]">
-        <SearchInput onSearchHandler={onSearchHandler} />
+        <SearchInput onFocusHandler={onFocusHandler} onSearchHandler={onSearchHandler} />
       </div>
       
          <ListTabs
@@ -190,7 +193,7 @@ const ProductRequestListPage = () => {
             tabVal={tabVal}
             tabHandler={tabHandler}
             requestData={allRequestProducts}
-            totalPage={productRequestList?.data?.paginate?.total}
+            totalPage={totalPage}
             pagiNateHandler={pagiNateHandler}
             isFetching={isFetching}
           />

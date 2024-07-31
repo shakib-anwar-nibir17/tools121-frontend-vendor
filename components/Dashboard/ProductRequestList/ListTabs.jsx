@@ -15,7 +15,7 @@ const ListTabs = ({
   pagiNateHandler,
   isFetching
 }) => {
-  
+  console.log(tabVal)
   return (
     <Tabs defaultValue={tabVal}>
       <div className="flex items-center mt-10 justify-between">
