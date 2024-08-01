@@ -39,13 +39,13 @@ const ProductRequestListPage = () => {
   }, []);
 
   const dateFilterHandler = () => {
-    const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+    if(totalPage > 0){
+      const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
     const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
 
     triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
-
-    console.log('start date', startDateFormate)
-    console.log('end date', endDateFormate)
+    setPerpageCount(10)
+    }
 
   };
 

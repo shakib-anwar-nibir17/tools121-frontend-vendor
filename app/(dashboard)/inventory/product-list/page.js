@@ -27,7 +27,7 @@ const ProductList = () => {
 
   useEffect(() => {
     triggerProductList({querys: `limit=${10}&&offset=${0}`});
-  }, [token]);
+  }, []);
 
   console.log("product list ==>", productList);
   // console.log("token ==>", token)

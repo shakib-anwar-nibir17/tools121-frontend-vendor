@@ -2,14 +2,18 @@ import PaginationCom from "@/components/common/PaginationCom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NoProducts from "../ProductList/NoProducts";
 import AllRequestDataTable from "./AllRequestDataTable";
+import Loader from "@/components/common/Loader";
+import PaginationServerside from "@/components/common/PaginationServerside";
 
 const AllRequest = ({
   tableData,
   options,
   tabVal,
   tabHandler,
-  totalData,
+  totalPage,
   quotationActionSubmit,
+  isFetching,
+  pagiNateHandler
 }) => {
   return (
     <Tabs defaultValue={tabVal}>
@@ -33,11 +37,15 @@ const AllRequest = ({
         </div>
         <div className="flex flex-row justify-end">
           <div>
-            <PaginationCom array={totalData} />
+              {
+              totalPage > 0 &&  <PaginationServerside pagiNateHandler={pagiNateHandler} totalPage={totalPage}/>
+            }
           </div>
         </div>
       </div>
-      {tableData?.length > 0 ? (
+      {
+        isFetching ?  <Loader /> : <>
+         {tableData?.length > 0 ? (
         <TabsContent value={tabVal}>
           <AllRequestDataTable
             quotationActionSubmit={quotationActionSubmit}
@@ -51,6 +59,9 @@ const AllRequest = ({
           buttonShow={false}
         />
       )}
+        </>
+      }
+     
     </Tabs>
   );
 };

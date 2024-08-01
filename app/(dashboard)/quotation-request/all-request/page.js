@@ -4,7 +4,7 @@
 "use client";
 import {
   useQuotationActionMutation,
-  useSupplierQuotationListQuery,
+  useLazySupplierQuotationListQuery,
 } from "@/app/redux/features/supplierQuotation";
 import AllRequest from "@/components/Dashboard/QuotationRequest/AllRequest";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
@@ -18,191 +18,124 @@ import toast from "react-hot-toast";
 
 const AllRequestPage = () => {
   const token = localStorage.getItem("vendorToken");
-  const {
-    data: supplierQuotationList,
-    refetch: refetchQuotationReq,
-    isFetching,
-  } = useSupplierQuotationListQuery(token, {
-    refetchOnMountOrArgChange: true,
-  });
+  const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
+
   const [allQuatationRq, setAllQuatationRq] = useState([]);
   const [allQuatationRqStore, setAllQuatationRqStore] = useState([]);
   const [tabVal, setTabVal] = useState("");
-  const { pageData, setCurrentPage } = useStateContext();
+  const { pageData, setCurrentPage, setPerpageCount } = useStateContext();
   const [options, setOptions] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [date, setDate] = useState({});
   const [quotationActionHandler, {}] = useQuotationActionMutation();
+  const [actionVal, setActionVal] = useState(null)
+  const [totalPage, setTotalPage] = useState(0)
 
   useEffect(() => {
-    refetchQuotationReq();
+    triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
   }, [token]);
 
   /// --- page data setup from pagination--- ///
   useEffect(() => {
     setCurrentPage(0);
-  }, [setCurrentPage, supplierQuotationList?.data?.page?.length]);
-
-  useEffect(() => {
-    setAllQuatationRq(pageData);
-  }, [pageData]);
-
-  useEffect(() => {
+    setPerpageCount(10)
     setTabVal("all-request");
+  }, []);
+
+  useEffect(() => {
+    
     if (supplierQuotationList?.data?.page?.length > 0) {
-      setAllQuatationRqStore(supplierQuotationList?.data?.page);
-      const unreadData = supplierQuotationList?.data?.quotations?.filter(
-        (item) => item?.supplier_action_type == 0
-      );
-      const spamData = supplierQuotationList?.data?.quotations?.filter(
-        (item) => item?.supplier_action_type == 400
-      );
-      const respondedData = supplierQuotationList?.data?.quotations?.filter(
-        (item) => item?.is_replied
-      );
-      const pinnedData = supplierQuotationList?.data?.quotations?.filter(
-        (item) => item?.supplier_action_type == 200
-      );
+      setAllQuatationRq(supplierQuotationList?.data?.page);
+      setTotalPage(supplierQuotationList?.data?.paginate?.total)
 
       const OpData = [
         {
           key: "All Request",
           value: "all-request",
-          amount: supplierQuotationList?.data?.quotations?.length,
+          amount: supplierQuotationList?.data?.paginate?.total,
         },
         {
           key: "Responded",
           value: "responded",
-          amount: respondedData?.length,
+          amount: supplierQuotationList?.data?.action_types[100] ? supplierQuotationList?.data?.action_types[100] : 0,
         },
         {
           key: "Unread",
           value: "unread",
-          amount: unreadData?.length,
+          amount: supplierQuotationList?.data?.action_types[0] ? supplierQuotationList?.data?.action_types[0] : 0,
         },
         {
           key: "Pinned",
           value: "pinned",
-          amount: pinnedData?.length,
+          amount: supplierQuotationList?.data?.action_types[200] ? supplierQuotationList?.data?.action_types[200] : 0,
         },
         {
           key: "Spam",
           value: "spam",
-          amount: spamData?.length,
+          amount: supplierQuotationList?.data?.action_types[400] ? supplierQuotationList?.data?.action_types[400] : 0,
         },
       ];
-
       setOptions(OpData);
     }
+    else{
+      setAllQuatationRq([])
+      setTotalPage(0)
+    }
   }, [
-    supplierQuotationList?.data?.quotations?.length,
-    supplierQuotationList?.data?.quotations,
+    supplierQuotationList?.data?.page?.length,
+    supplierQuotationList?.data?.page,
   ]);
 
   const tabHandler = (val) => {
     setTabVal(val);
-    if (supplierQuotationList?.data?.quotations?.length > 0) {
-      if (val == "responded") {
-        const respondedData = supplierQuotationList?.data?.quotations?.filter(
-          (item) => item?.is_replied
-        );
-        setAllQuatationRq(respondedData);
-        setAllQuatationRqStore(respondedData);
-      } else if (val == "unread") {
-        const unreadData = supplierQuotationList?.data?.quotations?.filter(
-          (item) => item?.supplier_action_type == 0
-        );
-        setAllQuatationRq(unreadData);
-        setAllQuatationRqStore(unreadData);
-      } else if (val == "spam") {
-        const spamData = supplierQuotationList?.data?.quotations?.filter(
-          (item) => item?.supplier_action_type == 400
-        );
-        setAllQuatationRq(spamData);
-        setAllQuatationRqStore(spamData);
-      } else if (val == "pinned") {
-        const pinnedData = supplierQuotationList?.data?.quotations?.filter(
-          (item) => item?.supplier_action_type == 200
-        );
-        setAllQuatationRq(pinnedData);
-        setAllQuatationRqStore(pinnedData);
-      } else {
-        setAllQuatationRq(supplierQuotationList?.data?.quotations);
-        setAllQuatationRqStore(supplierQuotationList?.data?.quotations);
-      }
+    if (val == "responded") {
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${100}`})
+      setActionVal(100)
+      setCurrentPage(0)
+      setPerpageCount(10)
+
+    } else if (val == "unread") {
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${0}`})
+      setActionVal(0)
+      setCurrentPage(0)
+      setPerpageCount(10)
+    } else if (val == "spam") {
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${400}`})
+      setActionVal(400)
+      setCurrentPage(0)
+      setPerpageCount(10)
+      console.log('called---------->>>>>')
+    } else if (val == "pinned") {
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
+      setActionVal(200)
+      setCurrentPage(0)
+      setPerpageCount(10)
+    } else if("all-request"){
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
+      setActionVal(null)
+      setCurrentPage(0)
+      setPerpageCount(10)
     }
   };
 
   const onSearchHandler = (text) => {
-    if (supplierQuotationList?.data?.quotations?.length > 0) {
-      if (text?.length > 2) {
-        console.log("calling --->", text);
-        setSearchText(text);
-        const searchData = supplierQuotationList?.data?.quotations?.filter(
-          (item) => {
-            const searchItem = text.toLocaleLowerCase();
-            return (
-              item?.product_name?.toLocaleLowerCase()?.indexOf(searchItem) > -1
-            );
-          }
-        );
-        setAllQuatationRq(searchData);
-      } else {
-        const doSlice = (filterVal) => {
-          if (filterVal == "none") {
-            const sliceData = supplierQuotationList?.data?.quotations?.slice(
-              0,
-              10
-            );
-            setAllQuatationRqStore(supplierQuotationList?.data?.quotations);
-            return sliceData;
-          } else {
-            const filterData = supplierQuotationList?.data?.quotations?.filter(
-              (item) => item?.action_type == filterVal
-            );
+    if (text?.length > 2) {
 
-            const sliceData = filterData?.slice(0, 10);
-            setAllQuatationRqStore(filterData);
-            return sliceData;
-          }
-        };
-        const filterVal =
-          tabVal == "unread"
-            ? 0
-            : tabVal == "responded"
-            ? 100
-            : tabVal == "pinned"
-            ? 200
-            : tabVal == "spam"
-            ? 400
-            : "none";
-        const sliceData = doSlice(filterVal);
-        setAllQuatationRq(sliceData);
-      }
+      setSearchText(text);
+      setTimeout(() => {
+        triggerQuotationList({querys: `limit=${10}&&offset=${0}&&search_key=${text}`})
+      },500)
+    } else {
+      tabHandler(tabVal)
     }
   };
-
+  
   const dateFilterHandler = () => {
-    if (supplierQuotationList?.data?.quotations?.length > 0) {
+    if (totalPage > 0) {
       const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
       const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
-
-      const startDate = moment(startDateFormate).startOf("day");
-      const endDate = moment(endDateFormate).endOf("day");
-
-      // console.log('start date', startDate)
-      // console.log('end date', endDate)
-      // console.log('main date ===>', date)
-
-      const filteredData = supplierQuotationList?.data?.quotations?.filter(
-        (item) => {
-          const itemDate = moment(item?.created);
-          return itemDate.isBetween(startDate, endDate, null, "[]");
-        }
-      );
-      console.log("filter data --->", filteredData);
-      setAllQuatationRq(filteredData);
-      setAllQuatationRqStore(filteredData);
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
+      setPerpageCount(10)
     }
   };
 
@@ -246,12 +179,12 @@ const AllRequestPage = () => {
       });
     }
   };
-  console.log(
-    "Supplier Quotation =====>",
-    supplierQuotationList?.data
-  );
+
+  const pagiNateHandler = (pageNo, perpageCount) => {
+    triggerQuotationList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
+  }
   // console.log('allQuatationRq --->', allQuatationRq);
-  // console.log('allQuatationRqStore --->', allQuatationRqStore);
+  console.log('supplierQuotationList --->', supplierQuotationList?.data);
 
   return (
     <div className="mb-20">
@@ -263,23 +196,20 @@ const AllRequestPage = () => {
           setDate={setDate}
         />
       </div>
-      {isFetching ? (
-        <Loader />
-      ) : (
-        <>
-          <div className="max-w-[540px] mt-12">
-            <SearchInput onSearchHandler={onSearchHandler} />
-          </div>
-          <AllRequest
-            tableData={allQuatationRq}
-            tabVal={tabVal}
-            options={options}
-            totalData={allQuatationRqStore}
-            tabHandler={tabHandler}
-            quotationActionSubmit={quotationActionSubmit}
-          />
-        </>
-      )}
+
+      <div className="max-w-[540px] mt-12">
+        <SearchInput onSearchHandler={onSearchHandler} />
+      </div>
+      <AllRequest
+        tableData={allQuatationRq}
+        tabVal={tabVal}
+        options={options}
+        tabHandler={tabHandler}
+        quotationActionSubmit={quotationActionSubmit}
+        isFetching={isFetching}
+        pagiNateHandler={pagiNateHandler}
+        totalPage={totalPage}
+      />
     </div>
   );
 };

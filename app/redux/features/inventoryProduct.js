@@ -6,7 +6,7 @@ const invenntoryProductApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getProductList: builder.query({
       query: (data) => ({
-        url: `/supplier/product/v1/list?${data?.querys}`,
+        url: `/supplier/product/v1/list?${data?.querys ? data?.querys : 'limit=10&&offset=0'}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${GetVendorToken()}`,
@@ -19,9 +19,8 @@ const invenntoryProductApi = api.injectEndpoints({
 
     getProducRequesttList: builder.query({
       query: (data) => ({
-        // url: "/supplier/product/v1/requested/list",
         // url: `/supplier/product/v1/requested/list?limit=${data?.limit ? data?.limit : 10}&&offset=${data?.offset ? data?.offset : 0}&&action_type=${data?.action_type ? data?.action_type : null}&&start_date=${data?.start_date ? data?.start_date : null}&&end_date=${data?.start_date ? data?.end_date : null}${data?.querys ? data?.querys : ''}`,
-        url: `/supplier/product/v1/requested/list?${data?.querys}`,
+        url: `/supplier/product/v1/requested/list?${data?.querys ? data?.querys : 'limit=10&&offset=0'}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${GetVendorToken()}`,
