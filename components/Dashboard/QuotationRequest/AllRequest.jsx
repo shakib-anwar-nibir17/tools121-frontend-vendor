@@ -15,8 +15,9 @@ const AllRequest = ({
   isFetching,
   pagiNateHandler
 }) => {
+  console.log('tab val ---->', tabVal)
   return (
-    <Tabs defaultValue={tabVal}>
+    <Tabs defaultValue="all-request">
       <div className="flex items-center mt-10 justify-between">
         <div>
           <TabsList className="gap-12 font-bold text-primary-950 p-0">

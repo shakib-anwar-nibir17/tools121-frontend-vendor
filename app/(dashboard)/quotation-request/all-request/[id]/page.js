@@ -19,11 +19,11 @@ const QuotationResponsePage = ({ params }) => {
     useLazySingleQuotationListQuery();
   const [quotationActionHandler, {}] = useQuotationActionMutation();
 
-  const quotationActionSubmit = async () => {
+  const quotationActionSubmit = async (actionVal) => {
     const request_obj = {
       actions: [
         {
-          action_type: 100,
+          action_type: actionVal,
           quotation_id: params?.id,
         },
       ],
@@ -34,7 +34,7 @@ const QuotationResponsePage = ({ params }) => {
   useEffect(() => {
     if (params?.id) {
       triggerSingleQuotation({ id: params?.id, token: token });
-      quotationActionSubmit();
+      quotationActionSubmit(100);
     }
   }, [params?.id, token, triggerSingleQuotation]);
 
@@ -60,6 +60,7 @@ const QuotationResponsePage = ({ params }) => {
             params={params}
             triggerSingleQuotation={triggerSingleQuotation}
             token={token}
+            quotationActionSubmit={quotationActionSubmit}
           />
         )}
       </div>

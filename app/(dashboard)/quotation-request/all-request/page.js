@@ -57,7 +57,7 @@ const AllRequestPage = () => {
         {
           key: "Responded",
           value: "responded",
-          amount: supplierQuotationList?.data?.action_types[100] ? supplierQuotationList?.data?.action_types[100] : 0,
+          amount: supplierQuotationList?.data?.action_types[500] ? supplierQuotationList?.data?.action_types[500] : 0,
         },
         {
           key: "Unread",

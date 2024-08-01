@@ -17,7 +17,7 @@ const ListTabs = ({
 }) => {
   console.log(tabVal)
   return (
-    <Tabs defaultValue={tabVal}>
+    <Tabs defaultValue="all-products">
       <div className="flex items-center mt-10 justify-between">
         <div>
           <TabsList className="gap-12 font-bold text-primary-950 p-0">

@@ -170,10 +170,8 @@ const ProductRequestListPage = () => {
   }
   
   useEffect(() => {
-    if(options?.length > 0){
-      setTabVal("all-products")
-    }
-  },[options?.length])
+    setTabVal("all-products")
+  },[])
 
   // console.log('base prod===>', allRequestProducts?.length)
   console.log('api call ==>', productRequestList)
