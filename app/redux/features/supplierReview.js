@@ -5,8 +5,7 @@ const supplierReview = api.injectEndpoints({
   endpoints: (builder) => ({
     supplierReviewList: builder.query({
       query: (data) => ({
-        // url: `/supplier/review/v1/list?limit-${data?.limit}&&offset=${data?.offset}&&action_type=${data?.action_type}&&start_date=${data?.start_date ? data?.start_date : null}&&end_date=${data?.start_date ? data?.end_date : null}`,
-        url: `/supplier/review/v1/list?${data?.querys}`,
+        url: `/supplier/review/v1/list?${data?.querys ? data?.querys : 'limit=10&&offset=0'}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${GetVendorToken()}`,

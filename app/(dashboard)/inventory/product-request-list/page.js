@@ -164,9 +164,14 @@ const ProductRequestListPage = () => {
     }
   };
   
-  const pagiNateHandler = (pageNo, perpageCount) => {
-    // triggerProductRequestList({limit: perpageCount, offset: pageNo , action_type: actionVal })
-    triggerProductRequestList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
+   const pagiNateHandler = (pageNo, perpageCount) => {
+    if(date?.from && date?.to){
+      const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+      const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
+      triggerProductRequestList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}start_date=${startDateFormate}&&end_date=${endDateFormate}`})
+    }else{
+      triggerProductRequestList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
+    }
   }
   
   useEffect(() => {

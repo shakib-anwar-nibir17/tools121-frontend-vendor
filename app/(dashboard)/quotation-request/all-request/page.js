@@ -131,12 +131,10 @@ const AllRequestPage = () => {
   };
   
   const dateFilterHandler = () => {
-    if (totalPage > 0) {
-      const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+    const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
       const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
       triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
       setPerpageCount(10)
-    }
   };
 
   const quotationActionSubmit = async (action, id) => {
@@ -181,7 +179,13 @@ const AllRequestPage = () => {
   };
 
   const pagiNateHandler = (pageNo, perpageCount) => {
-    triggerQuotationList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
+    if(date?.from && date?.to){
+      const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+      const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
+      triggerQuotationList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}start_date=${startDateFormate}&&end_date=${endDateFormate}`})
+    }else{
+      triggerQuotationList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
+    }
   }
   // console.log('allQuatationRq --->', allQuatationRq);
   console.log('supplierQuotationList --->', supplierQuotationList?.data);
