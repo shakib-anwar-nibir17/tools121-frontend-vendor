@@ -1,3 +1,4 @@
+import Analytics from "@/components/Dashboard/TrafficAnalytics/Analytics";
 import AnalyticsHeader from "@/components/Dashboard/TrafficAnalytics/AnalyticsHeader";
 import StatsTab from "@/components/Dashboard/TrafficAnalytics/StatsTab";
 import HeaderLinks from "@/components/common/HeaderLinks";
@@ -9,6 +10,7 @@ const TrafficAnalyticsPage = () => {
     <div>
       <HeaderLinks paths={paths} />
       <AnalyticsHeader />
+      <Analytics />
       <div className="max-w-[540px] mt-10">
         <SearchInput />
       </div>
