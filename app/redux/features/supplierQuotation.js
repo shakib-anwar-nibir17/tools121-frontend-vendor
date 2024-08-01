@@ -4,11 +4,11 @@ import { api } from "../api/api";
 const supplierQuotation = api.injectEndpoints({
   endpoints: (builder) => ({
     supplierQuotationList: builder.query({
-      query: (token) => ({
-        url: "/supplier/quotation/v1/list",
+      query: (data) => ({
+        url: `/supplier/quotation/v1/list?${data?.querys ? data?.querys : 'limit=10&&offset=0'}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -59,7 +59,7 @@ const supplierQuotation = api.injectEndpoints({
 });
 
 export const {
-  useSupplierQuotationListQuery,
+  useLazySupplierQuotationListQuery,
   useLazySingleQuotationListQuery,
   useSingleQuotationListQuery,
   useSingleQuotationReplyMutation,
