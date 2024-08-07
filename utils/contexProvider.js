@@ -8,6 +8,8 @@ export const ContextProvider = ({ children }) => {
   const [pageData, setPageData] = useState();
   const [currentPage, setCurrentPage] = useState(0);
   const [message, setMessage] = useState({});
+  const [perpageCount, setPerpageCount] = useState(10);
+  const [pageCount, setPageCount] = useState(0);
 
   return (
     <StateContext.Provider
@@ -22,6 +24,10 @@ export const ContextProvider = ({ children }) => {
         setCurrentPage,
         message,
         setMessage,
+        setPerpageCount,
+        perpageCount,
+        pageCount,
+        setPageCount
       }}
     >
       {children}

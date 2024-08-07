@@ -79,7 +79,11 @@ const CustomerReviewBox = ({
               Approve
             </button>
             <span>|</span>
-            <button
+            {
+              review?.is_replied ?  <button
+              className='text-green-700'>
+              Replied
+            </button> :  <button
               onClick={() => replyTrackHandler(review?.id)}
               className={`${
                 review?.id == replyTrack ? "text-slate-200" : "text-primary-900"
@@ -87,6 +91,7 @@ const CustomerReviewBox = ({
             >
               Reply
             </button>
+            }
             <span>|</span>
             {review?.review_action_type == 400 ? (
               ""

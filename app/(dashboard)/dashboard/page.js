@@ -2,7 +2,7 @@
 "use client";
 import {
   useQuotationActionMutation,
-  useSupplierQuotationListQuery,
+  useLazySupplierQuotationListQuery,
 } from "@/app/redux/features/supplierQuotation";
 import MainHeader from "@/components/Dashboard/DashboardPage/MainHeader";
 import TopSellingItems from "@/components/Dashboard/DashboardPage/TopSellingItems";
@@ -20,13 +20,7 @@ import toast from "react-hot-toast";
 const DashboradPage = () => {
   const paths = ["Dashboard", "Dashboard"];
   const token = localStorage.getItem("vendorToken");
-  const {
-    data: supplierQuotationList,
-    refetch: refetchQuotationReq,
-    isFetching,
-  } = useSupplierQuotationListQuery(token, {
-    refetchOnMountOrArgChange: true,
-  });
+  const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
 
   const [date, setDate] = useState({});
   const [allQuatationRq, setAllQuatationRq] = useState([]);
@@ -39,8 +33,8 @@ const DashboradPage = () => {
   const [quotationActionHandler] = useQuotationActionMutation();
 
   useEffect(() => {
-    refetchQuotationReq();
-  }, [token, refetchQuotationReq]);
+    triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
+  }, [token]);
 
   /// --- page data setup from pagination--- ///
   useEffect(() => {
