@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client";
-import { useLazyGetProducRequesttListQuery } from "@/app/redux/features/inventoryProduct";
+import { useLazyGetProducRequesttListQuery, useLazyGetReqProductCounterQuery } from "@/app/redux/features/inventoryProduct";
 import ListTabs from "@/components/Dashboard/ProductRequestList/ListTabs";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
 import Loader from "@/components/common/Loader";
@@ -23,6 +23,7 @@ const ProductRequestListPage = () => {
   const [date, setDate] = useState({});
 
   const [triggerProductRequestList, { data: productRequestList, error, isLoading , isFetching}] = useLazyGetProducRequesttListQuery();
+  const [triggerReqProductCounter, { data: counterList}] = useLazyGetReqProductCounterQuery();
   
   const [tabVal, setTabVal] = useState("");
   const [actionVal, setActionVal] = useState(null)
@@ -30,6 +31,7 @@ const ProductRequestListPage = () => {
   
   useEffect(() => {
     triggerProductRequestList({querys: `limit=${10}&&offset=${0}`});
+    triggerReqProductCounter()
   }, [token]);
 
   /// --- page data setup from pagination--- ///
@@ -45,6 +47,7 @@ const ProductRequestListPage = () => {
 
     triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
     setPerpageCount(10)
+    setCurrentPage(0)
     }
 
   };
@@ -109,29 +112,6 @@ const ProductRequestListPage = () => {
       setStoreRequestProducts(productRequestList?.data?.page);
       setAllRequestProducts(productRequestList?.data?.page);
       setTotalPage(productRequestList?.data?.paginate?.total)
-
-      setOptions([
-        {
-          key: "All Products",
-          value: "all-products",
-          amount: productRequestList?.data?.paginate?.total,
-        },
-        {
-          key: "Approved",
-          value: "approved",
-          amount: productRequestList?.data?.action_types[100] ? productRequestList?.data?.action_types[100] : 0
-        },
-        {
-          key: "Pending",
-          value: "pending",
-          amount: productRequestList?.data?.action_types[0] ? productRequestList?.data?.action_types[0] : 0,
-        },
-        {
-          key: "Rejected",
-          value: "rejected",
-          amount: 0,
-        },
-      ]);
     }
     else{
       setStoreRequestProducts([]);
@@ -174,12 +154,34 @@ const ProductRequestListPage = () => {
     }
   }
   
-  useEffect(() => {
-    setTabVal("all-products")
-  },[])
+  // useEffect(() => {
+  //   setTabVal("all-products")
+  //   setOptions([
+  //     {
+  //       key: "All Products",
+  //       value: "all-products",
+  //       amount: productRequestList?.data?.paginate?.total,
+  //     },
+  //     {
+  //       key: "Approved",
+  //       value: "approved",
+  //       amount: productRequestList?.data?.action_types[100] ? productRequestList?.data?.action_types[100] : 0
+  //     },
+  //     {
+  //       key: "Pending",
+  //       value: "pending",
+  //       amount: productRequestList?.data?.action_types[0] ? productRequestList?.data?.action_types[0] : 0,
+  //     },
+  //     {
+  //       key: "Rejected",
+  //       value: "rejected",
+  //       amount: 0,
+  //     },
+  //   ]);
+  // },[])
 
   // console.log('base prod===>', allRequestProducts?.length)
-  console.log('api call ==>', productRequestList)
+  console.log('counter list ==>', counterList)
 
   const onFocusHandler = () => {
     setCurrentPage(0);

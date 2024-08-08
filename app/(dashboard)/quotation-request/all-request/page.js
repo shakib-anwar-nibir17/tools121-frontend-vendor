@@ -5,6 +5,7 @@
 import {
   useQuotationActionMutation,
   useLazySupplierQuotationListQuery,
+  useLazyGetQuotationCounterQuery,
 } from "@/app/redux/features/supplierQuotation";
 import AllRequest from "@/components/Dashboard/QuotationRequest/AllRequest";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
@@ -19,6 +20,7 @@ import toast from "react-hot-toast";
 const AllRequestPage = () => {
   const token = localStorage.getItem("vendorToken");
   const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
+  const [triggerQuotationCounter, { data: counterList}] = useLazyGetQuotationCounterQuery();
 
   const [allQuatationRq, setAllQuatationRq] = useState([]);
   const [allQuatationRqStore, setAllQuatationRqStore] = useState([]);
@@ -33,6 +35,7 @@ const AllRequestPage = () => {
 
   useEffect(() => {
     triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
+    triggerQuotationCounter()
   }, [token]);
 
   /// --- page data setup from pagination--- ///
@@ -47,35 +50,6 @@ const AllRequestPage = () => {
     if (supplierQuotationList?.data?.page?.length > 0) {
       setAllQuatationRq(supplierQuotationList?.data?.page);
       setTotalPage(supplierQuotationList?.data?.paginate?.total)
-
-      const OpData = [
-        {
-          key: "All Request",
-          value: "all-request",
-          amount: supplierQuotationList?.data?.paginate?.total,
-        },
-        {
-          key: "Responded",
-          value: "responded",
-          amount: supplierQuotationList?.data?.action_types[500] ? supplierQuotationList?.data?.action_types[500] : 0,
-        },
-        {
-          key: "Unread",
-          value: "unread",
-          amount: supplierQuotationList?.data?.action_types[0] ? supplierQuotationList?.data?.action_types[0] : 0,
-        },
-        {
-          key: "Pinned",
-          value: "pinned",
-          amount: supplierQuotationList?.data?.action_types[200] ? supplierQuotationList?.data?.action_types[200] : 0,
-        },
-        {
-          key: "Spam",
-          value: "spam",
-          amount: supplierQuotationList?.data?.action_types[400] ? supplierQuotationList?.data?.action_types[400] : 0,
-        },
-      ];
-      setOptions(OpData);
     }
     else{
       setAllQuatationRq([])
@@ -187,8 +161,44 @@ const AllRequestPage = () => {
       triggerQuotationList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
     }
   }
+
+  useEffect(() => {
+    if(counterList?.data){
+      const OpData = [
+        {
+          key: "All Request",
+          value: "all-request",
+          amount: supplierQuotationList?.data?.paginate?.total,
+        },
+        {
+          key: "Responded",
+          value: "responded",
+          amount: counterList?.data[500] ? counterList?.data[500] : 0,
+        },
+        {
+          key: "Unread",
+          value: "unread",
+          amount: counterList?.data[0] ? counterList?.data[0] : 0,
+        },
+        {
+          key: "Pinned",
+          value: "pinned",
+          amount: counterList?.data[200] ? counterList?.data[200] : 0,
+        },
+        {
+          key: "Spam",
+          value: "spam",
+          amount: counterList?.data[400] ? counterList?.data[400] : 0,
+        },
+      ];
+      setOptions(OpData);
+    }
+    
+  },[counterList?.data])
+  
   // console.log('allQuatationRq --->', allQuatationRq);
-  console.log('supplierQuotationList --->', supplierQuotationList?.data);
+  // console.log('supplierQuotationList --->', supplierQuotationList?.data);
+  console.log('counterList ====>', counterList)
 
   return (
     <div className="mb-20">

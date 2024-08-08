@@ -55,6 +55,18 @@ const supplierQuotation = api.injectEndpoints({
       invalidatesTags: ['quotationlist'],
     }),
 
+    getQuotationCounter: builder.query({
+      query: (data) => ({
+        url: '/supplier/quotation/v1/action-counter',
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+    }),
+
   }),
 });
 
@@ -63,5 +75,8 @@ export const {
   useLazySingleQuotationListQuery,
   useSingleQuotationListQuery,
   useSingleQuotationReplyMutation,
-  useQuotationActionMutation
+  useQuotationActionMutation,
+
+  // ----------Counter------------
+  useLazyGetQuotationCounterQuery,
 } = supplierQuotation;
