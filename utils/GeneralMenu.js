@@ -27,6 +27,11 @@ const GeneralMenu = [
         subRoute: "quotation-request/all-request",
         value: "all-request",
       },
+      {
+        name: "Universal Quotation",
+        subRoute: "quotation-request/universal-quotation",
+        value: "universal-quotation",
+      },
     ],
     route: "quotation-request",
   },

@@ -223,6 +223,7 @@ const AllRequestPage = () => {
         isFetching={isFetching}
         pagiNateHandler={pagiNateHandler}
         totalPage={totalPage}
+        from="quotation"
       />
     </div>
   );

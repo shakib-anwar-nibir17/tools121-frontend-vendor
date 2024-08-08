@@ -13,7 +13,8 @@ const AllRequest = ({
   totalPage,
   quotationActionSubmit,
   isFetching,
-  pagiNateHandler
+  pagiNateHandler,
+  from
 }) => {
   console.log('tab val ---->', tabVal)
   return (
@@ -51,6 +52,7 @@ const AllRequest = ({
           <AllRequestDataTable
             quotationActionSubmit={quotationActionSubmit}
             tableData={tableData}
+            from={from}
           />
         </TabsContent>
       ) : (
