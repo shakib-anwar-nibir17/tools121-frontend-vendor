@@ -80,6 +80,18 @@ const supplierQuotation = api.injectEndpoints({
       // providesTags: ["quotationlist"],
     }),
 
+    getDashboardQuotationCount: builder.query({
+      query: (data) => ({
+        url: '/dashboard/v1/quotation-count',
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+    }),
+
   }),
 });
 
@@ -92,5 +104,6 @@ export const {
 
   // ----------Counter------------
   useLazyGetQuotationCounterQuery,
-  useLazyGetUniversalQuotationListQuery
+  useLazyGetUniversalQuotationListQuery,
+  useLazyGetDashboardQuotationCountQuery
 } = supplierQuotation;

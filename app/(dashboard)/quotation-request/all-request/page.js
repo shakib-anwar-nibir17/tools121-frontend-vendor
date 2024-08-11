@@ -111,7 +111,7 @@ const AllRequestPage = () => {
   };
 
   const quotationActionSubmit = async (action, id) => {
-    console.log('action click ==>', action, id)
+
     const request_obj = {
       actions: [
         {
@@ -197,9 +197,9 @@ const AllRequestPage = () => {
     
   },[counterList?.data, counterFetching])
   
-  console.log('allQuatationRq --->', allQuatationRq);
+  // console.log('allQuatationRq --->', allQuatationRq);
   // console.log('supplierQuotationList --->', supplierQuotationList?.data);
-  console.log('counterList ====>', counterList)
+  // console.log('counterList ====>', counterList)
   // console.log('currentPage --->', currentPage)
 
   return (
