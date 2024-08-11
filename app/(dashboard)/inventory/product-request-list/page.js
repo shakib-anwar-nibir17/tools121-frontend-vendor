@@ -38,17 +38,17 @@ const ProductRequestListPage = () => {
   useEffect(() => {
     setCurrentPage(0);
     setPerpageCount(10)
+    setTabVal("all-products")
   }, []);
 
   const dateFilterHandler = () => {
-    if(totalPage > 0){
-      const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+    const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
     const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
 
     triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
+    triggerReqProductCounter()
     setPerpageCount(10)
     setCurrentPage(0)
-    }
 
   };
 
@@ -57,46 +57,22 @@ const ProductRequestListPage = () => {
     const findTabData = options?.find((item) => item?.value == val)
 
     if (val == "pending") {
-      if(findTabData?.amount > 0){
-        // triggerProductRequestList({limit: 10, offset: 1, action_type: 0})
         triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&action_type=${0}`})
         setActionVal(0)
         setCurrentPage(0)
         setPerpageCount(10)
-      }
-      else{
-        setStoreRequestProducts([]);
-        setAllRequestProducts([]);
-        setTotalPage(0)
-      }
     } 
     else if (val == "approved") {
-      if(findTabData?.amount > 0){
-        // triggerProductRequestList({limit: 10, offset: 1, action_type: 100})
         triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&action_type=${100}`})
         setActionVal(100)
         setCurrentPage(0)
         setPerpageCount(10)
-      }
-      else{
-        setStoreRequestProducts([]);
-        setAllRequestProducts([]);
-        setTotalPage(0)
-      }
     } 
     else if (val == "rejected") {
-      if(findTabData?.amount > 0){
-        // triggerProductRequestList({limit: 10, offset: 1, action_type: 200})
         triggerProductRequestList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
         setActionVal(200)
         setCurrentPage(0)
         setPerpageCount(10)
-      }
-      else{
-        setStoreRequestProducts([]);
-        setAllRequestProducts([]);
-        setTotalPage(0)
-      }
     } 
     else if (val == "all-products") {
       triggerProductRequestList();
@@ -154,34 +130,34 @@ const ProductRequestListPage = () => {
     }
   }
   
-  // useEffect(() => {
-  //   setTabVal("all-products")
-  //   setOptions([
-  //     {
-  //       key: "All Products",
-  //       value: "all-products",
-  //       amount: productRequestList?.data?.paginate?.total,
-  //     },
-  //     {
-  //       key: "Approved",
-  //       value: "approved",
-  //       amount: productRequestList?.data?.action_types[100] ? productRequestList?.data?.action_types[100] : 0
-  //     },
-  //     {
-  //       key: "Pending",
-  //       value: "pending",
-  //       amount: productRequestList?.data?.action_types[0] ? productRequestList?.data?.action_types[0] : 0,
-  //     },
-  //     {
-  //       key: "Rejected",
-  //       value: "rejected",
-  //       amount: 0,
-  //     },
-  //   ]);
-  // },[])
+  useEffect(() => {
+   
+    setOptions([
+      {
+        key: "All Products",
+        value: "all-products",
+        amount: productRequestList?.data?.paginate?.total,
+      },
+      {
+        key: "Approved",
+        value: "approved",
+        amount: counterList?.data[100] ? counterList?.data[100] : 0
+      },
+      {
+        key: "Pending",
+        value: "pending",
+        amount: counterList?.data[0] ? counterList?.data[0] : 0,
+      },
+      {
+        key: "Rejected",
+        value: "rejected",
+        amount: counterList?.data[200] ? counterList?.data[200] : 0,
+      },
+    ]);
+  },[counterList?.data, productRequestList?.data?.page?.length])
 
   // console.log('base prod===>', allRequestProducts?.length)
-  console.log('counter list ==>', counterList)
+  console.log('counter list ==>', counterList?.data)
 
   const onFocusHandler = () => {
     setCurrentPage(0);

@@ -56,7 +56,7 @@ const DataTable = ({ tableData, quotationActionSubmit , from}) => {
               {product?.product_quantity} pieces
             </TableCell>
             <TableCell className="w-[25%] text-justify">
-              {product?.request_note?.slice(0, 120) + "....."}
+              {product?.request_note ? `${product?.request_note?.slice(0, 120) + "....."}` : ''}
             </TableCell>
             <TableCell className=" text-gray-500 w-[10%]">
               {product?.customer_name}
@@ -111,7 +111,7 @@ const DataTable = ({ tableData, quotationActionSubmit , from}) => {
                 className="cursor-pointer"
                 size={20}
                 color="#7B7C80"
-                onClick={() => quotationActionSubmit(400, product.id)}
+                onClick={() => quotationActionSubmit(300, product.id)}
               />
             </div>
           </TableCell>

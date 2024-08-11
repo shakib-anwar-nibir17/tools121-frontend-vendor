@@ -20,19 +20,18 @@ import toast from "react-hot-toast";
 const AllRequestPage = () => {
   const token = localStorage.getItem("vendorToken");
   const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
-  const [triggerQuotationCounter, { data: counterList}] = useLazyGetQuotationCounterQuery();
+  const [triggerQuotationCounter, { data: counterList, isFetching: counterFetching}] = useLazyGetQuotationCounterQuery();
 
   const [allQuatationRq, setAllQuatationRq] = useState([]);
-  const [allQuatationRqStore, setAllQuatationRqStore] = useState([]);
   const [tabVal, setTabVal] = useState("");
-  const { pageData, setCurrentPage, setPerpageCount } = useStateContext();
+  const { currentPage, setCurrentPage, setPerpageCount, perpageCount} = useStateContext();
   const [options, setOptions] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [date, setDate] = useState({});
   const [quotationActionHandler, {}] = useQuotationActionMutation();
   const [actionVal, setActionVal] = useState(null)
   const [totalPage, setTotalPage] = useState(0)
-
+  
   useEffect(() => {
     triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
     triggerQuotationCounter()
@@ -112,6 +111,7 @@ const AllRequestPage = () => {
   };
 
   const quotationActionSubmit = async (action, id) => {
+    console.log('action click ==>', action, id)
     const request_obj = {
       actions: [
         {
@@ -122,10 +122,11 @@ const AllRequestPage = () => {
     };
 
     const actionRes = await quotationActionHandler(request_obj);
-    console.log("Action Response ===>", actionRes);
+    // console.log("Action Response ===>", actionRes);
 
     if (actionRes?.data?.message == "Request success") {
-      // setTimeout(() => refetchQuotationReq(), 1000)
+      triggerQuotationCounter()
+      tabHandler(tabVal)
       if (action == 200) {
         toast.success("Quotation pinned Successfully", {
           position: "top-right",
@@ -194,11 +195,12 @@ const AllRequestPage = () => {
       setOptions(OpData);
     }
     
-  },[counterList?.data])
+  },[counterList?.data, counterFetching])
   
-  // console.log('allQuatationRq --->', allQuatationRq);
+  console.log('allQuatationRq --->', allQuatationRq);
   // console.log('supplierQuotationList --->', supplierQuotationList?.data);
   console.log('counterList ====>', counterList)
+  // console.log('currentPage --->', currentPage)
 
   return (
     <div className="mb-20">
