@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 "use client";
 
-import { useGetProductListQuery } from "@/app/redux/features/inventoryProduct";
+import { useLazyGetProductListQuery } from "@/app/redux/features/inventoryProduct";
 import AddProductsForm from "@/components/Dashboard/ProductList/AddProductsForm";
 import NoProducts from "@/components/Dashboard/ProductList/NoProducts";
 import ProductListTable from "@/components/Dashboard/ProductList/ProductListTable";
 import Loader from "@/components/common/Loader";
 import PaginationCom from "@/components/common/PaginationCom";
+import PaginationServerside from "@/components/common/PaginationServerside";
 import SearchInput from "@/components/common/SearchInput";
 import { Button } from "@/components/ui/button";
 import { useStateContext } from "@/utils/contexProvider";
@@ -16,24 +17,19 @@ import { useEffect, useState } from "react";
 const ProductList = () => {
   const router = useRouter();
   const token = localStorage.getItem("vendorToken");
-  const [products, setProducts] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const {
-    data: productList,
-    refetch: refetchProduct,
-    isFetching,
-  } = useGetProductListQuery(token, {
-    refetchOnMountOrArgChange: true,
-  });
-  const { pageData, setCurrentPage } = useStateContext();
+  const [triggerProductList, { data: productList, error, isLoading , isFetching}] = useLazyGetProductListQuery();
+
+  const { setPerpageCount, setCurrentPage } = useStateContext();
   const [allProduct, setAllProduct] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [totalPage, setTotalPage] = useState(0)
 
   useEffect(() => {
-    refetchProduct();
-  }, [token, refetchProduct]);
+    triggerProductList({querys: `limit=${10}&&offset=${0}`});
+  }, []);
 
-  console.log("product list ==>", productList, token);
+  console.log("product list ==>", productList);
   // console.log("token ==>", token)
   const buttonHandler = () => {
     setShowForm(true);
@@ -42,31 +38,39 @@ const ProductList = () => {
   /// --- page data setup from pagination--- ///
   useEffect(() => {
     setCurrentPage(0);
-  }, [setCurrentPage, productList?.data?.supplier_products?.length]);
+    setPerpageCount(10)
+  }, []);
 
   useEffect(() => {
-    setAllProduct(pageData);
-  }, [pageData]);
+    if(productList?.data?.page?.length > 0){
+      setAllProduct(productList?.data?.page)
+      setTotalPage(productList?.data?.paginate?.total)
+    }
+    else{
+      setAllProduct([])
+      setTotalPage(0)
+    }
+  }, [productList?.data?.page , productList?.data?.page?.length]);
 
   const onSearchHandler = (text) => {
     if (text?.length > 2) {
+
       console.log("calling --->", text);
+      
       setSearchText(text);
-      const searchData = productList?.data?.supplier_products?.filter(
-        (item) => {
-          const searchItem = text.toLocaleLowerCase();
-          return (
-            item?.product_name?.toLocaleLowerCase()?.indexOf(searchItem) > -1
-          );
-        }
-      );
-      setAllProduct(searchData);
+      setTimeout(() => {
+        triggerProductList({querys: `limit=${10}&&offset=${0}&&search_key=${text}`})
+      },500)
     } else {
-      const sliceData = productList?.data?.supplier_products?.slice(0, 10);
-      console.log(sliceData?.length);
-      setAllProduct(sliceData);
+      triggerProductList({querys: `limit=${10}&&offset=${0}`});
     }
   };
+  
+
+  const pagiNateHandler = (pageNo, perpageCount) => {
+    triggerProductList({querys: `limit=${perpageCount}&&offset=${pageNo}`})
+  }
+  
 
   return (
     <div>
@@ -87,10 +91,12 @@ const ProductList = () => {
         )}
       </div>
       {isFetching ? (
-        <Loader />
+       <div className="h-[700px] w-full flex flex-row justify-center items-center">
+           <Loader />
+       </div>
       ) : (
         <div className="w-full py-2">
-          {productList?.data?.supplier_products?.length > 0 ? (
+          {productList?.data?.page?.length > 0 ? (
             <ProductListTable productData={allProduct} />
           ) : (
             <NoProducts
@@ -99,9 +105,12 @@ const ProductList = () => {
               buttonHandler={buttonHandler}
             />
           )}
-          <PaginationCom array={productList?.data?.supplier_products} />
+          
         </div>
       )}
+      {
+        totalPage > 0 && <PaginationServerside pagiNateHandler={pagiNateHandler} totalPage={totalPage}/>
+      }
     </div>
   );
 };

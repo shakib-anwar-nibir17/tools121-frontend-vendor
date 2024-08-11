@@ -2,7 +2,8 @@
 "use client";
 import {
   useQuotationActionMutation,
-  useSupplierQuotationListQuery,
+  useLazySupplierQuotationListQuery,
+  useLazyGetDashboardQuotationCountQuery,
 } from "@/app/redux/features/supplierQuotation";
 import MainHeader from "@/components/Dashboard/DashboardPage/MainHeader";
 import TopSellingItems from "@/components/Dashboard/DashboardPage/TopSellingItems";
@@ -20,77 +21,64 @@ import toast from "react-hot-toast";
 const DashboradPage = () => {
   const paths = ["Dashboard", "Dashboard"];
   const token = localStorage.getItem("vendorToken");
-  const {
-    data: supplierQuotationList,
-    refetch: refetchQuotationReq,
-    isFetching,
-  } = useSupplierQuotationListQuery(token, {
-    refetchOnMountOrArgChange: true,
-  });
+  const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
+  const [triggerQuotationCount, { data: dashboardQuotationCount}] = useLazyGetDashboardQuotationCountQuery();
 
   const [date, setDate] = useState({});
   const [allQuatationRq, setAllQuatationRq] = useState([]);
-  const [allQuatationRqStore, setAllQuatationRqStore] = useState([]);
-  const [todaysQuotation, setTodaysQuotation] = useState([]);
   const [tabVal, setTabVal] = useState("");
   const [searchText, setSearchText] = useState("");
   const { pageData, setCurrentPage } = useStateContext();
   const [options, setOptions] = useState([]);
   const [quotationActionHandler] = useQuotationActionMutation();
-
+  const todaysDate = new Date();
+  const [totalPage, setTotalPage] = useState(0)
+  const startDateFormate = moment(todaysDate).format("YYYY-MM-DD");
+  const endDateFormate = moment(todaysDate).format("YYYY-MM-DD");
+  
   useEffect(() => {
-    refetchQuotationReq();
-  }, [token, refetchQuotationReq]);
+    triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
+    triggerQuotationCount()
+  }, [token]);
 
   /// --- page data setup from pagination--- ///
   useEffect(() => {
     setCurrentPage(0);
-  }, [setCurrentPage, supplierQuotationList?.data?.quotations?.length]);
-
-  useEffect(() => {
-    setAllQuatationRq(pageData);
-  }, [pageData]);
-
-  useEffect(() => {
     setTabVal("all-request");
-    if (todaysQuotation?.data?.quotations?.length > 0) {
-      setAllQuatationRqStore(todaysQuotation?.data?.quotations);
+  }, []);
 
-      const pinnedData = todaysQuotation?.data?.quotations?.filter(
-        (item) => item?.supplier_action_type == 200
-      );
+  useEffect(() => {
+    setAllQuatationRq(supplierQuotationList?.data?.page);
+  }, [supplierQuotationList?.data?.page?.length,
+    supplierQuotationList?.data?.page,]);
 
+  useEffect(() => {
+
+    if (supplierQuotationList?.data?.page?.length > 0) {
+      setTotalPage(supplierQuotationList?.data?.paginate?.total)
       const OpData = [
         {
           key: "Todays Request",
           value: "todays-request",
-          amount: todaysQuotation?.data?.quotations?.length,
+          amount: supplierQuotationList?.data?.paginate?.total,
         },
 
         {
           key: "Pinned",
           value: "pinned",
-          amount: pinnedData?.length,
+          amount: 0,
         },
       ];
 
       setOptions(OpData);
-    }
-  }, [todaysQuotation?.data?.quotations]);
 
-  const todaysDate = new Date();
+    }
+  }, [supplierQuotationList?.data?.page]);
+
   console.log("Supplier Info ===>>>", supplierQuotationList);
+  console.log("dashboardQuotationCount ===>>>", dashboardQuotationCount);
 
-  const result = filterQuotationsByDate(
-    supplierQuotationList?.data,
-    todaysDate
-  );
 
-  useEffect(() => {
-    if (result.length > 0) {
-      setTodaysQuotation(result);
-    }
-  }, [result]);
   const dateFilterHandler = () => {
     if (supplierQuotationList?.data?.quotations?.length > 0) {
       const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
@@ -115,76 +103,24 @@ const DashboradPage = () => {
     }
   };
 
-  const pinnedData = supplierQuotationList?.data?.quotations?.filter(
-    (item) => item?.supplier_action_type == 200
-  );
-
-  const unreadData = supplierQuotationList?.data?.quotations?.filter(
-    (item) => item?.supplier_action_type == 0
-  );
-
-  const onSearchHandler = (text) => {
-    if (supplierQuotationList?.data?.quotations?.length > 0) {
-      if (text?.length > 2) {
-        console.log("calling --->", text);
-        setSearchText(text);
-        const searchData = supplierQuotationList?.data?.quotations?.filter(
-          (item) => {
-            const searchItem = text.toLocaleLowerCase();
-            return (
-              item?.product_name?.toLocaleLowerCase()?.indexOf(searchItem) > -1
-            );
-          }
-        );
-        setAllQuatationRq(searchData);
-      } else {
-        const doSlice = (filterVal) => {
-          if (filterVal == "none") {
-            const sliceData = supplierQuotationList?.data?.quotations?.slice(
-              0,
-              10
-            );
-            setAllQuatationRqStore(supplierQuotationList?.data?.quotations);
-            return sliceData;
-          } else {
-            const filterData = supplierQuotationList?.data?.quotations?.filter(
-              (item) => item?.action_type == filterVal
-            );
-
-            const sliceData = filterData?.slice(0, 10);
-            setAllQuatationRqStore(filterData);
-            return sliceData;
-          }
-        };
-        const filterVal =
-          tabVal == "unread"
-            ? 0
-            : tabVal == "responded"
-            ? 100
-            : tabVal == "pinned"
-            ? 200
-            : tabVal == "spam"
-            ? 400
-            : "none";
-        const sliceData = doSlice(filterVal);
-        setAllQuatationRq(sliceData);
-      }
+  const tabHandler = (val) => {
+    setTabVal(val);
+    if (val == "pinned") {
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
+    } else {
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
     }
   };
 
-  const tabHandler = (val) => {
-    setTabVal(val);
-    if (todaysQuotation?.data?.quotations?.length > 0) {
-      if (val == "pinned") {
-        const pinnedData = todaysQuotation?.data?.quotations?.filter(
-          (item) => item?.supplier_action_type == 200
-        );
-        setAllQuatationRq(pinnedData);
-        setAllQuatationRqStore(pinnedData);
-      } else {
-        setAllQuatationRq(todaysQuotation?.data?.quotations);
-        setAllQuatationRqStore(todaysQuotation?.data?.quotations);
-      }
+  const onSearchHandler = (text) => {
+    if (text?.length > 2) {
+
+      setSearchText(text);
+      setTimeout(() => {
+        triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}&&search_key=${text}`})
+      },500)
+    } else {
+      tabHandler(tabVal)
     }
   };
 
@@ -202,7 +138,7 @@ const DashboradPage = () => {
     console.log("Action Response ===>", actionRes);
 
     if (actionRes?.data?.message == "Request success") {
-      // setTimeout(() => refetchQuotationReq(), 1000)
+      tabHandler(tabVal)
       if (action == 200) {
         toast.success("Quotation pinned Successfully", {
           position: "top-right",
@@ -233,10 +169,10 @@ const DashboradPage = () => {
     <div>
       <HeaderLinks paths={paths} />
       <MainHeader
-        data={supplierQuotationList?.data?.quotations}
-        todaysQuotation={todaysQuotation}
-        pinnedData={pinnedData}
-        unreadData={unreadData}
+        data={dashboardQuotationCount?.data?.total_quotation_count}
+        todaysQuotation={dashboardQuotationCount?.data?.today_quotation_count}
+        pinnedData={dashboardQuotationCount?.data?.pinned_quotation_count}
+        unreadData={dashboardQuotationCount?.data?.unread_quotation_count}
       />
       <div className="flex justify-end my-10">
         <CalendarDateRangePicker
@@ -256,7 +192,7 @@ const DashboradPage = () => {
         tableData={allQuatationRq}
         tabVal={tabVal}
         options={options}
-        totalData={allQuatationRqStore}
+        totalData={totalPage}
         tabHandler={tabHandler}
         quotationActionSubmit={quotationActionSubmit}
       />

@@ -5,8 +5,8 @@ import { api } from "../api/api";
 const invenntoryProductApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getProductList: builder.query({
-      query: (token) => ({
-        url: "/supplier/product/v1/list",
+      query: (data) => ({
+        url: `/supplier/product/v1/list?${data?.querys ? data?.querys : 'limit=10&&offset=0'}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${GetVendorToken()}`,
@@ -19,8 +19,8 @@ const invenntoryProductApi = api.injectEndpoints({
 
     getProducRequesttList: builder.query({
       query: (data) => ({
-        url: "/supplier/product/v1/requested/list",
-        // `/supplier/product/v1/requested/list${data?.action_type && data?.start_date? `?action_type=${data?.action_type}&start_date=${data?.start_date}&end_date=${data?.end_date}` : data?.action_type ? `?action_type=${data?.action_type}` : data?.start_date ? `?start_date=${data?.start_date}&end_date=${data?.end_date}` : ''}`
+        // url: `/supplier/product/v1/requested/list?limit=${data?.limit ? data?.limit : 10}&&offset=${data?.offset ? data?.offset : 0}&&action_type=${data?.action_type ? data?.action_type : null}&&start_date=${data?.start_date ? data?.start_date : null}&&end_date=${data?.start_date ? data?.end_date : null}${data?.querys ? data?.querys : ''}`,
+        url: `/supplier/product/v1/requested/list?${data?.querys ? data?.querys : 'limit=10&&offset=0'}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${GetVendorToken()}`,
@@ -226,6 +226,20 @@ const invenntoryProductApi = api.injectEndpoints({
         },
       }),
     }),
+
+    getReqProductCounter: builder.query({
+      query: (data) => ({
+        url: '/supplier/product/v1/requested/action-counter',
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+      // providesTags: ["productlist"],
+    }),
+
   }),
 });
 
@@ -238,14 +252,17 @@ export const {
   useLazySelectProductListQuery,
   useAddProductMutation,
   useAddProductRequestMutation,
-  useGetProductListQuery,
+  useLazyGetProductListQuery,
   useDeleteProductMutation,
-  useGetProducRequesttListQuery,
   useLazyGetSingleProductRequestQuery,
   useUpdateReqProductMutation,
   useDeleteRequstProductMutation,
   useLazyGetSingleProductQuery,
-  // useLazyGetProducRequesttListQuery,
+  useLazyGetProducRequesttListQuery,
   useUpdateProductMutation,
   useGetProductTagsQuery,
+  useLazySearchProdReqListQuery,
+
+  // ------------Counter--------------
+  useLazyGetReqProductCounterQuery
 } = invenntoryProductApi;

@@ -17,7 +17,7 @@ import { SlPaperClip } from "react-icons/sl";
 import { useReactToPrint } from "react-to-print";
 import PrintPage from "./PrintPage";
 
-const ResponseField = ({ data, token, params, triggerSingleQuotation }) => {
+const ResponseField = ({ data, token, params, triggerSingleQuotation , quotationActionSubmit}) => {
   const [singleQuotationReply, {}] = useSingleQuotationReplyMutation();
   console.log(data);
   const [loading, setLoading] = useState(false);
@@ -42,6 +42,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation }) => {
     if (response?.data?.message == "Request success") {
       setLoading(false);
       triggerSingleQuotation({ id: params?.id, token: token });
+      quotationActionSubmit(500)
       toast.success("Reply sent Successfully", {
         position: "top-right",
         duration: 3000,
