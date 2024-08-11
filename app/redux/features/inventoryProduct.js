@@ -226,6 +226,20 @@ const invenntoryProductApi = api.injectEndpoints({
         },
       }),
     }),
+
+    getReqProductCounter: builder.query({
+      query: (data) => ({
+        url: '/supplier/product/v1/requested/action-counter',
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+      // providesTags: ["productlist"],
+    }),
+
   }),
 });
 
@@ -247,5 +261,8 @@ export const {
   useLazyGetProducRequesttListQuery,
   useUpdateProductMutation,
   useGetProductTagsQuery,
-  useLazySearchProdReqListQuery
+  useLazySearchProdReqListQuery,
+
+  // ------------Counter--------------
+  useLazyGetReqProductCounterQuery
 } = invenntoryProductApi;

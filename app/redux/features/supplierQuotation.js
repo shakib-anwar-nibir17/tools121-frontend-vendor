@@ -55,6 +55,43 @@ const supplierQuotation = api.injectEndpoints({
       invalidatesTags: ['quotationlist'],
     }),
 
+    getQuotationCounter: builder.query({
+      query: (data) => ({
+        url: '/supplier/quotation/v1/action-counter',
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+    }),
+
+    getUniversalQuotationList: builder.query({
+      query: (data) => ({
+        url: `/supplier/quotation/v1/single-request/list?${data?.querys ? data?.querys : 'limit=10&&offset=0'}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+      // providesTags: ["quotationlist"],
+    }),
+
+    getDashboardQuotationCount: builder.query({
+      query: (data) => ({
+        url: '/dashboard/v1/quotation-count',
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+    }),
+
   }),
 });
 
@@ -63,5 +100,10 @@ export const {
   useLazySingleQuotationListQuery,
   useSingleQuotationListQuery,
   useSingleQuotationReplyMutation,
-  useQuotationActionMutation
+  useQuotationActionMutation,
+
+  // ----------Counter------------
+  useLazyGetQuotationCounterQuery,
+  useLazyGetUniversalQuotationListQuery,
+  useLazyGetDashboardQuotationCountQuery
 } = supplierQuotation;

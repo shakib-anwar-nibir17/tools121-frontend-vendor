@@ -2,10 +2,10 @@
 
 import DataTable from "./DataTable";
 
-const AllRequestDataTable = ({tableData, quotationActionSubmit}) => {
+const AllRequestDataTable = ({tableData, quotationActionSubmit,from}) => {
   
   return <div>
-    <DataTable tableData={tableData} quotationActionSubmit={quotationActionSubmit} />
+    <DataTable tableData={tableData} quotationActionSubmit={quotationActionSubmit} from={from} />
   </div>;
 };
 
