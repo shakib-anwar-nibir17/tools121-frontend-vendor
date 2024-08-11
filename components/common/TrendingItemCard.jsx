@@ -1,20 +1,23 @@
+import { VISITOR_URL } from "@/constant/urls";
 import Image from "next/image";
 
-const TrendingItemCard = () => {
+const TrendingItemCard = ({product}) => {
   return (
     <div>
       <div className="relative w-[204px] h-[128px] rounded-lg">
-        <Image
+        <img
           layout="fill"
           objectFit="cover"
-          src="/item-pic.png"
+          height={100}
+          width={100}
+          src={`${VISITOR_URL}/${product?.img_url}`}
           alt="top_trending_item"
         />
       </div>
       <h1 className="text-black mt-4 text-sm mb-8">
-        RIG-BS-6025RF Research Upright
+       {product?.name}
       </h1>
-      <p className="text-black text-lg text-center font-medium">1000 pieces</p>
+      <p className="text-black text-lg text-center font-medium">{product?.quote_cnt} pieces</p>
     </div>
   );
 };

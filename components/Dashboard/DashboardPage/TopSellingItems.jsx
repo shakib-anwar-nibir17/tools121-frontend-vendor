@@ -61,7 +61,7 @@ const productArray = [
   },
 ];
 
-const TopSellingItems = () => {
+const TopSellingItems = ({items}) => {
   return (
     <div className="border border-slate-300 box-border rounded-2xl shadow-custom-shadow w-1/2">
       <div className="px-8 py-6 border-b-2 border-slate-200">
@@ -84,15 +84,15 @@ const TopSellingItems = () => {
             </TableRow>
           </TableHeader>
           <TableBody className="border-b-2 border-slate-200">
-            {productArray.map((product, idx) => (
+            {items?.map((product, idx) => (
               <TableRow
                 className="text-black font-bold border-b-2 border-slate-200"
-                key={product._id}
+                key={idx}
               >
                 <TableCell className="font-medium">{idx + 1}</TableCell>
-                <TableCell>{product.name}</TableCell>
+                <TableCell>{product?.name}</TableCell>
                 <TableCell className="text-center">
-                  {product.conversion_rate}
+                  {product?.conversion_rate}
                 </TableCell>
               </TableRow>
             ))}

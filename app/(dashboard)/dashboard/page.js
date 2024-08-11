@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client";
+import { useLazyGetDashboardTopSellingProductQuery, useLazyGetDashboardTopTrendingProductQuery } from "@/app/redux/features/inventoryProduct";
 import {
   useQuotationActionMutation,
   useLazySupplierQuotationListQuery,
@@ -23,6 +24,8 @@ const DashboradPage = () => {
   const token = localStorage.getItem("vendorToken");
   const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
   const [triggerQuotationCount, { data: dashboardQuotationCount}] = useLazyGetDashboardQuotationCountQuery();
+  const [triggerTopSellingProduct, { data: topSellingProduct}] = useLazyGetDashboardTopSellingProductQuery();
+  const [triggerTopTrendingProduct, { data: topTrendingProduct}] = useLazyGetDashboardTopTrendingProductQuery();
 
   const [date, setDate] = useState({});
   const [allQuatationRq, setAllQuatationRq] = useState([]);
@@ -39,6 +42,8 @@ const DashboradPage = () => {
   useEffect(() => {
     triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
     triggerQuotationCount()
+    triggerTopSellingProduct()
+    triggerTopTrendingProduct()
   }, [token]);
 
   /// --- page data setup from pagination--- ///
@@ -76,7 +81,7 @@ const DashboradPage = () => {
   }, [supplierQuotationList?.data?.page]);
 
   console.log("Supplier Info ===>>>", supplierQuotationList);
-  console.log("dashboardQuotationCount ===>>>", dashboardQuotationCount);
+  console.log("triggerTopTrendingProduct ===>>>", topTrendingProduct);
 
 
   const dateFilterHandler = () => {
@@ -182,8 +187,8 @@ const DashboradPage = () => {
         />
       </div>
       <div className="mt-10 flex gap-5">
-        <TopSellingItems />
-        <TopTrendingProducts />
+        <TopSellingItems items={topSellingProduct?.data?.page} />
+        <TopTrendingProducts items={topTrendingProduct?.data?.page} />
       </div>
       <div className="max-w-[540px] mt-[60px]">
         <SearchInput onSearchHandler={onSearchHandler} />
