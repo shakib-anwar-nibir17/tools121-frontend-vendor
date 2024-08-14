@@ -42,7 +42,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
     if (response?.data?.message == "Request success") {
       setLoading(false);
       triggerSingleQuotation({ id: params?.id, token: token });
-      quotationActionSubmit(500)
+      quotationActionSubmit(0)
       toast.success("Reply sent Successfully", {
         position: "top-right",
         duration: 3000,
