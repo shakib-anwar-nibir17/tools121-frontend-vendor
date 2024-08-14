@@ -3,14 +3,20 @@ import Image from "next/image";
 
 const TrendingItemCard = ({product}) => {
   return (
-    <div>
-      <div className="relative w-[204px] h-[128px] rounded-lg">
-        <img
+    <div className="">
+      <div className="relative w-[180px] h-[120px] rounded-lg border border-2 border-gray-200">
+        {/* <img
           layout="fill"
           objectFit="cover"
           height={100}
           width={100}
           src={`${VISITOR_URL}/${product?.img_url}`}
+          alt="top_trending_item"
+        /> */}
+          <Image
+          layout="fill"
+          objectFit="cover"
+          src={product?.img_url}
           alt="top_trending_item"
         />
       </div>
