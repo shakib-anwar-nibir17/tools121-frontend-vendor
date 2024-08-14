@@ -186,7 +186,7 @@ const invenntoryProductApi = api.injectEndpoints({
           "Accept-Language": "en",
         },
       }),
-      invalidatesTags: ["productrequestlist"],
+      // invalidatesTags: ["productrequestlist"],
     }),
 
     getSingleProduct: builder.query({
