@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client";
-import { useLazyGetProducRequesttListQuery, useLazyGetReqProductCounterQuery } from "@/app/redux/features/inventoryProduct";
+import { useDeleteRequstProductMutation, useLazyGetProducRequesttListQuery, useLazyGetReqProductCounterQuery } from "@/app/redux/features/inventoryProduct";
 import ListTabs from "@/components/Dashboard/ProductRequestList/ListTabs";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
 import Loader from "@/components/common/Loader";
@@ -9,11 +9,12 @@ import { useStateContext } from "@/utils/contexProvider";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const ProductRequestListPage = () => {
   const token = localStorage.getItem("vendorToken");
   const router = useRouter();
-  const { pageData, setCurrentPage , setPerpageCount} = useStateContext();
+  const { pageData, setCurrentPage , setPerpageCount, perpageCount, currentPage} = useStateContext();
   const [allRequestProducts, setAllRequestProducts] = useState([]);
   const [storeRequestProducts, setStoreRequestProducts] = useState([]);
 
@@ -29,6 +30,9 @@ const ProductRequestListPage = () => {
   const [actionVal, setActionVal] = useState(null)
   const [totalPage, setTotalPage] = useState(0)
   
+  const [deleteReqProduct, {}] = useDeleteRequstProductMutation();
+  const [deleteId, setDeleteId] = useState("");
+
   useEffect(() => {
     triggerProductRequestList({querys: `limit=${10}&&offset=${0}`});
     triggerReqProductCounter()
@@ -163,6 +167,29 @@ const ProductRequestListPage = () => {
     setCurrentPage(0);
     setPerpageCount(10)
   }
+
+  const reqProductDeleteHandler = async (prod_id) => {
+    setDeleteId(prod_id);
+    const delete_res = await deleteReqProduct({ prod_id, token });
+
+    if (delete_res?.data?.message == "Request success") {
+      setDeleteId("");
+      triggerProductRequestList({querys: `limit=${perpageCount}&&offset=${currentPage}&&action_type=${actionVal}`})
+
+      toast.success("Product Deleted Successfully", {
+        position: "top-right",
+        duration: 2000,
+      });
+    } else {
+      setDeleteId("");
+      toast.error("Product Deleted Failed", {
+        position: "top-right",
+        duration: 2000,
+      });
+    }
+
+    console.log("delete response ===>", delete_res);
+  };
   return (
     <div className="mb-20">
       <div className="absolute top-0 right-0">
@@ -185,6 +212,8 @@ const ProductRequestListPage = () => {
             totalPage={totalPage}
             pagiNateHandler={pagiNateHandler}
             isFetching={isFetching}
+            deleteId={deleteId}
+            reqProductDeleteHandler={reqProductDeleteHandler}
           />
       
     </div>

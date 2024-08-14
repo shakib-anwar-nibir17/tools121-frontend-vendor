@@ -36,7 +36,7 @@ const ButtonStyles = {
   },
 };
 
-const ListDataTable = ({ requestData }) => {
+const ListDataTable = ({ requestData , reqProductDeleteHandler, deleteId}) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -46,31 +46,6 @@ const ListDataTable = ({ requestData }) => {
       () => router.push(`/inventory/product-request-form/${product?.id}`),
       500
     );
-  };
-
-  const token = localStorage.getItem("vendorToken");
-  const [deleteReqProduct, {}] = useDeleteRequstProductMutation();
-  const [deleteId, setDeleteId] = useState("");
-
-  const reqProductDeleteHandler = async (prod_id) => {
-    setDeleteId(prod_id);
-    const delete_res = await deleteReqProduct({ prod_id, token });
-
-    if (delete_res?.data?.message == "Request success") {
-      setDeleteId("");
-      toast.success("Product Deleted Successfully", {
-        position: "top-right",
-        duration: 2000,
-      });
-    } else {
-      setDeleteId("");
-      toast.error("Product Deleted Failed", {
-        position: "top-right",
-        duration: 2000,
-      });
-    }
-
-    console.log("delete response ===>", delete_res);
   };
 
   return (

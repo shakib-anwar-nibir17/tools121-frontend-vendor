@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client";
+import { useLazyGetDashboardTopSellingProductQuery, useLazyGetDashboardTopTrendingProductQuery } from "@/app/redux/features/inventoryProduct";
 import {
   useQuotationActionMutation,
   useLazySupplierQuotationListQuery,
@@ -23,6 +24,8 @@ const DashboradPage = () => {
   const token = localStorage.getItem("vendorToken");
   const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
   const [triggerQuotationCount, { data: dashboardQuotationCount}] = useLazyGetDashboardQuotationCountQuery();
+  const [triggerTopSellingProduct, { data: topSellingProduct}] = useLazyGetDashboardTopSellingProductQuery();
+  const [triggerTopTrendingProduct, { data: topTrendingProduct}] = useLazyGetDashboardTopTrendingProductQuery();
 
   const [date, setDate] = useState({});
   const [allQuatationRq, setAllQuatationRq] = useState([]);
@@ -36,9 +39,17 @@ const DashboradPage = () => {
   const startDateFormate = moment(todaysDate).format("YYYY-MM-DD");
   const endDateFormate = moment(todaysDate).format("YYYY-MM-DD");
   
+  const [allSellingProduct, setAllSellingProduct] = useState([])
+  const [allTrendingProduct, setAllTrendingProduct] = useState([])
+
+  const [topSellingPageNo, setTopSellingPageNo] = useState(0)
+  const [topTrendingPageNo, setTopTrendingPageNo] = useState(0)
+
   useEffect(() => {
     triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
     triggerQuotationCount()
+    triggerTopSellingProduct()
+    triggerTopTrendingProduct()
   }, [token]);
 
   /// --- page data setup from pagination--- ///
@@ -51,6 +62,37 @@ const DashboradPage = () => {
     setAllQuatationRq(supplierQuotationList?.data?.page);
   }, [supplierQuotationList?.data?.page?.length,
     supplierQuotationList?.data?.page,]);
+
+  useEffect(() => {
+    if(topSellingProduct?.data?.page?.length > 0){
+
+      if(topSellingPageNo > 0){
+        setAllSellingProduct((prev) => [...prev, ...topSellingProduct?.data?.page]);
+      }
+      else {
+        setAllSellingProduct(topSellingProduct?.data?.page);
+      }
+    }
+    else{
+      setAllSellingProduct([]);
+    }
+  }, [topSellingProduct?.data?.page?.length,
+    topSellingProduct?.data?.page,]);
+
+  useEffect(() => {
+    if(topTrendingProduct?.data?.page?.length > 0){
+      if(topTrendingPageNo > 0){
+        setAllTrendingProduct((prev) => [...prev, ...topTrendingProduct?.data?.page]);
+      }
+      else {
+        setAllTrendingProduct(topTrendingProduct?.data?.page);
+      }
+    }
+    else{
+      setAllTrendingProduct([]);
+    }
+  }, [topTrendingProduct?.data?.page?.length,
+    topTrendingProduct?.data?.page,]);
 
   useEffect(() => {
 
@@ -75,32 +117,19 @@ const DashboradPage = () => {
     }
   }, [supplierQuotationList?.data?.page]);
 
-  console.log("Supplier Info ===>>>", supplierQuotationList);
-  console.log("dashboardQuotationCount ===>>>", dashboardQuotationCount);
+  console.log("topSellingProduct ===>>>", topSellingProduct);
+  console.log("topTrendingProduct ===>>>", topTrendingProduct);
 
 
   const dateFilterHandler = () => {
-    if (supplierQuotationList?.data?.quotations?.length > 0) {
-      const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
-      const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
+    const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+    const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
 
-      const startDate = moment(startDateFormate).startOf("day");
-      const endDate = moment(endDateFormate).endOf("day");
+    const startDate = moment(startDateFormate).startOf("day");
+    const endDate = moment(endDateFormate).endOf("day");
 
-      // console.log('start date', startDate)
-      // console.log('end date', endDate)
-      // console.log('main date ===>', date)
-
-      const filteredData = supplierQuotationList?.data?.quotations?.filter(
-        (item) => {
-          const itemDate = moment(item?.created);
-          return itemDate.isBetween(startDate, endDate, null, "[]");
-        }
-      );
-      console.log("filter data --->", filteredData);
-      setAllQuatationRq(filteredData);
-      setAllQuatationRqStore(filteredData);
-    }
+    triggerTopSellingProduct({querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`})
+    triggerTopTrendingProduct({querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`})
   };
 
   const tabHandler = (val) => {
@@ -165,6 +194,42 @@ const DashboradPage = () => {
     }
   };
 
+  const topSellingProductLoadMore = () => {
+    const pageCount = topSellingPageNo + 1
+    setTopSellingPageNo(pageCount)
+    if(date?.from && date?.to){
+      const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+      const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
+
+      const startDate = moment(startDateFormate).startOf("day");
+      const endDate = moment(endDateFormate).endOf("day");
+
+      triggerTopSellingProduct({querys: `limit=${10}&&offset=${pageCount}&&start_date=${startDate}&&end_date=${endDate}`})
+    }
+    else{
+      triggerTopSellingProduct({querys: `limit=${10}&&offset=${pageCount}`})
+    }
+  }
+
+  const topTrendingProductLoadMore = () => {
+    const pageCount = topTrendingPageNo + 1
+    setTopTrendingPageNo(pageCount)
+
+    if(date?.from && date?.to){
+      const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+      const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
+
+      const startDate = moment(startDateFormate).startOf("day");
+      const endDate = moment(endDateFormate).endOf("day");
+
+      triggerTopTrendingProduct({querys: `limit=${10}&&offset=${pageCount}&&start_date=${startDate}&&end_date=${endDate}`})
+    }
+    else{
+      triggerTopTrendingProduct({querys: `limit=${10}&&offset=${pageCount}`})
+    }
+
+  }
+  
   return (
     <div>
       <HeaderLinks paths={paths} />
@@ -182,8 +247,8 @@ const DashboradPage = () => {
         />
       </div>
       <div className="mt-10 flex gap-5">
-        <TopSellingItems />
-        <TopTrendingProducts />
+        <TopSellingItems loadMoreHandler={topSellingProductLoadMore} totalData={topSellingProduct?.data?.paginate?.total} items={allSellingProduct} />
+        <TopTrendingProducts loadMoreHandler={topTrendingProductLoadMore} totalData={topTrendingProduct?.data?.paginate?.total} items={allTrendingProduct} />
       </div>
       <div className="max-w-[540px] mt-[60px]">
         <SearchInput onSearchHandler={onSearchHandler} />

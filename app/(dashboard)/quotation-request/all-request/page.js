@@ -61,13 +61,14 @@ const AllRequestPage = () => {
 
   const tabHandler = (val) => {
     setTabVal(val);
-    if (val == "responded") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${100}`})
-      setActionVal(100)
-      setCurrentPage(0)
-      setPerpageCount(10)
+    // if (val == "responded") {
+    //   triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${100}`})
+    //   setActionVal(100)
+    //   setCurrentPage(0)
+    //   setPerpageCount(10)
 
-    } else if (val == "unread") {
+    // } 
+    if (val == "unread") {
       triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${0}`})
       setActionVal(0)
       setCurrentPage(0)
@@ -77,7 +78,7 @@ const AllRequestPage = () => {
       setActionVal(400)
       setCurrentPage(0)
       setPerpageCount(10)
-      console.log('called---------->>>>>')
+      // console.log('called---------->>>>>')
     } else if (val == "pinned") {
       triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
       setActionVal(200)
@@ -121,7 +122,7 @@ const AllRequestPage = () => {
       ],
     };
 
-    const actionRes = await quotationActionHandler(request_obj);
+  const actionRes = await quotationActionHandler(request_obj);
     // console.log("Action Response ===>", actionRes);
 
     if (actionRes?.data?.message == "Request success") {
@@ -171,11 +172,11 @@ const AllRequestPage = () => {
           value: "all-request",
           amount: supplierQuotationList?.data?.paginate?.total,
         },
-        {
-          key: "Responded",
-          value: "responded",
-          amount: counterList?.data[500] ? counterList?.data[500] : 0,
-        },
+        // {
+        //   key: "Responded",
+        //   value: "responded",
+        //   amount: counterList?.data[500] ? counterList?.data[500] : 0,
+        // },
         {
           key: "Unread",
           value: "unread",
@@ -199,7 +200,7 @@ const AllRequestPage = () => {
   
   // console.log('allQuatationRq --->', allQuatationRq);
   // console.log('supplierQuotationList --->', supplierQuotationList?.data);
-  // console.log('counterList ====>', counterList)
+  console.log('counterList ====>', counterList)
   // console.log('currentPage --->', currentPage)
 
   return (
