@@ -140,7 +140,7 @@ const ProductRequestListPage = () => {
       {
         key: "All Products",
         value: "all-products",
-        amount: productRequestList?.data?.paginate?.total,
+        amount: counterList?.data?.total ? counterList?.data?.total : 0 ,
       },
       {
         key: "Approved",
