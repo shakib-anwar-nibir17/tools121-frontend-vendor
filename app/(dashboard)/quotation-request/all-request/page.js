@@ -170,7 +170,7 @@ const AllRequestPage = () => {
         {
           key: "All Request",
           value: "all-request",
-          amount: supplierQuotationList?.data?.paginate?.total,
+          amount: counterList?.data?.total ? counterList?.data?.total : 0 ,
         },
         // {
         //   key: "Responded",
