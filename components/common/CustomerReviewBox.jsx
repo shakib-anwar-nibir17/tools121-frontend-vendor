@@ -56,12 +56,16 @@ const CustomerReviewBox = ({
               Less
             </p>
           ) : (
-            <p
-              onClick={() => readMoreHandler(review?.id)}
-              className="text-blue-600 cursor-pointer font-bold"
-            >
-              Read More
-            </p>
+            <>
+              {
+               review.review?.length > 150 && <p
+                onClick={() => readMoreHandler(review?.id)}
+                className="text-blue-600 cursor-pointer font-bold"
+              >
+                Read More
+              </p>
+              }
+            </>
           )}
           <div className="flex gap-2 mt-4">
             <button

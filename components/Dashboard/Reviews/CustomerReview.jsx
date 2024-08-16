@@ -3,8 +3,7 @@
 import {
   useLazySupplierReviewListQuery,
   useReviewActionMutation,
-  useSingleReviewReplyMutation,
-  useSupplierReviewListQuery,
+  useSingleReviewReplyMutation
 } from "@/app/redux/features/supplierReview";
 import CustomerReviewBox from "@/components/common/CustomerReviewBox";
 import PaginationCom from "@/components/common/PaginationCom";
@@ -65,6 +64,7 @@ const CustomerReview = () => {
 
   useEffect(() => {
     triggerSuplierReview({querys:`limit=${10}&&offset=${0}`})
+    console.log('called ------------------------')
   }, [token]);
 
   useEffect(() => {
@@ -275,7 +275,7 @@ const CustomerReview = () => {
 
   const pagiNateHandler = (pageNo, perpageCount) => {
     if(filterDate?.startDate && filterDate?.endDate){
-      triggerSuplierReview({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}start_date=${filterDate?.startDate}&&end_date=${filterDate?.endDate}`})
+      triggerSuplierReview({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}&&start_date=${filterDate?.startDate}&&end_date=${filterDate?.endDate}`})
     }
     else{
       triggerSuplierReview({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
@@ -322,6 +322,9 @@ const CustomerReview = () => {
         </div>
       </div>
       <div className="px-6">
+        {/* <button onClick={() => {
+           triggerSuplierReview({querys:`limit=${10}&&offset=${0}`})
+        }} className="bg-blue-600 text-white px-4 py-2 rounded-md outline-none">Clicking</button> */}
         {/* reviews */}
         {supplierReviewList?.data?.page?.length > 0 &&
           allReview?.map((review) => (
