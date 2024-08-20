@@ -80,7 +80,11 @@ const UniversalQuotation = () => {
       const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
       const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
       triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
-    }else{
+    }
+    else if(searchText){
+      triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}&&search_key=${searchText}`})
+    }
+    else{
       triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}`})
     }
   }
@@ -99,7 +103,7 @@ const UniversalQuotation = () => {
   const repleyHandler = () => {
     console.log('Reply Clicked', replyText)
   }
-  console.log('universalQuotationList ====>', universalQuotationList)
+  // console.log('universalQuotationList ====>', universalQuotationList)
 
   return (
     <div className="mb-20">
