@@ -2,10 +2,15 @@
 
 import DataTable from "./DataTable";
 
-const AllRequestDataTable = ({tableData, quotationActionSubmit,from}) => {
+const AllRequestDataTable = ({tableData, quotationActionSubmit,from, 
+  setReplyId, replyId, repleyHandler, setReplyText}) => {
   
   return <div>
-    <DataTable tableData={tableData} quotationActionSubmit={quotationActionSubmit} from={from} />
+    <DataTable 
+    setReplyId={setReplyId}
+    replyId={replyId}
+    tableData={tableData} quotationActionSubmit={quotationActionSubmit} 
+    from={from} repleyHandler={repleyHandler} setReplyText={setReplyText}/>
   </div>;
 };
 

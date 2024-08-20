@@ -117,9 +117,6 @@ const DashboradPage = () => {
     }
   }, [supplierQuotationList?.data?.page]);
 
-  console.log("topSellingProduct ===>>>", topSellingProduct);
-  console.log("topTrendingProduct ===>>>", topTrendingProduct);
-
 
   const dateFilterHandler = () => {
     const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
@@ -230,6 +227,9 @@ const DashboradPage = () => {
 
   }
   
+  // console.log("topSellingProduct ===>>>", topSellingProduct);
+  console.log("topTrendingProduct ===>>>", topTrendingProduct);
+
   return (
     <div>
       <HeaderLinks paths={paths} />

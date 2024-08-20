@@ -12,7 +12,8 @@ import Link from "next/link";
 import { IoEye } from "react-icons/io5";
 import { RiDeleteBin5Fill, RiPushpinFill } from "react-icons/ri";
 
-const DataTable = ({ tableData, quotationActionSubmit , from}) => {
+const DataTable = ({ tableData, quotationActionSubmit , from,
+   setReplyId, replyId, repleyHandler, setReplyText}) => {
   return (
     <Table className="mt-6">
       <TableHeader>
@@ -25,7 +26,7 @@ const DataTable = ({ tableData, quotationActionSubmit , from}) => {
           </TableHead>
           <TableHead>Product Name</TableHead>
           <TableHead>Product Quantity</TableHead>
-          <TableHead className="w-[40%]">Request Note</TableHead>
+          <TableHead className="w-[30%]">Request Note</TableHead>
           <TableHead>Customer Name</TableHead>
          {from == 'quotation' &&  <TableHead></TableHead>}
           <TableHead>Date & Time</TableHead>
@@ -52,13 +53,13 @@ const DataTable = ({ tableData, quotationActionSubmit , from}) => {
                 {product?.product_name}
               </Link>
             </TableCell>
-            <TableCell className=" text-gray-500 w-[13%]">
+            <TableCell className=" text-gray-500 w-[10%]">
               {product?.product_quantity} pieces
             </TableCell>
-            <TableCell className="w-[25%] text-justify">
+            <TableCell className="w-[20%] text-justify">
               {product?.request_note ? `${product?.request_note?.slice(0, 120) + "....."}` : ''}
             </TableCell>
-            <TableCell className=" text-gray-500 w-[10%]">
+            <TableCell className=" text-gray-500 ">
               {product?.customer_name}
             </TableCell>
             {
@@ -79,13 +80,38 @@ const DataTable = ({ tableData, quotationActionSubmit , from}) => {
               {formatTimestamp(product?.created)}
             </TableCell>
             {
-              from == 'universal' ?  <TableCell className="">
+              from == 'universal' ?  <TableCell className="w-[35%] text-center">
+               {
+                replyId == product.id ?  <>
+                <textarea
+                type="text"
+                className="w-full h-full border border-1 border-gray-400 px-2 focus:outline-none text-sm"
+                placeholder="write reply"
+                onChange={(e) => {
+                  setReplyText(e.target.value)
+                }}
+              />
+               <div className="flex flex-row ">
+               <button
+                  onClick={() => setReplyId()}
+                  className="text-gray-600 w-[3%]"
+                >
+                  Cancel
+                </button> 
                 <button
-                  // onClick={() => quotationActionSubmit(400, product.id)}
-                  className="text-[#FF1E7C] w-[3%]"
+                  onClick={() => repleyHandler()}
+                  className="text-white  ms-14 p-2 rounded-md bg-blue-700"
+                >
+                  Send
+                </button> 
+               </div>
+                </>  :  <button
+                  onClick={() => setReplyId(product.id)}
+                  className="text-green-600 w-[3%] "
                 >
                   Reply
-                </button>
+                </button> 
+               }
             </TableCell>
             :
             <TableCell className="">

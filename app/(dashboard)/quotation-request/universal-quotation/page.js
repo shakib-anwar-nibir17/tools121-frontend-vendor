@@ -27,6 +27,8 @@ const UniversalQuotation = () => {
   const [searchText, setSearchText] = useState("");
   const [date, setDate] = useState({});
   const [totalPage, setTotalPage] = useState(0)
+  const [replyId, setReplyId] = useState('')
+  const [replyText, setReplyText] = useState('')
 
   useEffect(() => {
     triggerUniversalQuotation({querys: `limit=${10}&&offset=${0}`});
@@ -62,7 +64,7 @@ const UniversalQuotation = () => {
         triggerUniversalQuotation({querys: `limit=${10}&&offset=${0}&&search_key=${text}`})
       },500)
     } else {
-        triggerUniversalQuotation({querys: `limit=${10}&&offset=${0}&&action_type=${actionVal}`});
+        triggerUniversalQuotation({querys: `limit=${10}&&offset=${0}`});
     }
   };
   
@@ -77,9 +79,9 @@ const UniversalQuotation = () => {
     if(date?.from && date?.to){
       const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
       const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
-      triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}start_date=${startDateFormate}&&end_date=${endDateFormate}`})
+      triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
     }else{
-      triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
+      triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}`})
     }
   }
 
@@ -88,12 +90,15 @@ const UniversalQuotation = () => {
         {
           key: "All Request",
           value: "all-request",
-          amount:0,
+          amount: universalQuotationList?.data?.paginate?.total,
         },
       ];
       setOptions(OpData);
-  },[])
+  },[universalQuotationList?.data?.paginate?.total, universalQuotationList?.data?.page?.length])
   
+  const repleyHandler = () => {
+    console.log('Reply Clicked', replyText)
+  }
   console.log('universalQuotationList ====>', universalQuotationList)
 
   return (
@@ -111,34 +116,17 @@ const UniversalQuotation = () => {
         <SearchInput onSearchHandler={onSearchHandler} />
       </div>
       <AllRequest
-        tableData={ [
-          {
-              "id": "06b120be-b620-4db0-b8ae-3d9f67d4c09c",
-              "supplier_action_type": 100,
-              "customer_name": "arnab",
-              "product_quantity": 1,
-              "request_note": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
-              "product_name": "demo product name",
-              "is_replied": true,
-              "created": "2024-07-13T16:56:15.482786Z"
-          },
-          {
-              "id": "c61a4ca0-643a-4f3e-9699-4e543b9052c4",
-              "supplier_action_type": 200,
-              "customer_name": "arnab",
-              "product_quantity": 3,
-              "request_note": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
-              "product_name": "demo product name 2",
-              "is_replied": true,
-              "created": "2024-07-13T16:56:47.269570Z"
-          }
-      ]}
+        tableData={alluniversalQuotation}
         tabVal={tabVal}
         options={options}
         isFetching={isFetching}
         pagiNateHandler={pagiNateHandler}
-        totalPage={30}
+        totalPage={totalPage}
         from="universal"
+        setReplyId={setReplyId}
+        replyId={replyId}
+        repleyHandler={repleyHandler}
+        setReplyText={setReplyText}
       />
     </div>
   );
