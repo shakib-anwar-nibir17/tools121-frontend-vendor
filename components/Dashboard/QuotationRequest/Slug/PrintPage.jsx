@@ -40,12 +40,12 @@ const PrintPage = React.forwardRef(({ data }, ref) => {
         <div className="flex justify-between px-4 py-6">
           <div className="flex gap-3">
             <div className="rounded-xl border border-slate-300 shadow-custom-shadow h-16 w-16 relative">
-              <Image
+              {/* <Image
                 fill
                 src={data?.product_img_ref}
                 alt="reviewed_product_img"
                 className="rounded-xl"
-              />
+              /> */}
             </div>
             <h1 className="text-lg font-bold text-black">
               {data?.product_name}
