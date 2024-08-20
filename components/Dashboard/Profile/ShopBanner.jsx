@@ -15,6 +15,8 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineModeEditOutline, MdVerified } from "react-icons/md";
 import banner from "../../../public/e-shop-banner.png";
 import profile from "../../../public/profile_pic.png";
+import { BASE_URL } from "@/constant/urls";
+import { generateFile } from "@/utils/GenerateFile";
 
 const ShopBanner = () => {
   const token = localStorage.getItem("vendorToken");
@@ -96,16 +98,21 @@ const ShopBanner = () => {
     <div className="pb-6 border-b-2 border-slate-300">
       <div className="h-[300px] rounded-2xl w-full relative">
         <div className="2xl:w-[1504px] h-[300px] relative">
-          <Image
+          {
+            profileInfo?.data?.banner_url ? <Image
             fill
             alt="vendor_shop"
-            src={
-              profileInfo?.data?.banner_url
-                ? profileInfo?.data?.banner_url
-                : banner
-            }
+            src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.banner_url}`}
+            // src={generateFile(profileInfo?.data?.banner_url)}
             className="rounded-xl object-cover"
-          />
+          /> : <Image
+          fill
+          alt="vendor_shop"
+          src={banner}
+          className="rounded-xl object-cover"
+        />
+          }
+          
           <input
             onChange={(e) => {
               e.preventDefault();
@@ -136,17 +143,21 @@ const ShopBanner = () => {
           )}
         </div>
         <div className="w-[168px] h-[168px] rounded-full absolute left-10 -bottom-[78px]">
-          <Image
+          {
+          
+            profileInfo?.data?.logo_url ? <Image
             fill
             alt="profile_pic"
-            src={
-              profileInfo?.data?.logo_url
-                ? profileInfo?.data?.logo_url
-                : profile
-            }
+            src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.logo_url}`}
             className="rounded-full relative object-cover"
-          />
-
+          /> : <Image
+          fill
+          alt="profile_pic"
+          src={profile}
+          className="rounded-full relative object-cover"
+        /> 
+          }
+          
           {loading2 ? (
             <div className="w-11 h-11 rounded-full bg-primary-200 cursor-pointer border-2 border-white absolute bottom-0 right-3 flex items-center justify-center">
               <Loader height="20" width="20" />{" "}
