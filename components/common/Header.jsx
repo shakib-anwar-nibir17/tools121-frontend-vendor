@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { BASE_URL } from "@/constant/urls";
 import { capitalizeFirstTwo } from "@/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +26,7 @@ const Header = () => {
   const { data: profileInfo, refetch } = useUserDataQuery(token, {
     refetchOnMountOrArgChange: true,
   });
-  // console.log(profileInfo);
+  console.log(profileInfo);
 
   const router = useRouter();
   const logOutHandler = () => {
@@ -58,7 +59,7 @@ const Header = () => {
                   <div className="h-12 w-12 border rounded-full hover:ring-2 relative">
                     <Image
                       fill
-                      src={profileInfo?.data?.logo_url}
+                      src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.logo_url}`}
                       alt="profile"
                       className="rounded-full"
                     />

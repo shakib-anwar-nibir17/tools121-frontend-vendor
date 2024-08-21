@@ -68,13 +68,7 @@ const ProductList = () => {
   
 
   const pagiNateHandler = (pageNo, perpageCount) => {
-    if(date?.from && date?.to){
-      const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
-      const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
-      triggerProductList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}start_date=${startDateFormate}&&end_date=${endDateFormate}`})
-    }else{
-      triggerProductList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
-    }
+    triggerProductList({querys: `limit=${perpageCount}&&offset=${pageNo}`})
   }
   
 

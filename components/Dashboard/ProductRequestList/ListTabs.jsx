@@ -13,7 +13,9 @@ const ListTabs = ({
   options,
   buttonHandler,
   pagiNateHandler,
-  isFetching
+  isFetching,
+  reqProductDeleteHandler,
+  deleteId
 }) => {
   console.log(tabVal)
   return (
@@ -52,7 +54,7 @@ const ListTabs = ({
           
           {requestData?.length > 0 ? (
             <TabsContent value={tabVal}>
-              <ListDataTable requestData={requestData} />
+              <ListDataTable deleteId={deleteId} reqProductDeleteHandler={reqProductDeleteHandler} requestData={requestData} />
             </TabsContent>
           ) : (
             <NoProducts

@@ -186,7 +186,7 @@ const invenntoryProductApi = api.injectEndpoints({
           "Accept-Language": "en",
         },
       }),
-      invalidatesTags: ["productrequestlist"],
+      // invalidatesTags: ["productrequestlist"],
     }),
 
     getSingleProduct: builder.query({
@@ -226,6 +226,43 @@ const invenntoryProductApi = api.injectEndpoints({
         },
       }),
     }),
+
+    getReqProductCounter: builder.query({
+      query: (data) => ({
+        url: '/supplier/product/v1/requested/action-counter',
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+      // providesTags: ["productlist"],
+    }),
+
+    getDashboardTopSellingProduct: builder.query({
+      query: (data) => ({
+        url: `/dashboard/v1/top-selling?${data?.querys ? data?.querys : 'limit=10&&offset=0'}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+    }),
+    getDashboardTopTrendingProduct: builder.query({
+      query: (data) => ({
+        url: `/dashboard/v1/top-trending?${data?.querys ? data?.querys : 'limit=10&&offset=0'}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${GetVendorToken()}`,
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+      }),
+    }),
+
   }),
 });
 
@@ -247,5 +284,13 @@ export const {
   useLazyGetProducRequesttListQuery,
   useUpdateProductMutation,
   useGetProductTagsQuery,
-  useLazySearchProdReqListQuery
+  useLazySearchProdReqListQuery,
+
+  // ------------Counter--------------
+  useLazyGetReqProductCounterQuery,
+
+  // ---------Dashboard------------//
+  useLazyGetDashboardTopSellingProductQuery,
+  useLazyGetDashboardTopTrendingProductQuery,
+
 } = invenntoryProductApi;

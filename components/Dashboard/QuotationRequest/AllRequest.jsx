@@ -13,9 +13,14 @@ const AllRequest = ({
   totalPage,
   quotationActionSubmit,
   isFetching,
-  pagiNateHandler
+  pagiNateHandler,
+  from,
+  setReplyId,
+  replyId,
+  repleyHandler,
+  setReplyText
 }) => {
-  console.log('tab val ---->', tabVal)
+  // console.log('tab val ---->', tabVal)
   return (
     <Tabs defaultValue="all-request">
       <div className="flex items-center mt-10 justify-between">
@@ -51,6 +56,11 @@ const AllRequest = ({
           <AllRequestDataTable
             quotationActionSubmit={quotationActionSubmit}
             tableData={tableData}
+            from={from}
+            setReplyId={setReplyId}
+            replyId={replyId}
+            repleyHandler={repleyHandler}
+            setReplyText={setReplyText}
           />
         </TabsContent>
       ) : (
