@@ -65,8 +65,9 @@ export default function SignIn() {
     };
     const loginRes = await loginHandler(request_Obj);
     console.log("login Response =====>", loginRes);
+    console.log(loginRes?.data?.status);
 
-    if (loginRes?.data?.data?.token) {
+    if (loginRes?.data?.status === "200") {
       setLoading(false);
       dispatch(setLoginName({ loginName: data?.username }));
       localStorage.setItem("vendorToken", loginRes?.data?.data?.token);
@@ -74,6 +75,10 @@ export default function SignIn() {
       document.cookie = `vendorToken=${token}; path=/; max-age=86400; ${
         window.location.protocol === "https:" ? "secure;" : ""
       }`;
+      toast.success("Login successful", {
+        position: "top-right",
+        duration: 2000,
+      });
       router.push("/dashboard");
     } else if (
       loginRes?.error?.data?.message ==
