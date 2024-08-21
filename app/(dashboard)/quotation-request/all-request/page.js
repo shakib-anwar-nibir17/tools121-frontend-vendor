@@ -199,10 +199,7 @@ const AllRequestPage = () => {
   },[counterList?.data, counterFetching])
   
   // console.log('allQuatationRq --->', allQuatationRq);
-  // console.log('supplierQuotationList --->', supplierQuotationList?.data);
-  console.log('counterList ====>', counterList)
-  // console.log('currentPage --->', currentPage)
-
+  
   return (
     <div className="mb-20">
       <div className="flex justify-between items-center">
