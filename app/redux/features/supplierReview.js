@@ -41,7 +41,7 @@ const supplierReview = api.injectEndpoints({
         },
         body: data,
       }),
-      invalidatesTags: ['supplierreviewlist'],
+      // invalidatesTags: ['supplierreviewlist'],
     }),
 
   }),

@@ -228,7 +228,7 @@ const DashboradPage = () => {
   }
   
   // console.log("topSellingProduct ===>>>", topSellingProduct);
-  console.log("topTrendingProduct ===>>>", topTrendingProduct);
+  // console.log("topTrendingProduct ===>>>", topTrendingProduct);
 
   return (
     <div>
