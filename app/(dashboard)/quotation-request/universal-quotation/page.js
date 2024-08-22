@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 "use client";
 import {
- 
+  useSingleQuotationReplyMutation,
   useLazyGetUniversalQuotationListQuery,
 } from "@/app/redux/features/supplierQuotation";
 import AllRequest from "@/components/Dashboard/QuotationRequest/AllRequest";
@@ -29,6 +29,8 @@ const UniversalQuotation = () => {
   const [totalPage, setTotalPage] = useState(0)
   const [replyId, setReplyId] = useState('')
   const [replyText, setReplyText] = useState('')
+
+  const [singleQuotationReply, {}] = useSingleQuotationReplyMutation();
 
   useEffect(() => {
     triggerUniversalQuotation({querys: `limit=${10}&&offset=${0}`});
@@ -80,7 +82,11 @@ const UniversalQuotation = () => {
       const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
       const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
       triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
-    }else{
+    }
+    else if(searchText){
+      triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}&&search_key=${searchText}`})
+    }
+    else{
       triggerUniversalQuotation({querys: `limit=${perpageCount}&&offset=${pageNo}`})
     }
   }
@@ -96,11 +102,35 @@ const UniversalQuotation = () => {
       setOptions(OpData);
   },[universalQuotationList?.data?.paginate?.total, universalQuotationList?.data?.page?.length])
   
-  const repleyHandler = () => {
+  const repleyHandler = async() => {
     console.log('Reply Clicked', replyText)
-  }
-  console.log('universalQuotationList ====>', universalQuotationList)
+    const request_Obj = {
+      quotation_id: replyId,
+      reply_txt: replyText,
+    };
 
+    const response = await singleQuotationReply(request_Obj);
+
+    console.log("quotation reply response =====>", response);
+
+    if (response?.data?.message == "Request success") {
+      setReplyId('')
+      toast.success("Reply sent Successfully", {
+        position: "top-right",
+        duration: 3000,
+      });
+    } else {
+     
+      toast.error("Reply sent failed", {
+        position: "top-right",
+        duration: 3000,
+      });
+    }
+  }
+  // console.log('universalQuotationList ====>', universalQuotationList)
+  const tabHandler = () => {
+    triggerUniversalQuotation({querys: `limit=${10}&&offset=${0}`});
+  }
   return (
     <div className="mb-20">
       <div className="flex justify-between items-center">
@@ -127,6 +157,7 @@ const UniversalQuotation = () => {
         replyId={replyId}
         repleyHandler={repleyHandler}
         setReplyText={setReplyText}
+        tabHandler={tabHandler}
       />
     </div>
   );

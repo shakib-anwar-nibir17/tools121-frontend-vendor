@@ -10,6 +10,7 @@ import GeneralInfo from "@/components/Dashboard/ProductRequest/GeneralInfo";
 import MediaInfo from "@/components/Dashboard/ProductRequest/MediaInfo";
 import MoreInfo from "@/components/Dashboard/ProductRequest/MoreInfo";
 import { Button } from "@/components/ui/button";
+import { BASE_URL } from "@/constant/urls";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -173,9 +174,7 @@ const ProductRequestForm = ({ params }) => {
 
   useEffect(() => {
     if (singleProductRequestData?.data?.requested_product_img?.img_url) {
-      setPreview(
-        singleProductRequestData?.data?.requested_product_img?.img_url
-      );
+      setPreview(`${BASE_URL}/generate-file/?file_path=${singleProductRequestData?.data?.requested_product_img?.img_url}`);
 
       if (singleProductRequestData?.data?.requested_product_tags?.length > 0) {
         const formattag =
@@ -197,10 +196,10 @@ const ProductRequestForm = ({ params }) => {
     singleProductRequestData?.data?.requested_product_tags,
   ]);
 
-  console.log(
-    "singleProductRequestData ===>",
-    singleProductRequestData?.data?.requested_product_tags
-  );
+  // console.log(
+  //   "singleProductRequestData ===>",
+  //   singleProductRequestData?.data?.requested_product_tags
+  // );
 
   const tagChangeHandler = (tagObj) => {
     console.log("tagObj --->", tagObj);
@@ -219,7 +218,8 @@ const ProductRequestForm = ({ params }) => {
     }
   };
 
-  console.log("productTags -------->", tags);
+  console.log("product img -------->", preview);
+
 
   return (
     <div className="max-w-[676px] mb-[102px]">
