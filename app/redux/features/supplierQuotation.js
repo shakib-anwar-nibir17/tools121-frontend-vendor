@@ -56,7 +56,7 @@ const supplierQuotation = api.injectEndpoints({
     }),
 
     getQuotationCounter: builder.query({
-      query: (data) => ({
+      query: () => ({
         url: '/supplier/quotation/v1/action-counter',
         method: "GET",
         headers: {
@@ -81,7 +81,7 @@ const supplierQuotation = api.injectEndpoints({
     }),
 
     getDashboardQuotationCount: builder.query({
-      query: (data) => ({
+      query: () => ({
         url: '/dashboard/v1/quotation-count',
         method: "GET",
         headers: {

@@ -3,7 +3,6 @@
 import { useDeleteRequstProductMutation, useLazyGetProducRequesttListQuery, useLazyGetReqProductCounterQuery } from "@/app/redux/features/inventoryProduct";
 import ListTabs from "@/components/Dashboard/ProductRequestList/ListTabs";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
-import Loader from "@/components/common/Loader";
 import SearchInput from "@/components/common/SearchInput";
 import { useStateContext } from "@/utils/contexProvider";
 import moment from "moment";
@@ -30,7 +29,7 @@ const ProductRequestListPage = () => {
   const [actionVal, setActionVal] = useState(null)
   const [totalPage, setTotalPage] = useState(0)
   
-  const [deleteReqProduct, {}] = useDeleteRequstProductMutation();
+  const [deleteReqProduct] = useDeleteRequstProductMutation();
   const [deleteId, setDeleteId] = useState("");
 
   useEffect(() => {
