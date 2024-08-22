@@ -75,14 +75,10 @@ export default function SignIn() {
       document.cookie = `vendorToken=${token}; path=/; max-age=86400; ${
         window.location.protocol === "https:" ? "secure;" : ""
       }`;
-<<<<<<< HEAD
       toast.success("Login successful", {
         position: "top-right",
         duration: 2000,
       });
-=======
-      console.log('Router pust')
->>>>>>> 7b5eab0d8a8bf1e036d4ed4a48cc193a0e849092
       router.push("/dashboard");
     } else if (
       loginRes?.error?.data?.message ==
