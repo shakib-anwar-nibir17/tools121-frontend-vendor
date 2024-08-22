@@ -1,5 +1,4 @@
-import { BASE_URL, VISITOR_URL } from "@/constant/urls";
-import { generateFile } from "@/utils/GenerateFile";
+import { BASE_URL } from "@/constant/urls";
 import Image from "next/image";
 
 const TrendingItemCard = ({product}) => {

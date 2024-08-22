@@ -10,7 +10,6 @@ import {
 import AllRequest from "@/components/Dashboard/QuotationRequest/AllRequest";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
 import HeaderLinkWrapper from "@/components/common/HeaderLinkWrapper";
-import Loader from "@/components/common/Loader";
 import SearchInput from "@/components/common/SearchInput";
 import { useStateContext } from "@/utils/contexProvider";
 import moment from "moment";
@@ -19,12 +18,12 @@ import toast from "react-hot-toast";
 
 const AllRequestPage = () => {
   const token = localStorage.getItem("vendorToken");
-  const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
+  const [triggerQuotationList, { data: supplierQuotationList, isFetching}] = useLazySupplierQuotationListQuery();
   const [triggerQuotationCounter, { data: counterList, isFetching: counterFetching}] = useLazyGetQuotationCounterQuery();
 
   const [allQuatationRq, setAllQuatationRq] = useState([]);
   const [tabVal, setTabVal] = useState("");
-  const { currentPage, setCurrentPage, setPerpageCount, perpageCount} = useStateContext();
+  const { currentPage, setCurrentPage, setPerpageCount} = useStateContext();
   const [options, setOptions] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [date, setDate] = useState({});
@@ -68,23 +67,27 @@ const AllRequestPage = () => {
     //   setPerpageCount(10)
 
     // } 
+    const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+    const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
+
     if (val == "unread") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${0}`})
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${0}&&start_date=${date?.from ? startDateFormate : null}&&end_date=${date?.from ? endDateFormate : null}`})
       setActionVal(0)
       setCurrentPage(0)
       setPerpageCount(10)
     } else if (val == "spam") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${400}`})
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${400}&&start_date=${date?.from ? startDateFormate : null}&&end_date=${date?.from ? endDateFormate : null}`})
       setActionVal(400)
       setCurrentPage(0)
       setPerpageCount(10)
       // console.log('called---------->>>>>')
     } else if (val == "pinned") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}&&start_date=${date?.from ? startDateFormate : null}&&end_date=${date?.from ? endDateFormate : null}`})
       setActionVal(200)
       setCurrentPage(0)
       setPerpageCount(10)
-    } else if("all-request"){
+    } 
+    else{
       triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
       setActionVal(null)
       setCurrentPage(0)
@@ -199,10 +202,7 @@ const AllRequestPage = () => {
   },[counterList?.data, counterFetching])
   
   // console.log('allQuatationRq --->', allQuatationRq);
-  // console.log('supplierQuotationList --->', supplierQuotationList?.data);
-  console.log('counterList ====>', counterList)
-  // console.log('currentPage --->', currentPage)
-
+  
   return (
     <div className="mb-20">
       <div className="flex justify-between items-center">

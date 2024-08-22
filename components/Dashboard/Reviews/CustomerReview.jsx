@@ -6,7 +6,6 @@ import {
   useSingleReviewReplyMutation
 } from "@/app/redux/features/supplierReview";
 import CustomerReviewBox from "@/components/common/CustomerReviewBox";
-import PaginationCom from "@/components/common/PaginationCom";
 import PaginationServerside from "@/components/common/PaginationServerside";
 import Select from "@/components/common/Select";
 import { CustomerReviewSVG } from "@/components/icons/Icons";
@@ -40,10 +39,10 @@ const sortOptions = [
 
 const CustomerReview = () => {
   const token = localStorage.getItem("vendorToken");
-  const [triggerSuplierReview, { data: supplierReviewList, error, isLoading }] =
+  const [triggerSuplierReview, { data: supplierReviewList }] =
   useLazySupplierReviewListQuery();
   
-  const { pageData, setCurrentPage , setPerpageCount} = useStateContext();
+  const { perpageCount, setCurrentPage , setPerpageCount, currentPage} = useStateContext();
   const [allReview, setAllReview] = useState([]);
   const [readTrack, setReadTrack] = useState("");
   const [replyTrack, setReplyTrack] = useState("");
@@ -64,7 +63,7 @@ const CustomerReview = () => {
 
   useEffect(() => {
     triggerSuplierReview({querys:`limit=${10}&&offset=${0}`})
-    console.log('called ------------------------')
+    
   }, [token]);
 
   useEffect(() => {
@@ -91,6 +90,7 @@ const CustomerReview = () => {
 
   const actionApiResonseMessageHandler = (res, action) => {
     if (res == "Request success") {
+      triggerSuplierReview({querys: `limit=${perpageCount}&&offset=${currentPage}&&action_type=${actionVal}&&start_date=${filterDate?.startDate}&&end_date=${filterDate?.endDate}`})
       if (action == 100) {
         toast.success("Review approved Successfully", {
           position: "top-right",
@@ -128,7 +128,9 @@ const CustomerReview = () => {
     };
 
     const actionRes = await reviewAction(request_obj);
-    console.log("Action Response ===>", actionRes);
+    
+    // console.log("Action Response ===>", actionRes);
+
     actionApiResonseMessageHandler(actionRes?.data?.message, action);
   };
 
@@ -282,7 +284,7 @@ const CustomerReview = () => {
     }
   }
 
-  console.log("Supplier Review =====>", supplierReviewList);
+  // console.log("Supplier Review =====>", supplierReviewList);
   // console.log("Selected data =====>", selectedReviewArr);
 
   return (
