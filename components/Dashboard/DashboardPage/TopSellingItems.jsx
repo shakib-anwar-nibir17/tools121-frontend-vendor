@@ -8,58 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const productArray = [
-  {
-    _id: 1,
-    name: "RIG-BS-6025RF Research Upright Metallurgical Microscope",
-    conversion_rate: 25,
-  },
-  {
-    _id: 2,
-    name: "ZEISS Axio Vert.A1 Inverted Metallurgical Microscope",
-    conversion_rate: 30,
-  },
-  {
-    _id: 3,
-    name: "Nikon ECLIPSE LV100N POL Polarizing Microscope",
-    conversion_rate: 20,
-  },
-  {
-    _id: 4,
-    name: "Olympus GX53 Inverted Metallurgical Microscope",
-    conversion_rate: 28,
-  },
-  {
-    _id: 5,
-    name: "Leica DM2700 M Upright Metallurgical Microscope",
-    conversion_rate: 22,
-  },
-  {
-    _id: 6,
-    name: "Mitutoyo FS70 Inspection Metallurgical Microscope",
-    conversion_rate: 18,
-  },
-  {
-    _id: 7,
-    name: "Meiji Techno IM7500 Inverted Metallurgical Microscope",
-    conversion_rate: 24,
-  },
-  {
-    _id: 8,
-    name: "AmScope 40X-2500X LED Lab Compound Microscope",
-    conversion_rate: 26,
-  },
-  {
-    _id: 9,
-    name: "Motic BA310MET-T Trinocular Metallurgical Microscope",
-    conversion_rate: 21,
-  },
-  {
-    _id: 10,
-    name: "BRESSER Science ADL-601F Inverted Microscope",
-    conversion_rate: 27,
-  },
-];
 
 const TopSellingItems = ({items, totalData, loadMoreHandler}) => {
   return (

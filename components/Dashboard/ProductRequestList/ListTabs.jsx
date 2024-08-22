@@ -1,4 +1,3 @@
-import PaginationCom from "@/components/common/PaginationCom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NoProducts from "../ProductList/NoProducts";
 import ListDataTable from "./ListDataTable";

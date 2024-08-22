@@ -74,6 +74,7 @@ export default function SignIn() {
       document.cookie = `vendorToken=${token}; path=/; max-age=86400; ${
         window.location.protocol === "https:" ? "secure;" : ""
       }`;
+      console.log('Router pust')
       router.push("/dashboard");
     } else if (
       loginRes?.error?.data?.message ==

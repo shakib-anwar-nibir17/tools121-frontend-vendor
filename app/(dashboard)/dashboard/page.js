@@ -14,7 +14,6 @@ import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePi
 import HeaderLinks from "@/components/common/HeaderLinks";
 import SearchInput from "@/components/common/SearchInput";
 import { useStateContext } from "@/utils/contexProvider";
-import { filterQuotationsByDate } from "@/utils/utils";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -67,7 +66,7 @@ const DashboradPage = () => {
     if(topSellingProduct?.data?.page?.length > 0){
 
       if(topSellingPageNo > 0){
-        setAllSellingProduct((prev) => [...prev, ...topSellingProduct?.data?.page]);
+        setAllSellingProduct((prev) => [...prev, ...topSellingProduct.data.page]);
       }
       else {
         setAllSellingProduct(topSellingProduct?.data?.page);
@@ -82,7 +81,7 @@ const DashboradPage = () => {
   useEffect(() => {
     if(topTrendingProduct?.data?.page?.length > 0){
       if(topTrendingPageNo > 0){
-        setAllTrendingProduct((prev) => [...prev, ...topTrendingProduct?.data?.page]);
+        setAllTrendingProduct((prev) => [...prev, ...topTrendingProduct.data.page]);
       }
       else {
         setAllTrendingProduct(topTrendingProduct?.data?.page);
