@@ -6,7 +6,6 @@ import {
   useSingleReviewReplyMutation
 } from "@/app/redux/features/supplierReview";
 import CustomerReviewBox from "@/components/common/CustomerReviewBox";
-import PaginationCom from "@/components/common/PaginationCom";
 import PaginationServerside from "@/components/common/PaginationServerside";
 import Select from "@/components/common/Select";
 import { CustomerReviewSVG } from "@/components/icons/Icons";
@@ -40,7 +39,7 @@ const sortOptions = [
 
 const CustomerReview = () => {
   const token = localStorage.getItem("vendorToken");
-  const [triggerSuplierReview, { data: supplierReviewList, error, isLoading }] =
+  const [triggerSuplierReview, { data: supplierReviewList }] =
   useLazySupplierReviewListQuery();
   
   const { perpageCount, setCurrentPage , setPerpageCount, currentPage} = useStateContext();

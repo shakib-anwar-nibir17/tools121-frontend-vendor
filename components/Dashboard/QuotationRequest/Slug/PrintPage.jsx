@@ -1,5 +1,4 @@
 import { formatTimestamp } from "@/utils/utils";
-import Image from "next/image";
 import React from "react";
 
 const marginTop = "20mm";

@@ -1,6 +1,5 @@
 /* eslint-disable no-empty-pattern */
 "use client";
-import { useDeleteRequstProductMutation } from "@/app/redux/features/inventoryProduct";
 import { setSingleProductRequst } from "@/app/redux/slices/inventorySlice";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -13,8 +12,6 @@ import {
 } from "@/components/ui/table";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import toast from "react-hot-toast";
 import { IoEye } from "react-icons/io5";
 import { MdModeEditOutline } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";

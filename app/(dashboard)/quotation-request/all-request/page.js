@@ -10,7 +10,6 @@ import {
 import AllRequest from "@/components/Dashboard/QuotationRequest/AllRequest";
 import { CalendarDateRangePicker } from "@/components/common/CalenderDateRangePicker";
 import HeaderLinkWrapper from "@/components/common/HeaderLinkWrapper";
-import Loader from "@/components/common/Loader";
 import SearchInput from "@/components/common/SearchInput";
 import { useStateContext } from "@/utils/contexProvider";
 import moment from "moment";
@@ -19,12 +18,12 @@ import toast from "react-hot-toast";
 
 const AllRequestPage = () => {
   const token = localStorage.getItem("vendorToken");
-  const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
+  const [triggerQuotationList, { data: supplierQuotationList, isFetching}] = useLazySupplierQuotationListQuery();
   const [triggerQuotationCounter, { data: counterList, isFetching: counterFetching}] = useLazyGetQuotationCounterQuery();
 
   const [allQuatationRq, setAllQuatationRq] = useState([]);
   const [tabVal, setTabVal] = useState("");
-  const { currentPage, setCurrentPage, setPerpageCount, perpageCount} = useStateContext();
+  const { currentPage, setCurrentPage, setPerpageCount} = useStateContext();
   const [options, setOptions] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [date, setDate] = useState({});
@@ -87,7 +86,8 @@ const AllRequestPage = () => {
       setActionVal(200)
       setCurrentPage(0)
       setPerpageCount(10)
-    } else if("all-request"){
+    } 
+    else{
       triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
       setActionVal(null)
       setCurrentPage(0)
