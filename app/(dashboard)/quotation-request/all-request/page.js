@@ -68,19 +68,22 @@ const AllRequestPage = () => {
     //   setPerpageCount(10)
 
     // } 
+    const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
+    const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
+
     if (val == "unread") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${0}`})
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${0}&&start_date=${date?.from ? startDateFormate : null}&&end_date=${date?.from ? endDateFormate : null}`})
       setActionVal(0)
       setCurrentPage(0)
       setPerpageCount(10)
     } else if (val == "spam") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${400}`})
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${400}&&start_date=${date?.from ? startDateFormate : null}&&end_date=${date?.from ? endDateFormate : null}`})
       setActionVal(400)
       setCurrentPage(0)
       setPerpageCount(10)
       // console.log('called---------->>>>>')
     } else if (val == "pinned") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
+      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}&&start_date=${date?.from ? startDateFormate : null}&&end_date=${date?.from ? endDateFormate : null}`})
       setActionVal(200)
       setCurrentPage(0)
       setPerpageCount(10)

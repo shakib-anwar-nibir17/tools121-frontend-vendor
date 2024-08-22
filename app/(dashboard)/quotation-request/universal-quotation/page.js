@@ -102,7 +102,7 @@ const UniversalQuotation = () => {
       setOptions(OpData);
   },[universalQuotationList?.data?.paginate?.total, universalQuotationList?.data?.page?.length])
   
-  const repleyHandler = () => {
+  const repleyHandler = async() => {
     console.log('Reply Clicked', replyText)
     const request_Obj = {
       quotation_id: replyId,
@@ -128,7 +128,9 @@ const UniversalQuotation = () => {
     }
   }
   // console.log('universalQuotationList ====>', universalQuotationList)
-
+  const tabHandler = () => {
+    triggerUniversalQuotation({querys: `limit=${10}&&offset=${0}`});
+  }
   return (
     <div className="mb-20">
       <div className="flex justify-between items-center">
@@ -155,6 +157,7 @@ const UniversalQuotation = () => {
         replyId={replyId}
         repleyHandler={repleyHandler}
         setReplyText={setReplyText}
+        tabHandler={tabHandler}
       />
     </div>
   );
