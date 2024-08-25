@@ -1,21 +1,19 @@
 "use client";
-import { useLazyGetUsernameListByPhoneQuery, useUserNameOtpSendMutation } from "@/app/redux/features/authApi";
+import { useLazyGetUsernameListByPhoneQuery } from "@/app/redux/features/authApi";
 import { setUserNameData } from "@/app/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
 const UserNamesPages = () => {
   const dispatch = useDispatch();
-  const [userNameOtpSend] = useUserNameOtpSendMutation();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [selectedUserName, setSelectedUserName] = useState("");
 
-  const [triggerUserNameList, { data: userNames, error, isLoading }] =
+  const [triggerUserNameList, { data: userNames, }] =
   useLazyGetUsernameListByPhoneQuery();
   const userPhoneData = useSelector((state) => state.authStore.userPhone);
 
