@@ -35,23 +35,23 @@ const GeneralMenu = [
     ],
     route: "quotation-request",
   },
-  {
-    menu: "Orders",
-    icons: BsCart3,
-    submenu: [
-      {
-        name: "Create New Order",
-        subRoute: "orders/create-new-orders",
-        value: "createNewOrder",
-      },
-      {
-        name: "Invoice List",
-        subRoute: "orders/invoice-list",
-        value: "invoiceList",
-      },
-    ],
-    route: "orders",
-  },
+  // {
+  //   menu: "Orders",
+  //   icons: BsCart3,
+  //   submenu: [
+  //     {
+  //       name: "Create New Order",
+  //       subRoute: "orders/create-new-orders",
+  //       value: "createNewOrder",
+  //     },
+  //     {
+  //       name: "Invoice List",
+  //       subRoute: "orders/invoice-list",
+  //       value: "invoiceList",
+  //     },
+  //   ],
+  //   route: "orders",
+  // },
   {
     menu: "Inventory",
     icons: BsBoxes,
