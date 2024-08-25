@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-empty-pattern */
 "use client";
-import { useLazyGetUsernameListByPhoneQuery } from "@/app/redux/features/authApi";
-import { setUsernames } from "@/app/redux/slices/authSlice";
+import { useLazyGetUsernameListByPhoneQuery, usePhoneOtpSendMutation } from "@/app/redux/features/authApi";
+import { setUsernames, setUserPhoneData } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
@@ -28,10 +28,11 @@ export default function ChangeLoginNameForm() {
 
   const [loading, setLoading] = useState();
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const [trigger, { data, error, isLoading }] =
+  const [triggerUserNameList, { data, error, isLoading }] =
     useLazyGetUsernameListByPhoneQuery();
   const dispatch = useDispatch();
   const router = useRouter();
+  const [sendOtpByPhone, {}] = usePhoneOtpSendMutation();
 
   const {
     register,
@@ -42,21 +43,35 @@ export default function ChangeLoginNameForm() {
   });
 
   const formHandler = async (reqData) => {
-    const token = await executeRecaptcha("register");
+    const token = await executeRecaptcha("otpsendbyphone");
     const queryObj = {
       phone: reqData?.phone,
       token: token,
     };
-    trigger(queryObj);
-    if (data?.data?.usernames?.length > 0) {
+    const sendOtpObj = {
+      phone: reqData?.phone,
+      recaptcha_token: token,
+    };
+
+    const phoneOtpSendRes = await sendOtpByPhone(sendOtpObj)
+    console.log('phoneOtpSendRes ===>', phoneOtpSendRes)
+
+    if (phoneOtpSendRes?.data?.message == "OTP sent for verification") {
       setLoading(false);
-      dispatch(setUsernames(data));
-     
-      router.push("/username-verify");
-      console.log("getUserList by phon res ====>", data, loading, error);
-    } else {
+      triggerUserNameList(queryObj)
+      dispatch(setUserPhoneData(reqData?.phone))
+      router.push("/phone-otp-verify");
+    } 
+    else if(phoneOtpSendRes?.error?.data?.message == "Supplier with this username or phone not exist") {
       setLoading(false);
       toast.error("No user exists with this phone number", {
+        position: "top-right",
+        duration: 2500,
+      });
+    }
+    else{
+      setLoading(false);
+      toast.error("Request Failed", {
         position: "top-right",
         duration: 2500,
       });

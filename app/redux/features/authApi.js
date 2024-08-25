@@ -117,6 +117,46 @@ const authApi = api.injectEndpoints({
       }),
       // providesTags: ['userinfo'],
     }),
+
+    phoneOtpSend: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/auth/v1/verify/phone",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
+      //   invalidatesTags: [''],
+    }),
+
+    verifyOtpByPhone: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/auth/v1/phone/verify-otp",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
+      //   invalidatesTags: [''],
+    }),
+    
+    resendOtpByPhone: builder.mutation({
+      query: (data) => ({
+        url: "/supplier/auth/v1/phone/resend-otp",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": "en",
+        },
+        body: data,
+      }),
+      //   invalidatesTags: [''],
+    }),
+
   }),
 });
 
@@ -131,4 +171,8 @@ export const {
   useChangePasswordMutation,
   useGetUsernameListByPhoneQuery,
   useLazyGetUsernameListByPhoneQuery,
+  
+  usePhoneOtpSendMutation,
+  useVerifyOtpByPhoneMutation,
+  useResendOtpByPhoneMutation,
 } = authApi;

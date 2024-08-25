@@ -1,8 +1,8 @@
 "use client";
-import { useUserNameOtpSendMutation } from "@/app/redux/features/authApi";
+import { useLazyGetUsernameListByPhoneQuery, useUserNameOtpSendMutation } from "@/app/redux/features/authApi";
 import { setUserNameData } from "@/app/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,11 +10,29 @@ import { useDispatch, useSelector } from "react-redux";
 const UserNamesPages = () => {
   const dispatch = useDispatch();
   const [userNameOtpSend] = useUserNameOtpSendMutation();
-  const userNames = useSelector((state) => state.authStore.userNames);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [selectedUserName, setSelectedUserName] = useState("");
+
+  const [triggerUserNameList, { data: userNames, error, isLoading }] =
+  useLazyGetUsernameListByPhoneQuery();
+  const userPhoneData = useSelector((state) => state.authStore.userPhone);
+
+  
+  const userNameListHandler = async () => {
+    const token = await executeRecaptcha("usernames");
+    const queryObj = {
+      phone: userPhoneData,
+      token: token,
+    };
+    triggerUserNameList(queryObj)
+  }
+  useEffect(() => {
+    if(userNames?.data?.usernames == 0 || !userNames){
+      userNameListHandler()
+    }
+  },[userPhoneData, !userNames])
 
   const proceedHandler = async (name) => {
     setLoading(true);
@@ -26,28 +44,13 @@ const UserNamesPages = () => {
       recaptcha_token: token,
     };
 
-    const response = await userNameOtpSend(request_Obj);
-
-    if (response?.data?.message == "OTP sent for verification") {
-      toast.success("OTP has been successfully", {
-        position: "top-right",
-        duration: 3000,
-      });
-
-      dispatch(setUserNameData(request_Obj));
-      setSelectedUserName("");
-      setLoading(false);
-      router.push("/reset-password");
-    } else {
-      setLoading(false);
-      setSelectedUserName("");
-      toast.error("Signed-up failed try again", {
-        position: "top-right",
-        duration: 2000,
-      });
-    }
+    dispatch(setUserNameData(request_Obj));
+    setSelectedUserName("");
+    setLoading(false);
+    router.push("/reset-password");
+      
   };
-
+console.log('userNames ===>', userNames)
   return (
     <div className="text-black">
       <div className="text-center lg:text-left my-10">
