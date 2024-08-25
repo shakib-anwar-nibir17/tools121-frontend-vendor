@@ -28,7 +28,7 @@ const MoreInfo = ({
 
       <div className="p-6 border border-slate-300 mt-6 rounded-lg">
         <h1 className="text-lg text-black">Inventory</h1>
-        <div className="flex gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 ">
           {productTags?.map((item) => (
             <div key={item?.id} className="w-full mt-5">
               <label className="font-bold text-black">{item?.tag_name}</label>

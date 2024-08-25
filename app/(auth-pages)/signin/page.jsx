@@ -74,8 +74,10 @@ export default function SignIn() {
       document.cookie = `vendorToken=${token}; path=/; max-age=86400; ${
         window.location.protocol === "https:" ? "secure;" : ""
       }`;
-      console.log('Router pust')
+      console.log('Router post')
       router.push("/dashboard");
+      // router.push("/forgot-password");
+
     } else if (
       loginRes?.error?.data?.message ==
       "Supplier with this username or phone not exist"

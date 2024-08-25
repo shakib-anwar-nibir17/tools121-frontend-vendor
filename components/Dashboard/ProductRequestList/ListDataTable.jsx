@@ -115,19 +115,27 @@ const ListDataTable = ({ requestData , reqProductDeleteHandler, deleteId}) => {
                     color="#7B7C80"
                   />
                 ) : (
-                  <RiDeleteBin5Fill
-                    className="cursor-pointer"
-                    size={20}
-                    color="#7B7C80"
-                    onClick={() => reqProductDeleteHandler(product?.id)}
-                  />
+                  <>
+                    {
+                      (product?.action_type == 100 ||  product?.action_type == 100) ? '' :  <RiDeleteBin5Fill
+                      className="cursor-pointer"
+                      size={20}
+                      color="#7B7C80"
+                      onClick={() => reqProductDeleteHandler(product?.id)}
+                    />
+                    }
+                  </>
+                 
                 )}
-                <MdModeEditOutline
-                  onClick={() => editHandler(product)}
-                  className="cursor-pointer"
-                  size={20}
-                  color="#7B7C80"
-                />
+                {
+                   (product?.action_type == 100 ||  product?.action_type == 100) ? '' : <MdModeEditOutline
+                   onClick={() => editHandler(product)}
+                   className="cursor-pointer"
+                   size={20}
+                   color="#7B7C80"
+                 />
+                }
+                
                 <IoEye className="cursor-pointer" size={20} color="#7B7C80" />
               </div>
             </TableCell>

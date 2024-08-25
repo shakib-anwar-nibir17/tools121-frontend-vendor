@@ -45,11 +45,11 @@ const DataTable = ({ tableData, quotationActionSubmit , from,
             <TableCell
               className={`${
                 product?.supplier_action_type == 0
-                  ? "text-primary-900"
-                  : "text-black"
-              } font-medium w-[17.5%]`}
+                  ? "text-primary-900 font-bold"
+                  : "text-black font-medium "
+              } w-[17.5%]`}
             >
-              <Link href={`/quotation-request/all-request/${product?.id}`}>
+              <Link  href={`/quotation-request/all-request/${product?.id}`}>
                 {product?.product_name}
               </Link>
             </TableCell>
