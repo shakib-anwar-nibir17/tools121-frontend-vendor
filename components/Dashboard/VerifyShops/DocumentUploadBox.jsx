@@ -2,6 +2,7 @@ import UploadBox from "@/components/common/UploadBox";
 import { DocumentSVGIcon } from "@/components/icons/Icons";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
 import { RxCrossCircled } from "react-icons/rx";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const DocumentUploadBox = ({ item, docUploadHandler, docDeleteHandler }) => {
   return (
@@ -18,7 +19,8 @@ const DocumentUploadBox = ({ item, docUploadHandler, docDeleteHandler }) => {
             Max. file size 2mb/file
           </p>
         </div>
-        <RiVerifiedBadgeLine size={22} color="#0D6EFD" />
+       {item?.document_status == 0 ?  <RiVerifiedBadgeLine size={22} color="#0D6EFD" /> : <RiVerifiedBadgeFill  size={22} color="green"  />
+      }
       </div>
       {/* upload Box */}
       <div className="mt-4">
@@ -46,12 +48,15 @@ const DocumentUploadBox = ({ item, docUploadHandler, docDeleteHandler }) => {
             </div>
           </div>
 
-          <RxCrossCircled
+          {
+            item?.document_status == 0 ?  <RxCrossCircled
             onClick={() => docDeleteHandler(item?.document_id)}
             size={22}
             className="cursor-pointer"
             color="#01060D"
-          />
+          /> : ''
+          }
+         
         </div>
       )}
     </div>
