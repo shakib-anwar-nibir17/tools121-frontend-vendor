@@ -75,7 +75,7 @@ export default function SignIn() {
         window.location.protocol === "https:" ? "secure;" : ""
       }`;
       console.log('Router post')
-      router.push("/dashboard");
+      router.push("/");
       // router.push("/forgot-password");
 
     } else if (
