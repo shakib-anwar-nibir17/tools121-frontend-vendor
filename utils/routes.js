@@ -11,4 +11,5 @@ export const PUBLIC_ROUTES = [
   "/forgot-username",
   "/reset-password",
   "/user-names/auth",
+  "/phone-otp-verify"
 ];

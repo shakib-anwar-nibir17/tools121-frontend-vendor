@@ -2,8 +2,8 @@
 "use client";
 
 import {
-  useResendOtpMutation,
-  useVerifyOtpMutation,
+    useResendOtpByPhoneMutation,
+  useVerifyOtpByPhoneMutation,
 } from "@/app/redux/features/authApi";
 import { setOtpCode } from "@/app/redux/slices/authSlice";
 import { Button } from "@/components/ui/button";
@@ -18,15 +18,15 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function Verify() {
+export default function PhoneOtpVerify() {
   const [otpValue, setOtpValue] = useState(null);
   const [error, setError] = useState();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [loading, setLoading] = useState(false);
-  const [resendOtp, {}] = useResendOtpMutation();
-  const [userNameVerifyOtp, {}] = useVerifyOtpMutation();
+  const [resendOtpByPhone, {}] = useResendOtpByPhoneMutation();
+  const [verifyOtpByPhone, {}] = useVerifyOtpByPhoneMutation();
 
-  const userNameData = useSelector((state) => state.authStore.userNameData);
+  const userPhoneData = useSelector((state) => state.authStore.userPhone);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -37,15 +37,16 @@ export default function Verify() {
     setLoading(false);
     const token = await executeRecaptcha("resend_otp");
     const request_Obj = {
-      phone: userNameData?.username,
+      phone: userPhoneData,
       recaptcha_token: token,
     };
 
-    const resendOtp_res = await resendOtp(request_Obj);
+    const resendOtp_res = await resendOtpByPhone(request_Obj);
 
     console.log("resendOtp res ===>", resendOtp_res);
+
     if(resendOtp_res?.error?.data?.message == "Request failed"){
-      toast.success("OTP send failed", {
+      toast.error("OTP send failed", {
         position: "top-right",
         duration: 2000,
       });
@@ -73,28 +74,38 @@ export default function Verify() {
   // handle r function for OTP verification
 
   const handlerVerification = async () => {
-    if (userNameData?.username) {
+    if (userPhoneData) {
       const token = await executeRecaptcha("verify_otp");
       const request_Obj = {
-        username: userNameData?.username,
+        phone: userPhoneData,
         recaptcha_token: token,
         otp: otpValue,
       };
-      console.log(request_Obj);
-      const verifyRes = await userNameVerifyOtp(request_Obj);
-      console.log(verifyRes);
+      
+      const verifyRes = await verifyOtpByPhone(request_Obj);
+      console.log('verifyRes ===> ', verifyRes);
+      setLoading(false)
 
-      if (verifyRes?.data?.status === "200") {
+      if (verifyRes?.data?.message == "OTP verify success") {
         setLoading(false);
+
         dispatch(setOtpCode(request_Obj));
+
         toast.success("OTP Verification Successful", {
           position: "top-right",
           duration: 2000,
         });
-        router.push("/reset-password");
+      
+        router.push("/user-names/auth"); 
       }
+      else{
+        setLoading(false);
 
-      console.log("VerifyRes ===>", verifyRes, request_Obj);
+        toast.error("OTP Verification Failed", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
     } else {
       setError("Please try Resend OTP option first");
     }

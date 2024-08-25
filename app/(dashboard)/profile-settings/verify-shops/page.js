@@ -52,6 +52,7 @@ const VerifyShops = () => {
     }
     console.log("docRes ==>", docRes);
   };
+  
   console.log("userdoc list ==>", userDocList?.data?.documents);
 
   // document delete function
@@ -115,6 +116,7 @@ const VerifyShops = () => {
       });
     }
   };
+
   return (
     <div className="mb-20 max-w-[732px]">
       <div className=" min-h-screen rounded-2xl border border-slate-200">
@@ -148,12 +150,12 @@ const VerifyShops = () => {
         </div>
       </div>
       <div className="mt-6 flex justify-end gap-4">
-        <Button
+        {/* <Button
           onClick={() => docsResetHandler()}
           className="text-xl px-6 bg-white text-primary-900 border border-primary-900"
         >
           Reset
-        </Button>
+        </Button> */}
         <Button onClick={() => requestVerification()} className="text-xl px-6">
           Request For Verification
         </Button>
