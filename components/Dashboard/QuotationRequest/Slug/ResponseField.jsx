@@ -33,12 +33,12 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
 
     const textareaValue = response1;
     const request_Obj = {
-      quotation_id: data?.id,
+      quotation_id: params?.id,
       reply_txt: textareaValue,
     };
 
     const response = await singleQuotationReply(request_Obj);
-    console.log("quotation reply response =====>", response);
+    console.log("quotation reply response =====>", request_Obj);
     if (response?.data?.message == "Request success") {
       setLoading(false);
       triggerSingleQuotation({ id: params?.id, token: token });

@@ -11,6 +11,7 @@ export const authSlice = createSlice({
     otpCode: {},
     userNames: [],
     loginName: {},
+    userPhone: ''
   },
   reducers: {
     setRegisterData: (state, action) => {
@@ -30,6 +31,10 @@ export const authSlice = createSlice({
     setLoginName: (state, action) => {
       state.loginName = action.payload;
     },
+    setUserPhoneData: (state, action) => {
+      state.userPhone = action.payload;
+    },
+    
   },
 });
 
@@ -39,6 +44,7 @@ export const {
   setOtpCode,
   setUsernames,
   setLoginName,
+  setUserPhoneData
 } = authSlice.actions;
 
 export const authSliceReducer = authSlice.reducer;
