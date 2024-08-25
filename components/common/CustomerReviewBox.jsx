@@ -39,11 +39,11 @@ const CustomerReviewBox = ({
             /> */}
             <PiImageSquareLight size={28} />
           </div>
-          <p className="text-black font-bold">{review?.product_name}</p>
+          <p className={`${review?.review_action_type == 0 ? 'text-lg font-bold' : 'text-base font-normal'}`}>{review?.product_name}</p>
         </div>
         {/* user review and reply options */}
         <div className=" col-span-4 pl-6">
-          <p className="text-justify">
+          <p className="text-justify ">
             {readTrack == review?.id
               ? review?.review
               : review.review?.slice(0, 150)}
@@ -80,7 +80,8 @@ const CustomerReviewBox = ({
                 }
               }}
             >
-              Approve
+              {  review?.review_action_type == 100 ? 'Approved' : 'Approve'}
+              
             </button>
             <span>|</span>
             {
@@ -98,7 +99,12 @@ const CustomerReviewBox = ({
             }
             <span>|</span>
             {review?.review_action_type == 400 ? (
-              ""
+              <button
+             
+              className="text-red-600"
+            >
+              Spamed
+            </button>
             ) : (
               <button
                 onClick={() => reviewActionSubmit(400, review?.id)}
@@ -109,7 +115,12 @@ const CustomerReviewBox = ({
             )}
             <span>|</span>
             {review?.review_action_type == 300 ? (
-              ""
+               <button
+               onClick={() => reviewActionSubmit(300, review?.id)}
+               className="text-red-600"
+             >
+               Trashed
+             </button>
             ) : (
               <button
                 onClick={() => reviewActionSubmit(300, review?.id)}

@@ -107,7 +107,7 @@ const DashboradPage = () => {
         {
           key: "Pinned",
           value: "pinned",
-          amount: 0,
+          amount: dashboardQuotationCount?.data?.pinned_quotation_count,
         },
       ];
 
@@ -162,32 +162,32 @@ const DashboradPage = () => {
     const actionRes = await quotationActionHandler(request_obj);
     console.log("Action Response ===>", actionRes);
 
-    if (actionRes?.data?.message == "Request success") {
-      tabHandler(tabVal)
-      if (action == 200) {
-        toast.success("Quotation pinned Successfully", {
-          position: "top-right",
-          duration: 2000,
-        });
-      }
-      if (action == 300) {
-        toast.success("Quotation delete Successfully", {
-          position: "top-right",
-          duration: 2000,
-        });
-      }
-      if (action == 400) {
-        toast.success("Quotation spam Successfully", {
-          position: "top-right",
-          duration: 2000,
-        });
-      }
-    } else {
-      toast.error("Quotation Action Failed", {
-        position: "top-right",
-        duration: 2000,
-      });
-    }
+        if (actionRes?.data?.message == "Request success") {
+          tabHandler(tabVal)
+          if (action == 200) {
+            toast.success("Quotation pinned Successfully", {
+              position: "top-right",
+              duration: 2000,
+            });
+          }
+          if (action == 300) {
+            toast.success("Quotation delete Successfully", {
+              position: "top-right",
+              duration: 2000,
+            });
+          }
+          if (action == 400) {
+            toast.success("Quotation spam Successfully", {
+              position: "top-right",
+              duration: 2000,
+            });
+          }
+        } else {
+          toast.error("Quotation Action Failed", {
+            position: "top-right",
+            duration: 2000,
+          });
+        }
   };
 
   const topSellingProductLoadMore = () => {
