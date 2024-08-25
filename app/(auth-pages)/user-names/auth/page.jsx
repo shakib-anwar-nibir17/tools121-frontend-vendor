@@ -37,7 +37,7 @@ const UserNamesPages = () => {
       dispatch(setUserNameData(request_Obj));
       setSelectedUserName("");
       setLoading(false);
-      router.push("/username-verify");
+      router.push("/reset-password");
     } else {
       setLoading(false);
       setSelectedUserName("");

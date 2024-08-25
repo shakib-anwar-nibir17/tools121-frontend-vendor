@@ -51,7 +51,8 @@ export default function ChangeLoginNameForm() {
     if (data?.data?.usernames?.length > 0) {
       setLoading(false);
       dispatch(setUsernames(data));
-      router.push("/user-names/auth");
+     
+      router.push("/username-verify");
       console.log("getUserList by phon res ====>", data, loading, error);
     } else {
       setLoading(false);

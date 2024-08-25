@@ -93,7 +93,8 @@ export default function Verify() {
         });
 
         // localStorage.setItem("vendorToken", verifyRes?.data?.access_token); // user not registered
-        router.push("/reset-password");
+       
+        router.push("/user-names/auth"); 
       }
 
       console.log("VerifyRes ===>", verifyRes, request_Obj);
