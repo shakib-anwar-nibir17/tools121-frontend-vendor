@@ -1,10 +1,36 @@
-import { MainLogoSVG } from "@/components/icons/Icons";
-import { fetchMediaData } from "@/utils/fetchMedia";
-import parse from "html-react-parser";
-const Notice = async ({ id }) => {
-  const data = await fetchMediaData(id);
+"use client";
 
-  if (!data) {
+import { MainLogoSVG } from "@/components/icons/Icons";
+import parse from "html-react-parser";
+import { useEffect, useState } from "react";
+const Notice = ({ id }) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://testapireal.tools121.com/contentdata/${id}`
+        );
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error || !data) {
     return <div>Failed to load data</div>;
   }
 
