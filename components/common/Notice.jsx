@@ -12,7 +12,13 @@ const Notice = ({ id }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://testapireal.tools121.com/contentdata/${id}`
+          `https://testapireal.tools121.com/contentdata/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
         const result = await response.json();
         setData(result);
