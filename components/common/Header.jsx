@@ -41,7 +41,7 @@ const Header = () => {
     <nav className="xl:border-b  border-primary-200 pb-6 mt-6">
       <div className="sm:px-8 px-12">
         <div className="hidden xl:flex justify-between">
-          <Link href={"/"}>
+          <Link href={"https://test.tools121.com/"}>
             <Image
               className="w-auto h-auto"
               src="/logo.png"
