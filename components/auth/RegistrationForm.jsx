@@ -99,7 +99,7 @@ export default function RegistrationForm() {
       dispatch(setRegisterData(request_Obj));
       setLoading(false);
     } else if (
-      registerRes?.data?.message == "Supplier with this username already exist"
+      registerRes?.error?.data?.message == "Supplier with this username already exist"
     ) {
       setLoading(false);
       toast.error("Supplier with this username already exist", {
