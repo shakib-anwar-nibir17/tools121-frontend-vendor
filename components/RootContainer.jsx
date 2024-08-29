@@ -17,6 +17,7 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     const isToken = localStorage.getItem("vendorToken");
+    console.log('root isToken ===>', isToken)
     if (isToken) {
       setLoading(false);
       router.push("/dashboard");
