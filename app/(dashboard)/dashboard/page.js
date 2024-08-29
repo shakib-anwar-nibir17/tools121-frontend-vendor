@@ -70,10 +70,7 @@ const DashboradPage = () => {
       }
       else {
         setAllSellingProduct(topSellingProduct?.data?.page);
-      }
-    }
-    else{
-      setAllSellingProduct([]);
+      } 
     }
   }, [topSellingProduct?.data?.page?.length,
     topSellingProduct?.data?.page,]);
@@ -86,9 +83,6 @@ const DashboradPage = () => {
       else {
         setAllTrendingProduct(topTrendingProduct?.data?.page);
       }
-    }
-    else{
-      setAllTrendingProduct([]);
     }
   }, [topTrendingProduct?.data?.page?.length,
     topTrendingProduct?.data?.page,]);
