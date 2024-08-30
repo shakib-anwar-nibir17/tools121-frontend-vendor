@@ -98,8 +98,9 @@ export default function RegistrationForm() {
       router.push("/registration-verify");
       dispatch(setRegisterData(request_Obj));
       setLoading(false);
-    } else if (
-      registerRes?.data?.message == "Supplier with this username already exist"
+    } 
+    else if (
+      registerRes?.error?.data?.message == "Supplier with this username already exist"
     ) {
       setLoading(false);
       toast.error("Supplier with this username already exist", {
