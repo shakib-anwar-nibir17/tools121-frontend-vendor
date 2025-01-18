@@ -77,7 +77,7 @@ const DataTable = ({ tableData, quotationActionSubmit , from,
             </TableCell>
             }
             <TableCell className=" text-black font-bold w-[22%]">
-              {formatTimestamp(product?.created)}
+              {formatTimestamp(product?.quote_time)}
             </TableCell>
             {
               from == 'universal' ?  <TableCell className="w-[35%] text-center">

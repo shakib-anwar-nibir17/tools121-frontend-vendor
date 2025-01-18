@@ -172,7 +172,7 @@ const CustomerReview = () => {
       setPerpageCount(10)
       
     } else if (item == 200) {
-      triggerSuplierReview({querys: `limit=${10}&&offset=${0}&&action_type=${500}`})
+      triggerSuplierReview({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
       setActionVal(500)
       setCurrentPage(0)
       setPerpageCount(10)

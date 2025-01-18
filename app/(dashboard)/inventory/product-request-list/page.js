@@ -189,6 +189,12 @@ const ProductRequestListPage = () => {
 
     console.log("delete response ===>", delete_res);
   };
+
+  const dateCancelHandler = () => {
+    setDate({})
+    triggerProductRequestList({querys: `limit=${10}&&offset=${0}`});
+    triggerReqProductCounter()
+  }
   return (
     <div className="mb-20">
       <div className="absolute top-0 right-0">
@@ -196,6 +202,7 @@ const ProductRequestListPage = () => {
           dateFilterHandler={dateFilterHandler}
           date={date}
           setDate={setDate}
+          dateCancelHandler={dateCancelHandler}
         />
       </div>
       <div className="max-w-[540px]">

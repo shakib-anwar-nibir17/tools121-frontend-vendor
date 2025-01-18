@@ -131,6 +131,12 @@ const UniversalQuotation = () => {
   const tabHandler = () => {
     triggerUniversalQuotation({querys: `limit=${10}&&offset=${0}`});
   }
+
+  const dateCancelHandler = () => {
+    setDate({})
+    triggerUniversalQuotation({querys: `limit=${10}&&offset=${0}`});
+  }
+
   return (
     <div className="mb-20">
       <div className="flex justify-between items-center">
@@ -139,6 +145,7 @@ const UniversalQuotation = () => {
           dateFilterHandler={dateFilterHandler}
           date={date}
           setDate={setDate}
+          dateCancelHandler={dateCancelHandler}
         />
       </div>
 
