@@ -4,7 +4,7 @@ import { api } from "../api/api";
 const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     userData: builder.query({
-      query: (credentials) => ({
+      query: () => ({
         url: "/supplier/profile/v1/info",
         method: "GET",
         headers: {
@@ -31,7 +31,7 @@ const authApi = api.injectEndpoints({
     }),
 
     userDocList: builder.query({
-      query: (credentials) => ({
+      query: () => ({
         url: "/supplier/doc/v1/list",
         method: "GET",
         headers: {
@@ -70,7 +70,7 @@ const authApi = api.injectEndpoints({
     }),
 
     requestDocVerification: builder.mutation({
-      query: (token) => ({
+      query: () => ({
         url: "/supplier/doc/v1/verify-request",
         method: "POST",
         headers: {
@@ -94,7 +94,7 @@ const authApi = api.injectEndpoints({
       invalidatesTags: ["userdocs"],
     }),
     resetUserDocs: builder.mutation({
-      query: (data) => ({
+      query: () => ({
         url: `/supplier/doc/v1/reset`,
         method: "DELETE",
         headers: {
