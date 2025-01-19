@@ -11,7 +11,7 @@ const RootPage = () => {
 
   useEffect(() => {
     
-    console.log("isToken ===>>", isToken)
+    console.log("isToken Page ===>>", isToken)
 
     if(isToken){
       // setLoading(false)

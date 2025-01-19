@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
     console.log('root isToken ===>', isToken)
     if (isToken) {
       setLoading(false);
-      router.push("/dashboard");
+      // router.push("/dashboard");
     } else {
       setLoading(false);
       router.push("/signin");
