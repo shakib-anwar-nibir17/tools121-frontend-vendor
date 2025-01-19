@@ -72,6 +72,12 @@ const DashboradPage = () => {
         setAllSellingProduct(topSellingProduct?.data?.page);
       } 
     }
+    else{
+      if(date?.to && date.from && topSellingProduct?.data?.page?.length == 0){
+        setAllSellingProduct([])
+      }
+    }
+
   }, [topSellingProduct?.data?.page?.length,
     topSellingProduct?.data?.page,]);
 
@@ -82,6 +88,11 @@ const DashboradPage = () => {
       }
       else {
         setAllTrendingProduct(topTrendingProduct?.data?.page);
+      }
+    }
+    else{
+      if(date?.to && date.from && topTrendingProduct?.data?.page?.length == 0){
+        setAllTrendingProduct([])
       }
     }
   }, [topTrendingProduct?.data?.page?.length,
@@ -115,12 +126,10 @@ const DashboradPage = () => {
     const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
     const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
 
-    const startDate = moment(startDateFormate).startOf("day");
-    const endDate = moment(endDateFormate).endOf("day");
-
-    triggerTopSellingProduct({querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`})
-    triggerTopTrendingProduct({querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`})
+    triggerTopSellingProduct({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
+    triggerTopTrendingProduct({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
   };
+
 
   const tabHandler = (val) => {
     setTabVal(val);
@@ -220,9 +229,11 @@ const DashboradPage = () => {
 
   }
   
-  // console.log("topSellingProduct ===>>>", topSellingProduct);
-  // console.log("topTrendingProduct ===>>>", topTrendingProduct);
-
+  const dateCancelHandler = () => {
+    triggerTopSellingProduct()
+    triggerTopTrendingProduct()
+    setDate({})
+  }
   return (
     <div>
       <HeaderLinks paths={paths} />
@@ -237,6 +248,7 @@ const DashboradPage = () => {
           dateFilterHandler={dateFilterHandler}
           date={date}
           setDate={setDate}
+          dateCancelHandler={dateCancelHandler}
         />
       </div>
       <div className="mt-10 flex gap-5">

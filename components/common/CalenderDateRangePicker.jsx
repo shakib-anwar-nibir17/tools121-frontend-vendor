@@ -62,9 +62,10 @@ export function CalendarDateRangePicker({
             <PopoverClose asChild>
             <Button className="bg-slate-200 text-black" onClick={() => dateCancelHandler()}>Cancel</Button>
             </PopoverClose>
-          
-
-            <Button onClick={() => dateFilterHandler()}>Update</Button>
+            
+            <PopoverClose asChild>
+              <Button onClick={() => dateFilterHandler()}>Update</Button>
+            </PopoverClose>
           </div>
         </PopoverContent>
       </Popover>

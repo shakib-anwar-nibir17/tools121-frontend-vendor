@@ -202,7 +202,12 @@ const AllRequestPage = () => {
   },[counterList?.data, counterFetching])
   
   // console.log('allQuatationRq --->', allQuatationRq);
-  
+  const dateCancelHandler = () => {
+    triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
+    triggerQuotationCounter()
+    setDate({})
+  }
+
   return (
     <div className="mb-20">
       <div className="flex justify-between items-center">
@@ -211,6 +216,7 @@ const AllRequestPage = () => {
           dateFilterHandler={dateFilterHandler}
           date={date}
           setDate={setDate}
+          dateCancelHandler={dateCancelHandler}
         />
       </div>
 

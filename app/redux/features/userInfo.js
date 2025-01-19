@@ -1,3 +1,4 @@
+import { GetVendorToken } from "@/utils/GetToken";
 import { api } from "../api/api";
 
 const authApi = api.injectEndpoints({
@@ -7,7 +8,7 @@ const authApi = api.injectEndpoints({
         url: "/supplier/profile/v1/info",
         method: "GET",
         headers: {
-          Authorization: `Bearer ${credentials}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -20,7 +21,7 @@ const authApi = api.injectEndpoints({
         url: "/supplier/profile/v1/info-update",
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${data?.token}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -34,7 +35,7 @@ const authApi = api.injectEndpoints({
         url: "/supplier/doc/v1/list",
         method: "GET",
         headers: {
-          Authorization: `Bearer ${credentials}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -47,7 +48,7 @@ const authApi = api.injectEndpoints({
         url: "/supplier/doc/v1/upload",
         method: "POST",
         headers: {
-          Authorization: `Bearer ${data?.token}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Accept-Language": "en",
         },
         body: data?.forms,
@@ -60,7 +61,7 @@ const authApi = api.injectEndpoints({
         url: "/supplier/img/v1/upload",
         method: "POST",
         headers: {
-          Authorization: `Bearer ${data?.token}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Accept-Language": "en",
         },
         body: data?.formdata,
@@ -73,7 +74,7 @@ const authApi = api.injectEndpoints({
         url: "/supplier/doc/v1/verify-request",
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Accept-Language": "en",
         },
       }),
@@ -85,7 +86,7 @@ const authApi = api.injectEndpoints({
         url: `/supplier/doc/v1/delete/${data?.document_id}`,
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${data?.token}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },
@@ -97,7 +98,7 @@ const authApi = api.injectEndpoints({
         url: `/supplier/doc/v1/reset`,
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${data?.token}`,
+          Authorization: `Bearer ${GetVendorToken()}`,
           "Content-Type": "application/json",
           "Accept-Language": "en",
         },

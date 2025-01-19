@@ -122,7 +122,7 @@ const ShopInfoForm = () => {
 
       console.log("Update req body ==>", request_Obj);
       console.log("update_res ==>", update_res);
-
+      setLoading(false);
       if (update_res?.data?.message == "Request success") {
         setLoading(false);
         toast.success("Profile updated Successfully", {

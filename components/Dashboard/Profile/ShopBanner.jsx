@@ -22,7 +22,7 @@ const ShopBanner = () => {
   const token = localStorage.getItem("vendorToken");
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const { data: profileInfo, refetch } = useUserDataQuery(token, {
+  const { data: profileInfo, refetch } = useUserDataQuery({
     refetchOnMountOrArgChange: true,
   });
   const fileRef = useRef();
@@ -92,7 +92,7 @@ const ShopBanner = () => {
     console.log("imgUpRes ===>", imgUpRes);
   };
 
-  console.log("Profile info ==>", profileInfo);
+  console.log("Profile info ==>", profileInfo?.data);
 
   return (
     <div className="pb-6 border-b-2 border-slate-300">
