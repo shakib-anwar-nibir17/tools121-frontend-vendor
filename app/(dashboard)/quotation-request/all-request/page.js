@@ -149,6 +149,12 @@ const AllRequestPage = () => {
           duration: 2000,
         });
       }
+      if (action == 100) {
+        toast.success("Quotation Unpinned Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
     } else {
       toast.error("Quotation Action Failed", {
         position: "top-right",

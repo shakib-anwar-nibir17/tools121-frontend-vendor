@@ -105,12 +105,12 @@ const Header = () => {
                   </div>
                 </div>
                 <DropdownMenuItem>
-                  <Link
-                    href={"/profile-settings/profile"}
+                  <div
+                    onClick={() => router.push("/profile-settings/profile")}
                     className="px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left flex items-center gap-6 text-medium text-lg"
                   >
                     <PiSquaresFour size={24} /> Account Settings
-                  </Link>
+                  </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <div

@@ -130,6 +130,9 @@ const DataTable = ({ tableData, quotationActionSubmit , from,
                   if (product?.supplier_action_type !== 200) {
                     quotationActionSubmit(200, product.id);
                   }
+                  else if(product?.supplier_action_type == 200) {
+                    quotationActionSubmit(100, product.id);
+                  }
                 }}
               />
 
