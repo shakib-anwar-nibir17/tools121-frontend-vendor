@@ -234,6 +234,7 @@ const DashboradPage = () => {
     triggerTopTrendingProduct()
     setDate({})
   }
+  console.log('allTrendingProduct ===', allTrendingProduct)
   return (
     <div>
       <HeaderLinks paths={paths} />

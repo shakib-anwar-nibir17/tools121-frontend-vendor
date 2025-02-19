@@ -92,19 +92,19 @@ const ShopBanner = () => {
     console.log("imgUpRes ===>", imgUpRes);
   };
 
-  console.log("Profile info ==>", profileInfo?.data);
+  console.log("Profile info ==>", profileInfo?.data?.logo_url);
 
   return (
     <div className="pb-6 border-b-2 border-slate-300">
       <div className="h-[300px] rounded-2xl w-full relative">
         <div className="2xl:w-[1504px] h-[300px] relative">
           {
-            profileInfo?.data?.banner_url ? <Image
-            fill
+            profileInfo?.data?.banner_url ? <img
+            
             alt="vendor_shop"
             src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.banner_url}`}
             // src={generateFile(profileInfo?.data?.banner_url)}
-            className="rounded-xl object-cover"
+            className="rounded-xl object-cover h-full w-full"
           /> : <Image
           fill
           alt="vendor_shop"
@@ -143,21 +143,19 @@ const ShopBanner = () => {
           )}
         </div>
         <div className="w-[168px] h-[168px] rounded-full absolute left-10 -bottom-[78px]">
-          {
+        {
           
-            profileInfo?.data?.logo_url ? <Image
-            fill
-            alt="profile_pic"
-            src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.logo_url}`}
-            className="rounded-full relative object-cover"
-          /> : <Image
-          fill
+          profileInfo?.data?.logo_url ? <img
           alt="profile_pic"
-          src={profile}
-          className="rounded-full relative object-cover"
-        /> 
-          }
-          
+          src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.logo_url}`}
+          className="rounded-full relative object-cover h-full w-full"
+        /> : <Image
+        fill
+        alt="profile_pic"
+        src={profile}
+        className="rounded-full relative object-cover"
+      /> 
+        }
           {loading2 ? (
             <div className="w-11 h-11 rounded-full bg-primary-200 cursor-pointer border-2 border-white absolute bottom-0 right-3 flex items-center justify-center">
               <Loader height="20" width="20" />{" "}

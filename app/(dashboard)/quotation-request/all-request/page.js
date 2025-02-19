@@ -207,7 +207,7 @@ const AllRequestPage = () => {
     
   },[counterList?.data, counterFetching])
   
-  // console.log('allQuatationRq --->', allQuatationRq);
+  console.log('allQuatationRq --->', allQuatationRq);
   const dateCancelHandler = () => {
     triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
     triggerQuotationCounter()
