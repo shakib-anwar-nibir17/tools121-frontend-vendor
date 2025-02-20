@@ -68,7 +68,7 @@ const DataTable = ({ tableData, quotationActionSubmit , from,
                 ""
               ) : (
                 <button
-                  onClick={() => quotationActionSubmit(400, product.id)}
+                  onClick={() => quotationActionSubmit(400, product?.q_read_id)}
                   className="text-[#FF1E7C] w-[3%]"
                 >
                   spam
@@ -128,10 +128,10 @@ const DataTable = ({ tableData, quotationActionSubmit , from,
                 }
                 onClick={() => {
                   if (product?.supplier_action_type !== 200) {
-                    quotationActionSubmit(200, product.id);
+                    quotationActionSubmit(200, product.q_read_id);
                   }
                   else if(product?.supplier_action_type == 200) {
-                    quotationActionSubmit(100, product.id);
+                    quotationActionSubmit(100, product.q_read_id);
                   }
                 }}
               />
@@ -140,7 +140,7 @@ const DataTable = ({ tableData, quotationActionSubmit , from,
                 className="cursor-pointer"
                 size={20}
                 color="#7B7C80"
-                onClick={() => quotationActionSubmit(300, product.id)}
+                onClick={() => quotationActionSubmit(300, product.q_read_id)}
               />
             </div>
           </TableCell>

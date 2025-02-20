@@ -19,6 +19,7 @@ const QuotationResponsePage = ({ params }) => {
     useLazySingleQuotationListQuery();
   const [quotationActionHandler, {}] = useQuotationActionMutation();
 
+  
   const quotationActionSubmit = async (actionVal) => {
     const request_obj = {
       actions: [
@@ -31,6 +32,7 @@ const QuotationResponsePage = ({ params }) => {
 
     const actionRes = await quotationActionHandler(request_obj);
   };
+  console.log("singleQuotationList", singleQuotationList?.data)
   useEffect(() => {
     if (params?.id) {
       triggerSingleQuotation({ id: params?.id, token: token });

@@ -57,11 +57,11 @@ const Header = () => {
               <DropdownMenuTrigger className="group inline-flex justify-center items-center text-sm font-medium text-gray-900 hover:text-primary-950 outline-none">
                 {profileInfo?.data?.logo_url ? (
                   <div className="h-12 w-12 border rounded-full hover:ring-2 relative">
-                    <Image
+                    <img
                       fill
                       src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.logo_url}`}
                       alt="profile"
-                      className="rounded-full"
+                      className="rounded-full w-full h-full"
                     />
                   </div>
                 ) : (
