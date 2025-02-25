@@ -16,6 +16,7 @@ import { GrEmoji } from "react-icons/gr";
 import { SlPaperClip } from "react-icons/sl";
 import { useReactToPrint } from "react-to-print";
 import PrintPage from "./PrintPage";
+import { BASE_URL } from "@/constant/urls";
 
 const ResponseField = ({ data, token, params, triggerSingleQuotation , quotationActionSubmit}) => {
   const [singleQuotationReply, {}] = useSingleQuotationReplyMutation();
@@ -97,12 +98,12 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
           <div className="flex justify-between px-4 py-6">
             <div className="flex gap-3">
               <div className="rounded-xl border border-slate-300 shadow-custom-shadow h-16 w-16 relative">
-                {/* <Image
-                  fill
-                  src={data?.product_img_ref}
+                <img
+                  
+                  src={`${BASE_URL}/generate-file/?file_path=${data?.product_img_ref }`}
                   alt="reviewed_product_img"
-                  className="rounded-xl"
-                /> */}
+                  className="rounded-xl h-full w-full"
+                />
               </div>
               <h1 className="text-lg font-bold text-black">
                 {data?.product_name}
