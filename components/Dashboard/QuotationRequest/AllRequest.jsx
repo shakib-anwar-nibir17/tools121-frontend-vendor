@@ -32,7 +32,9 @@ const AllRequest = ({
                 key={option?.value}
                 className="text-base pb-0 data-[state=active]:bg-white data-[state=active]:text-primary-950 data-[state=active]:border-b-4 data-[state=active]:border-primary-900 hover:border-b-4 hover:border-primary-900 w-[132px]"
                 value={option?.value}
-                onClick={() => tabHandler(option.value)}
+                onClick={() => {
+                  tabHandler(option.value)
+                }}
               >
                 <p className="py-4">{option?.key}</p>
                 <span className="py-4 text-primary-900">

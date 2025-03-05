@@ -105,7 +105,7 @@ const DashboradPage = () => {
       const OpData = [
         {
           key: "Todays Request",
-          value: "todays-request",
+          value: "all-request",
           amount: supplierQuotationList?.data?.paginate?.total,
         },
 
@@ -119,7 +119,7 @@ const DashboradPage = () => {
       setOptions(OpData);
 
     }
-  }, [supplierQuotationList?.data?.page]);
+  }, [supplierQuotationList?.data?.page, token]);
 
 
   const dateFilterHandler = () => {
@@ -133,6 +133,7 @@ const DashboradPage = () => {
 
   const tabHandler = (val) => {
     setTabVal(val);
+    console.log('Clicked', val)
     if (val == "pinned") {
       triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
     } else {
@@ -234,7 +235,8 @@ const DashboradPage = () => {
     triggerTopTrendingProduct()
     setDate({})
   }
-  console.log('allTrendingProduct ===', allTrendingProduct)
+  console.log("supplierQuotationList ===>", supplierQuotationList)
+
   return (
     <div>
       <HeaderLinks paths={paths} />
@@ -266,6 +268,7 @@ const DashboradPage = () => {
         totalData={totalPage}
         tabHandler={tabHandler}
         quotationActionSubmit={quotationActionSubmit}
+        isFetching={isFetching}
       />
     </div>
   );

@@ -20,7 +20,7 @@ import { BASE_URL } from "@/constant/urls";
 
 const ResponseField = ({ data, token, params, triggerSingleQuotation , quotationActionSubmit}) => {
   const [singleQuotationReply, {}] = useSingleQuotationReplyMutation();
-  console.log(data);
+  console.log('quoutes data ===>', data);
   const [loading, setLoading] = useState(false);
   const [response1, setResponse1] = useState("");
 
@@ -98,8 +98,8 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
           <div className="flex justify-between px-4 py-6">
             <div className="flex gap-3">
               <div className="rounded-xl border border-slate-300 shadow-custom-shadow h-16 w-16 relative">
-                <img
-                  
+                <Image
+                  fill
                   src={`${BASE_URL}/generate-file/?file_path=${data?.product_img_ref }`}
                   alt="reviewed_product_img"
                   className="rounded-xl h-full w-full"
