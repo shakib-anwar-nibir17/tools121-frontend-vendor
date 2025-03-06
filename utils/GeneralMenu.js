@@ -74,12 +74,12 @@ const GeneralMenu = [
     ],
     route: "inventory",
   },
-  {
-    menu: "Traffic Analytics",
-    icons: GrDocumentPerformance,
-    route: "traffic-analytics",
-    value: "traffic-analytics",
-  },
+  // {
+  //   menu: "Traffic Analytics",
+  //   icons: GrDocumentPerformance,
+  //   route: "traffic-analytics",
+  //   value: "traffic-analytics",
+  // },
   {
     menu: "Advertising",
     icons: LiaUserTieSolid,
