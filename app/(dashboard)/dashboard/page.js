@@ -133,7 +133,6 @@ const DashboradPage = () => {
 
   const tabHandler = (val) => {
     setTabVal(val);
-    console.log('Clicked', val)
     if (val == "pinned") {
       triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
     } else {
