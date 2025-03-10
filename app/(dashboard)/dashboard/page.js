@@ -235,7 +235,6 @@ const DashboradPage = () => {
     triggerTopTrendingProduct()
     setDate({})
   }
-  console.log("supplierQuotationList ===>", supplierQuotationList)
 
   return (
     <div>
@@ -254,13 +253,16 @@ const DashboradPage = () => {
           dateCancelHandler={dateCancelHandler}
         />
       </div>
-      <div className="mt-10 flex gap-5">
+      
+      <div  className="mt-10 flex gap-5">
         <TopSellingItems loadMoreHandler={topSellingProductLoadMore} totalData={topSellingProduct?.data?.paginate?.total} items={allSellingProduct} />
         <TopTrendingProducts loadMoreHandler={topTrendingProductLoadMore} totalData={topTrendingProduct?.data?.paginate?.total} items={allTrendingProduct} />
       </div>
+
       <div className="max-w-[540px] mt-[60px]">
         <SearchInput onSearchHandler={onSearchHandler} />
       </div>
+      <div className="h-screen">
       <AllRequest
         tableData={allQuatationRq}
         tabVal={tabVal}
@@ -270,6 +272,7 @@ const DashboradPage = () => {
         quotationActionSubmit={quotationActionSubmit}
         isFetching={isFetching}
       />
+      </div>
     </div>
   );
 };
