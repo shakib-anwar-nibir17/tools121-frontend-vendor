@@ -67,7 +67,6 @@ export default function SignIn() {
     console.log("login Response =====>", loginRes);
 
     if (loginRes?.data?.data?.token) {
-      setLoading(false);
       dispatch(setLoginName({ loginName: data?.username }));
       localStorage.setItem("vendorToken", loginRes?.data?.data?.token);
       const token = loginRes?.data?.data?.token;
@@ -75,7 +74,10 @@ export default function SignIn() {
         window.location.protocol === "https:" ? "secure;" : ""
       }`;
       console.log('Router post')
-      router.push("/");
+      setTimeout(() => {
+      setLoading(false);
+        router.push("/")
+      }, 1000)
       // router.push("/forgot-password");
 
     } else if (
