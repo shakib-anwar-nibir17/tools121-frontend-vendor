@@ -40,8 +40,8 @@ const Header = () => {
   return (
     <nav className="xl:border-b  border-primary-200 pb-6 mt-6">
       <div className="sm:px-8 px-12">
-        <div className="hidden xl:flex justify-between">
-          <Link href={"https://test.tools121.com/"}>
+        <div className="flex justify-between">
+          <Link href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}`}>
             <Image
               className="w-auto h-auto"
               src="/logo.png"

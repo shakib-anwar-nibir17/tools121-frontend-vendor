@@ -73,7 +73,8 @@ export default function SignIn() {
       document.cookie = `vendorToken=${token}; path=/; max-age=86400; ${
         window.location.protocol === "https:" ? "secure;" : ""
       }`;
-      console.log('Router post')
+
+
       setTimeout(() => {
       setLoading(false);
         router.push("/")

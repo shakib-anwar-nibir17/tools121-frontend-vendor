@@ -1,6 +1,7 @@
 "use client";
 
 import { MainLogoSVG } from "@/components/icons/Icons";
+import { VISITOR_URL } from "@/constant/urls";
 import parse from "html-react-parser";
 import { useEffect, useState } from "react";
 const Notice = ({ id }) => {
@@ -12,7 +13,7 @@ const Notice = ({ id }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://testapireal.tools121.com/contentdata/${id}`,
+          `${VISITOR_URL}/contentdata/${id}`,
           {
             method: "GET",
             headers: {

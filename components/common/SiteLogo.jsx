@@ -4,7 +4,7 @@ import Link from "next/link";
 const SiteLogo = () => {
   return (
     <div className="absolute md:px-16 px-4 2xl:py-10 xl:py-6 py-4">
-      <Link href="https://test.tools121.com/">
+      <Link href={process.env.NEXT_PUBLIC_WEBSITE_URL}>
         <Image
           className="2xl:w-48 xl:h-12 lg:w-40 w-36 h-8"
           src="/logo.png"

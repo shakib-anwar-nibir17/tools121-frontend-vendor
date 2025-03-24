@@ -137,7 +137,7 @@ const ProductListTable = ({ productData }) => {
                   onClick={() => editHandler(product?.id)}
                 />
                 {/* <IoEye className="cursor-pointer" size={20} color="#7B7C80" /> */}
-                <a target="blank" href={`https://test.tools121.com/details/${product?.id}`}><IoEye className="cursor-pointer" size={20} color="#7B7C80" /></a>
+                <a target="blank" href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/details/${product?.id}`}><IoEye className="cursor-pointer" size={20} color="#7B7C80" /></a>
               </div>
             </TableCell>
           </TableRow>
