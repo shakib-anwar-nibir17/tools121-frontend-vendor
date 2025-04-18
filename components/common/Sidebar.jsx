@@ -18,7 +18,7 @@ const Sidebar = async () => {
   ];
 
   return (
-    <aside className="border-r-2 border-slate-200 ">
+    <aside className="border-r-2 border-slate-200">
       <Tabs defaultValue="dashboard" orientation="horizontal" className="flex ">
         <div className="xl:min-w-[368px] pl-12 pr-4 ">
           <TabsList className="flex flex-col h-full">
