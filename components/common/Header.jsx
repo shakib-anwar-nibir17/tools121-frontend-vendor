@@ -18,6 +18,8 @@ import { GrLogout } from "react-icons/gr";
 import { MdArrowDropDown } from "react-icons/md";
 import { PiSquaresFour } from "react-icons/pi";
 import { useSelector } from "react-redux";
+import { SheetTrigger } from "../ui/sheet";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const Header = () => {
   const [authToken, setAuthToken] = useState(false);
@@ -40,7 +42,7 @@ const Header = () => {
   return (
     <nav className="xl:border-b  border-primary-200 pb-6 mt-6">
       <div className="sm:px-8 px-12">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <Link href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}`}>
             <Image
               className="w-auto h-auto"
@@ -52,12 +54,12 @@ const Header = () => {
             />
           </Link>
           {/* sign in button */}
-          <div className="flex space-x-6">
+          <div className="flex space-x-6 items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger className="group inline-flex justify-center items-center text-sm font-medium text-gray-900 hover:text-primary-950 outline-none">
                 {profileInfo?.data?.logo_url ? (
                   <div className="h-12 w-12 border rounded-full hover:ring-2 relative">
-                    <img
+                    <Image
                       fill
                       src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.logo_url}`}
                       alt="profile"
@@ -68,9 +70,11 @@ const Header = () => {
                   <UserProfileIcon className="h-12 w-12 text-gray-300 border rounded-full hover:ring-2" />
                 )}
 
-                <span className="ml-2 text-lg mr-2 font-medium">Hi,</span>
+                <span className="ml-2 text-lg mr-2 font-medium hidden lg:block">
+                  Hi,
+                </span>
                 {profileInfo?.data?.name ? (
-                  <span className="text-lg font-bold mr-3">
+                  <span className="text-lg font-bold mr-3 hidden lg:block">
                     {loginName.loginName}
                   </span>
                 ) : (
@@ -124,51 +128,14 @@ const Header = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <div className="lg:hidden mt-2">
+              <SheetTrigger>
+                <GiHamburgerMenu size={24} />
+              </SheetTrigger>
+            </div>
           </div>
         </div>
       </div>
-      {/* mobile view */}
-      {/* <div className="px-4 xl:hidden flex justify-between items-center gap-4 py-4 sm:px-8 border-t border-b border-primary-200">
-        <div>
-          {authToken ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="group inline-flex justify-center text-sm font-medium text-gray-900 hover:text-primary-950">
-                <UserProfileIcon className="h-12 w-12 text-gray-300 border rounded-full hover:ring-2" />
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent className="bg-white" align="end">
-                <DropdownMenuItem>
-                  <Link
-                    href={"/profile"}
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
-                  >
-                    Profile
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <div
-                    onClick={() => {
-                      logOutHandler();
-                    }}
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
-                  >
-                    Logout
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Link href={"/signin"}>
-              <div className="flex items-center min-w-0 gap-x-2">
-                <UserOutlinedIcon className="w-4 h-4" />
-                <p className="text-xs text-primary-950 font-medium pb-px leading-[32px]">
-                  Sign in
-                </p>
-              </div>
-            </Link>
-          )}
-        </div>
-      </div> */}
     </nav>
   );
 };
