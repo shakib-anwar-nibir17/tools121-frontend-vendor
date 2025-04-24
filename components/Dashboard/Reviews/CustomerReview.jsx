@@ -3,7 +3,7 @@
 import {
   useLazySupplierReviewListQuery,
   useReviewActionMutation,
-  useSingleReviewReplyMutation
+  useSingleReviewReplyMutation,
 } from "@/app/redux/features/supplierReview";
 import CustomerReviewBox from "@/components/common/CustomerReviewBox";
 import PaginationServerside from "@/components/common/PaginationServerside";
@@ -40,9 +40,10 @@ const sortOptions = [
 const CustomerReview = () => {
   const token = localStorage.getItem("vendorToken");
   const [triggerSuplierReview, { data: supplierReviewList }] =
-  useLazySupplierReviewListQuery();
-  
-  const { perpageCount, setCurrentPage , setPerpageCount, currentPage} = useStateContext();
+    useLazySupplierReviewListQuery();
+
+  const { perpageCount, setCurrentPage, setPerpageCount, currentPage } =
+    useStateContext();
   const [allReview, setAllReview] = useState([]);
   const [readTrack, setReadTrack] = useState("");
   const [replyTrack, setReplyTrack] = useState("");
@@ -52,33 +53,31 @@ const CustomerReview = () => {
   const [reviewAction, {}] = useReviewActionMutation();
 
   const [selectedReviewArr, setSelectedReviewArr] = useState([]);
-  const [actionVal, setActionVal] = useState(null)
-  const [totalPage, setTotalPage] = useState(0)
-  const [filterDate, setFilterDate] = useState({startDate: null, endDate: null})
+  const [actionVal, setActionVal] = useState(null);
+  const [totalPage, setTotalPage] = useState(0);
+  const [filterDate, setFilterDate] = useState({
+    startDate: null,
+    endDate: null,
+  });
   /// --- page data setup from pagination--- ///
   useEffect(() => {
     setCurrentPage(0);
-    setPerpageCount(10)
+    setPerpageCount(10);
   }, []);
 
   useEffect(() => {
-    triggerSuplierReview({querys:`limit=${10}&&offset=${0}`})
-    
+    triggerSuplierReview({ querys: `limit=${10}&&offset=${0}` });
   }, [token]);
 
   useEffect(() => {
     if (supplierReviewList?.data?.page?.length > 0) {
       setAllReview(supplierReviewList?.data?.page);
-      setTotalPage(supplierReviewList?.data?.paginate?.total)
-    }
-    else{
+      setTotalPage(supplierReviewList?.data?.paginate?.total);
+    } else {
       setAllReview([]);
-      setTotalPage(0)
+      setTotalPage(0);
     }
-  }, [
-    supplierReviewList?.data?.page?.length,
-    supplierReviewList?.data?.page,
-  ]);
+  }, [supplierReviewList?.data?.page?.length, supplierReviewList?.data?.page]);
 
   const readMoreHandler = (id) => {
     setReadTrack(id);
@@ -90,7 +89,9 @@ const CustomerReview = () => {
 
   const actionApiResonseMessageHandler = (res, action) => {
     if (res == "Request success") {
-      triggerSuplierReview({querys: `limit=${perpageCount}&&offset=${currentPage}&&action_type=${actionVal}&&start_date=${filterDate?.startDate}&&end_date=${filterDate?.endDate}`})
+      triggerSuplierReview({
+        querys: `limit=${perpageCount}&&offset=${currentPage}&&action_type=${actionVal}&&start_date=${filterDate?.startDate}&&end_date=${filterDate?.endDate}`,
+      });
       if (action == 100) {
         toast.success("Review approved Successfully", {
           position: "top-right",
@@ -128,7 +129,7 @@ const CustomerReview = () => {
     };
 
     const actionRes = await reviewAction(request_obj);
-    
+
     // console.log("Action Response ===>", actionRes);
 
     actionApiResonseMessageHandler(actionRes?.data?.message, action);
@@ -164,33 +165,39 @@ const CustomerReview = () => {
   };
 
   const filterHandler = (item) => {
-    
     if (item == 100) {
-      triggerSuplierReview({querys: `limit=${10}&&offset=${0}&&action_type=${100}`})
-      setActionVal(100)
-      setCurrentPage(0)
-      setPerpageCount(10)
-      
+      triggerSuplierReview({
+        querys: `limit=${10}&&offset=${0}&&action_type=${100}`,
+      });
+      setActionVal(100);
+      setCurrentPage(0);
+      setPerpageCount(10);
     } else if (item == 200) {
-      triggerSuplierReview({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
-      setActionVal(500)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      triggerSuplierReview({
+        querys: `limit=${10}&&offset=${0}&&action_type=${200}`,
+      });
+      setActionVal(500);
+      setCurrentPage(0);
+      setPerpageCount(10);
     } else if (item == 300) {
-      triggerSuplierReview({querys: `limit=${10}&&offset=${0}&&action_type=${300}`})
-      setActionVal(300)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      triggerSuplierReview({
+        querys: `limit=${10}&&offset=${0}&&action_type=${300}`,
+      });
+      setActionVal(300);
+      setCurrentPage(0);
+      setPerpageCount(10);
     } else if (item == 400) {
-      triggerSuplierReview({querys: `limit=${10}&&offset=${0}&&action_type=${400}`})
-      setActionVal(400)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      triggerSuplierReview({
+        querys: `limit=${10}&&offset=${0}&&action_type=${400}`,
+      });
+      setActionVal(400);
+      setCurrentPage(0);
+      setPerpageCount(10);
     } else if (item == "all") {
-      triggerSuplierReview({querys: `limit=${10}&&offset=${0}`})
-      setActionVal(null)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      triggerSuplierReview({ querys: `limit=${10}&&offset=${0}` });
+      setActionVal(null);
+      setCurrentPage(0);
+      setPerpageCount(10);
     }
   };
 
@@ -242,47 +249,67 @@ const CustomerReview = () => {
   const sortHandler = (sort_type) => {
     if (sort_type == "recent") {
       // Get the current date and the date 6 days ago
-      const endDate = moment().format('YYYY-MM-DD');
-      const startDate = moment().subtract(7, "days").format('YYYY-MM-DD');
+      const endDate = moment().format("YYYY-MM-DD");
+      const startDate = moment().subtract(7, "days").format("YYYY-MM-DD");
 
-      triggerSuplierReview({querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`})
-      setPerpageCount(10)
+      triggerSuplierReview({
+        querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`,
+      });
+      setPerpageCount(10);
 
-      setFilterDate({startDate: startDate, endDate: endDate})
+      setFilterDate({ startDate: startDate, endDate: endDate });
       // console.log("recentData data ===> ", endDate, startDate);
     } else if (sort_type == "week") {
       // Get the start and end dates for the last week
-      const endDate = moment().subtract(7, "days").endOf("day").format('YYYY-MM-DD'); // End of yesterday
-      const startDate = moment().subtract(14, "days").startOf("day").format('YYYY-MM-DD'); // Start of the day 7 days ago
-      triggerSuplierReview({querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`})
-      setPerpageCount(10)
+      const endDate = moment()
+        .subtract(7, "days")
+        .endOf("day")
+        .format("YYYY-MM-DD"); // End of yesterday
+      const startDate = moment()
+        .subtract(14, "days")
+        .startOf("day")
+        .format("YYYY-MM-DD"); // Start of the day 7 days ago
+      triggerSuplierReview({
+        querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`,
+      });
+      setPerpageCount(10);
 
-      setFilterDate({startDate: startDate, endDate: endDate})
+      setFilterDate({ startDate: startDate, endDate: endDate });
 
       // console.log("recentData data ===> ", endDate, startDate);
-
     } else if (sort_type == "month") {
       // Get the start and end of the previous month
-      const startDate = moment().subtract(1, "months").startOf("month").format('YYYY-MM-DD');
-      const endDate = moment().subtract(1, "months").endOf("month").format('YYYY-MM-DD');
+      const startDate = moment()
+        .subtract(1, "months")
+        .startOf("month")
+        .format("YYYY-MM-DD");
+      const endDate = moment()
+        .subtract(1, "months")
+        .endOf("month")
+        .format("YYYY-MM-DD");
 
-      triggerSuplierReview({querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`})
-      setPerpageCount(10)
+      triggerSuplierReview({
+        querys: `limit=${10}&&offset=${0}&&start_date=${startDate}&&end_date=${endDate}`,
+      });
+      setPerpageCount(10);
 
-      setFilterDate({startDate: startDate, endDate: endDate})
+      setFilterDate({ startDate: startDate, endDate: endDate });
 
       // console.log("recentData data ===> ", endDate, startDate);
     }
   };
 
   const pagiNateHandler = (pageNo, perpageCount) => {
-    if(filterDate?.startDate && filterDate?.endDate){
-      triggerSuplierReview({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}&&start_date=${filterDate?.startDate}&&end_date=${filterDate?.endDate}`})
+    if (filterDate?.startDate && filterDate?.endDate) {
+      triggerSuplierReview({
+        querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}&&start_date=${filterDate?.startDate}&&end_date=${filterDate?.endDate}`,
+      });
+    } else {
+      triggerSuplierReview({
+        querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`,
+      });
     }
-    else{
-      triggerSuplierReview({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
-    }
-  }
+  };
 
   // console.log("Supplier Review =====>", supplierReviewList);
   // console.log("Selected data =====>", selectedReviewArr);
@@ -294,7 +321,7 @@ const CustomerReview = () => {
           <CustomerReviewSVG /> Customer Review
         </p>
       </div>
-      <div className="flex items-center gap-4 px-6 py-6">
+      <div className="flex flex-col md:flex-row items-start xl:items-center gap-4 px-6 py-6">
         <div>
           <p className="text-sm font-bold text-black mb-1">All Action</p>
           <Select
@@ -324,10 +351,6 @@ const CustomerReview = () => {
         </div>
       </div>
       <div className="px-6">
-        {/* <button onClick={() => {
-           triggerSuplierReview({querys:`limit=${10}&&offset=${0}`})
-        }} className="bg-blue-600 text-white px-4 py-2 rounded-md outline-none">Clicking</button> */}
-        {/* reviews */}
         {supplierReviewList?.data?.page?.length > 0 &&
           allReview?.map((review) => (
             <CustomerReviewBox
@@ -348,9 +371,12 @@ const CustomerReview = () => {
           ))}
         <div>
           <p className="flex items-end text-primary-900 cursor-pointer">
-              {
-                totalPage > 0 && <PaginationServerside pagiNateHandler={pagiNateHandler} totalPage={totalPage}/>
-              }
+            {totalPage > 0 && (
+              <PaginationServerside
+                pagiNateHandler={pagiNateHandler}
+                totalPage={totalPage}
+              />
+            )}
           </p>
         </div>
       </div>
