@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 "use client";
-import { useLazyGetDashboardTopSellingProductQuery, useLazyGetDashboardTopTrendingProductQuery } from "@/app/redux/features/inventoryProduct";
+import {
+  useLazyGetDashboardTopSellingProductQuery,
+  useLazyGetDashboardTopTrendingProductQuery,
+} from "@/app/redux/features/inventoryProduct";
 import {
   useQuotationActionMutation,
   useLazySupplierQuotationListQuery,
@@ -21,10 +24,16 @@ import toast from "react-hot-toast";
 const DashboradPage = () => {
   const paths = ["Dashboard", "Dashboard"];
   const token = localStorage.getItem("vendorToken");
-  const [triggerQuotationList, { data: supplierQuotationList, error, isLoading , isFetching}] = useLazySupplierQuotationListQuery();
-  const [triggerQuotationCount, { data: dashboardQuotationCount}] = useLazyGetDashboardQuotationCountQuery();
-  const [triggerTopSellingProduct, { data: topSellingProduct}] = useLazyGetDashboardTopSellingProductQuery();
-  const [triggerTopTrendingProduct, { data: topTrendingProduct}] = useLazyGetDashboardTopTrendingProductQuery();
+  const [
+    triggerQuotationList,
+    { data: supplierQuotationList, error, isLoading, isFetching },
+  ] = useLazySupplierQuotationListQuery();
+  const [triggerQuotationCount, { data: dashboardQuotationCount }] =
+    useLazyGetDashboardQuotationCountQuery();
+  const [triggerTopSellingProduct, { data: topSellingProduct }] =
+    useLazyGetDashboardTopSellingProductQuery();
+  const [triggerTopTrendingProduct, { data: topTrendingProduct }] =
+    useLazyGetDashboardTopTrendingProductQuery();
 
   const [date, setDate] = useState({});
   const [allQuatationRq, setAllQuatationRq] = useState([]);
@@ -34,21 +43,23 @@ const DashboradPage = () => {
   const [options, setOptions] = useState([]);
   const [quotationActionHandler] = useQuotationActionMutation();
   const todaysDate = new Date();
-  const [totalPage, setTotalPage] = useState(0)
+  const [totalPage, setTotalPage] = useState(0);
   const startDateFormate = moment(todaysDate).format("YYYY-MM-DD");
   const endDateFormate = moment(todaysDate).format("YYYY-MM-DD");
-  
-  const [allSellingProduct, setAllSellingProduct] = useState([])
-  const [allTrendingProduct, setAllTrendingProduct] = useState([])
 
-  const [topSellingPageNo, setTopSellingPageNo] = useState(0)
-  const [topTrendingPageNo, setTopTrendingPageNo] = useState(0)
+  const [allSellingProduct, setAllSellingProduct] = useState([]);
+  const [allTrendingProduct, setAllTrendingProduct] = useState([]);
+
+  const [topSellingPageNo, setTopSellingPageNo] = useState(0);
+  const [topTrendingPageNo, setTopTrendingPageNo] = useState(0);
 
   useEffect(() => {
-    triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
-    triggerQuotationCount()
-    triggerTopSellingProduct()
-    triggerTopTrendingProduct()
+    triggerQuotationList({
+      querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`,
+    });
+    triggerQuotationCount();
+    triggerTopSellingProduct();
+    triggerTopTrendingProduct();
   }, [token]);
 
   /// --- page data setup from pagination--- ///
@@ -59,49 +70,52 @@ const DashboradPage = () => {
 
   useEffect(() => {
     setAllQuatationRq(supplierQuotationList?.data?.page);
-  }, [supplierQuotationList?.data?.page?.length,
-    supplierQuotationList?.data?.page,]);
+  }, [
+    supplierQuotationList?.data?.page?.length,
+    supplierQuotationList?.data?.page,
+  ]);
 
   useEffect(() => {
-    if(topSellingProduct?.data?.page?.length > 0){
-
-      if(topSellingPageNo > 0){
-        setAllSellingProduct((prev) => [...prev, ...topSellingProduct.data.page]);
-      }
-      else {
+    if (topSellingProduct?.data?.page?.length > 0) {
+      if (topSellingPageNo > 0) {
+        setAllSellingProduct((prev) => [
+          ...prev,
+          ...topSellingProduct.data.page,
+        ]);
+      } else {
         setAllSellingProduct(topSellingProduct?.data?.page);
-      } 
-    }
-    else{
-      if(date?.to && date.from && topSellingProduct?.data?.page?.length == 0){
-        setAllSellingProduct([])
+      }
+    } else {
+      if (date?.to && date.from && topSellingProduct?.data?.page?.length == 0) {
+        setAllSellingProduct([]);
       }
     }
-
-  }, [topSellingProduct?.data?.page?.length,
-    topSellingProduct?.data?.page,]);
+  }, [topSellingProduct?.data?.page?.length, topSellingProduct?.data?.page]);
 
   useEffect(() => {
-    if(topTrendingProduct?.data?.page?.length > 0){
-      if(topTrendingPageNo > 0){
-        setAllTrendingProduct((prev) => [...prev, ...topTrendingProduct.data.page]);
-      }
-      else {
+    if (topTrendingProduct?.data?.page?.length > 0) {
+      if (topTrendingPageNo > 0) {
+        setAllTrendingProduct((prev) => [
+          ...prev,
+          ...topTrendingProduct.data.page,
+        ]);
+      } else {
         setAllTrendingProduct(topTrendingProduct?.data?.page);
       }
-    }
-    else{
-      if(date?.to && date.from && topTrendingProduct?.data?.page?.length == 0){
-        setAllTrendingProduct([])
+    } else {
+      if (
+        date?.to &&
+        date.from &&
+        topTrendingProduct?.data?.page?.length == 0
+      ) {
+        setAllTrendingProduct([]);
       }
     }
-  }, [topTrendingProduct?.data?.page?.length,
-    topTrendingProduct?.data?.page,]);
+  }, [topTrendingProduct?.data?.page?.length, topTrendingProduct?.data?.page]);
 
   useEffect(() => {
-
     if (supplierQuotationList?.data?.page?.length > 0) {
-      setTotalPage(supplierQuotationList?.data?.paginate?.total)
+      setTotalPage(supplierQuotationList?.data?.paginate?.total);
       const OpData = [
         {
           key: "Todays Request",
@@ -117,38 +131,44 @@ const DashboradPage = () => {
       ];
 
       setOptions(OpData);
-
     }
   }, [supplierQuotationList?.data?.page, token]);
-
 
   const dateFilterHandler = () => {
     const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
     const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
 
-    triggerTopSellingProduct({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
-    triggerTopTrendingProduct({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
+    triggerTopSellingProduct({
+      querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`,
+    });
+    triggerTopTrendingProduct({
+      querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`,
+    });
   };
-
 
   const tabHandler = (val) => {
     setTabVal(val);
     if (val == "pinned") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}`})
+      triggerQuotationList({
+        querys: `limit=${10}&&offset=${0}&&action_type=${200}`,
+      });
     } else {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
+      triggerQuotationList({
+        querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`,
+      });
     }
   };
 
   const onSearchHandler = (text) => {
     if (text?.length > 2) {
-
       setSearchText(text);
       setTimeout(() => {
-        triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}&&search_key=${text}`})
-      },500)
+        triggerQuotationList({
+          querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}&&search_key=${text}`,
+        });
+      }, 500);
     } else {
-      tabHandler(tabVal)
+      tabHandler(tabVal);
     }
   };
 
@@ -165,75 +185,76 @@ const DashboradPage = () => {
     const actionRes = await quotationActionHandler(request_obj);
     console.log("Action Response ===>", actionRes);
 
-        if (actionRes?.data?.message == "Request success") {
-          tabHandler(tabVal)
-          if (action == 200) {
-            toast.success("Quotation pinned Successfully", {
-              position: "top-right",
-              duration: 2000,
-            });
-          }
-          if (action == 300) {
-            toast.success("Quotation delete Successfully", {
-              position: "top-right",
-              duration: 2000,
-            });
-          }
-          if (action == 400) {
-            toast.success("Quotation spam Successfully", {
-              position: "top-right",
-              duration: 2000,
-            });
-          }
-        } else {
-          toast.error("Quotation Action Failed", {
-            position: "top-right",
-            duration: 2000,
-          });
-        }
+    if (actionRes?.data?.message == "Request success") {
+      tabHandler(tabVal);
+      if (action == 200) {
+        toast.success("Quotation pinned Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
+      if (action == 300) {
+        toast.success("Quotation delete Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
+      if (action == 400) {
+        toast.success("Quotation spam Successfully", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
+    } else {
+      toast.error("Quotation Action Failed", {
+        position: "top-right",
+        duration: 2000,
+      });
+    }
   };
 
   const topSellingProductLoadMore = () => {
-    const pageCount = topSellingPageNo + 1
-    setTopSellingPageNo(pageCount)
-    if(date?.from && date?.to){
+    const pageCount = topSellingPageNo + 1;
+    setTopSellingPageNo(pageCount);
+    if (date?.from && date?.to) {
       const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
       const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
 
       const startDate = moment(startDateFormate).startOf("day");
       const endDate = moment(endDateFormate).endOf("day");
 
-      triggerTopSellingProduct({querys: `limit=${10}&&offset=${pageCount}&&start_date=${startDate}&&end_date=${endDate}`})
+      triggerTopSellingProduct({
+        querys: `limit=${10}&&offset=${pageCount}&&start_date=${startDate}&&end_date=${endDate}`,
+      });
+    } else {
+      triggerTopSellingProduct({ querys: `limit=${10}&&offset=${pageCount}` });
     }
-    else{
-      triggerTopSellingProduct({querys: `limit=${10}&&offset=${pageCount}`})
-    }
-  }
+  };
 
   const topTrendingProductLoadMore = () => {
-    const pageCount = topTrendingPageNo + 1
-    setTopTrendingPageNo(pageCount)
+    const pageCount = topTrendingPageNo + 1;
+    setTopTrendingPageNo(pageCount);
 
-    if(date?.from && date?.to){
+    if (date?.from && date?.to) {
       const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
       const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
 
       const startDate = moment(startDateFormate).startOf("day");
       const endDate = moment(endDateFormate).endOf("day");
 
-      triggerTopTrendingProduct({querys: `limit=${10}&&offset=${pageCount}&&start_date=${startDate}&&end_date=${endDate}`})
+      triggerTopTrendingProduct({
+        querys: `limit=${10}&&offset=${pageCount}&&start_date=${startDate}&&end_date=${endDate}`,
+      });
+    } else {
+      triggerTopTrendingProduct({ querys: `limit=${10}&&offset=${pageCount}` });
     }
-    else{
-      triggerTopTrendingProduct({querys: `limit=${10}&&offset=${pageCount}`})
-    }
+  };
 
-  }
-  
   const dateCancelHandler = () => {
-    triggerTopSellingProduct()
-    triggerTopTrendingProduct()
-    setDate({})
-  }
+    triggerTopSellingProduct();
+    triggerTopTrendingProduct();
+    setDate({});
+  };
 
   return (
     <div>
@@ -252,25 +273,33 @@ const DashboradPage = () => {
           dateCancelHandler={dateCancelHandler}
         />
       </div>
-      
-      <div  className="mt-10 flex gap-5">
-        <TopSellingItems loadMoreHandler={topSellingProductLoadMore} totalData={topSellingProduct?.data?.paginate?.total} items={allSellingProduct} />
-        <TopTrendingProducts loadMoreHandler={topTrendingProductLoadMore} totalData={topTrendingProduct?.data?.paginate?.total} items={allTrendingProduct} />
+
+      <div className="mt-10 flex gap-5">
+        <TopSellingItems
+          loadMoreHandler={topSellingProductLoadMore}
+          totalData={topSellingProduct?.data?.paginate?.total}
+          items={allSellingProduct}
+        />
+        <TopTrendingProducts
+          loadMoreHandler={topTrendingProductLoadMore}
+          totalData={topTrendingProduct?.data?.paginate?.total}
+          items={allTrendingProduct}
+        />
       </div>
 
       <div className="max-w-[540px] mt-[60px]">
         <SearchInput onSearchHandler={onSearchHandler} />
       </div>
       <div className="h-screen">
-      <AllRequest
-        tableData={allQuatationRq}
-        tabVal={tabVal}
-        options={options}
-        totalData={totalPage}
-        tabHandler={tabHandler}
-        quotationActionSubmit={quotationActionSubmit}
-        isFetching={isFetching}
-      />
+        <AllRequest
+          tableData={allQuatationRq}
+          tabVal={tabVal}
+          options={options}
+          totalData={totalPage}
+          tabHandler={tabHandler}
+          quotationActionSubmit={quotationActionSubmit}
+          isFetching={isFetching}
+        />
       </div>
     </div>
   );

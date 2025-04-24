@@ -83,7 +83,7 @@ const Header = () => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent
-                className="bg-white w-[300px] h-[216px]"
+                className="bg-white max-w-[300px] h-[216px]"
                 align="end"
               >
                 <div className="p-6 flex items-center gap-2 border-b-2 border-slate-200">
