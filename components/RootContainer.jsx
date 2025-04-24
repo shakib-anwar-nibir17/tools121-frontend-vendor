@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     const isToken = localStorage.getItem("vendorToken");
-    console.log('root isToken ===>', isToken)
+    console.log("root isToken ===>", isToken);
     if (isToken) {
       setLoading(false);
       // router.push("/dashboard");
@@ -28,14 +28,6 @@ export default function RootLayout({ children }) {
   }, []);
 
   return (
-    // <>
-    //   {
-    //      loading ? <div className="w-full h-screen flex flex-row justify-center items-center">
-    //       <Loader/>
-    //      </div> :
-
-    //   }
-    // </>
     <ReCaptchaProvider>
       <Provider store={store}>
         <ContextProvider>
