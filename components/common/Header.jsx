@@ -22,13 +22,11 @@ import { SheetTrigger } from "../ui/sheet";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 const Header = () => {
-  const [authToken, setAuthToken] = useState(false);
   const loginName = useSelector((state) => state.authStore.loginName);
   const token = localStorage.getItem("vendorToken");
-  const { data: profileInfo, refetch } = useUserDataQuery(token, {
+  const { data: profileInfo } = useUserDataQuery(token, {
     refetchOnMountOrArgChange: true,
   });
-  console.log(profileInfo);
 
   const router = useRouter();
   const logOutHandler = () => {
@@ -128,7 +126,7 @@ const Header = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <div className="lg:hidden mt-2">
+            <div className="xl:hidden mt-2">
               <SheetTrigger>
                 <GiHamburgerMenu size={24} />
               </SheetTrigger>

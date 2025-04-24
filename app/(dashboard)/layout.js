@@ -8,7 +8,7 @@ export default function MainDashboardLayout({ children }) {
   return (
     <Sheet>
       <Header />
-      <main className="flex hidden">
+      <main className="flex">
         <Sidebar />
         <div className="w-full relative">
           <div className="mt-10 mx-6">{children}</div>
