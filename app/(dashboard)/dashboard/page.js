@@ -274,7 +274,7 @@ const DashboradPage = () => {
         />
       </div>
 
-      <div className="mt-10 flex gap-5">
+      <div className="mt-10 flex flex-col xl:flex-row gap-5">
         <TopSellingItems
           loadMoreHandler={topSellingProductLoadMore}
           totalData={topSellingProduct?.data?.paginate?.total}

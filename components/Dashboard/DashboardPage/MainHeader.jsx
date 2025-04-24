@@ -7,7 +7,7 @@ import {
 
 const MainHeader = ({ todaysQuotation, pinnedData, unreadData, data }) => {
   return (
-    <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 w-full px-4 xl:px-0">
+    <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 w-full">
       <div className="rounded-2xl h-[120px] xl:h-[160px] bg-[#E7FFEA] border border-[#2EBF43] text-[#2EBF43] flex justify-center items-center gap-4">
         <TodaysQuotationSVG />
         <div>
