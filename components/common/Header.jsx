@@ -39,7 +39,7 @@ const Header = () => {
 
   return (
     <nav className="xl:border-b  border-primary-200 pb-6 mt-6">
-      <div className="sm:px-8 px-12">
+      <div className="px-2 sm:px-8 xl:px-12">
         <div className="flex justify-between items-center">
           <Link href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}`}>
             <Image
