@@ -414,7 +414,7 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[996px]">
-      <div className="gap-5 flex mb-6">
+      <div className="gap-5 flex flex-col xl:flex-row mb-6">
         <div className="w-full">
           <label className=" text-primary-950 font-bold">
             Product Category*
@@ -455,7 +455,7 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
         </div>
       </div>
 
-      <div className="gap-5 flex mb-6">
+      <div className="gap-5 flex flex-col xl:flex-row mb-6">
         <div className="w-full">
           <label className=" text-primary-950 font-bold">Product Name*</label>
           <SingleSelect
@@ -483,8 +483,8 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
         </div>
       </div>
 
-      <div className="flex mb-6">
-        <div className="h-[71px] border border-slate-200 py-3 px-4 w-1/2 rounded-lg flex justify-between items-start">
+      <div className="flex  mb-6">
+        <div className="h-[71px] border border-slate-200 py-3 px-4 w-full xl:w-1/2 rounded-lg flex justify-between items-start">
           <div className="flex items-center gap-3">
             <Image
               src={"/not-found-product.png"}
@@ -504,7 +504,7 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
         </div>
       </div>
 
-      <div className="gap-5 flex mb-6">
+      <div className="gap-5 flex flex-col xl:flex-row mb-6">
         <div className="w-full">
           <label className=" text-primary-950 font-bold">Model*</label>
           <SingleSelect
@@ -534,7 +534,7 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
         </div>
       </div>
 
-      <div className="gap-5 flex mb-6">
+      <div className="gap-5 flex flex-col xl:flex-row mb-6">
         <div className="w-full">
           <label className="font-bold">Regular Price</label>
           <input
@@ -575,7 +575,7 @@ const AddProductsForm = ({ setShowForm, singleProductData, paramsId }) => {
         </div>
       </div>
 
-      <div className="flex gap-5">
+      <div className="flex flex-col xl:flex-row gap-5">
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">Delivery Note*</label>
           <textarea

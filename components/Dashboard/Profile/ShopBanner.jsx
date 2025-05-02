@@ -98,21 +98,22 @@ const ShopBanner = () => {
     <div className="pb-6 border-b-2 border-slate-300">
       <div className="h-[300px] rounded-2xl w-full relative">
         <div className="2xl:w-[1504px] h-[300px] relative">
-          {
-            profileInfo?.data?.banner_url ? <img
-            
-            alt="vendor_shop"
-            src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.banner_url}`}
-            // src={generateFile(profileInfo?.data?.banner_url)}
-            className="rounded-xl object-cover h-full w-full"
-          /> : <Image
-          fill
-          alt="vendor_shop"
-          src={banner}
-          className="rounded-xl object-cover"
-        />
-          }
-          
+          {profileInfo?.data?.banner_url ? (
+            <img
+              alt="vendor_shop"
+              src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.banner_url}`}
+              // src={generateFile(profileInfo?.data?.banner_url)}
+              className="rounded-xl object-cover h-full w-full"
+            />
+          ) : (
+            <Image
+              fill
+              alt="vendor_shop"
+              src={banner}
+              className="rounded-xl object-cover"
+            />
+          )}
+
           <input
             onChange={(e) => {
               e.preventDefault();
@@ -142,26 +143,27 @@ const ShopBanner = () => {
             </Button>
           )}
         </div>
-        <div className="w-[168px] h-[168px] rounded-full absolute left-10 -bottom-[78px]">
-        {
-          
-          profileInfo?.data?.logo_url ? <img
-          alt="profile_pic"
-          src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.logo_url}`}
-          className="rounded-full relative object-cover h-full w-full"
-        /> : <Image
-        fill
-        alt="profile_pic"
-        src={profile}
-        className="rounded-full relative object-cover"
-      /> 
-        }
+        <div className="w-[100px] h-[100px] xl:w-[168px] xl:h-[168px] rounded-full absolute left-4 xl:left-10 -bottom-[50px] xl:-bottom-[78px]">
+          {profileInfo?.data?.logo_url ? (
+            <img
+              alt="profile_pic"
+              src={`${BASE_URL}/generate-file/?file_path=${profileInfo?.data?.logo_url}`}
+              className="rounded-full relative object-cover h-full w-full"
+            />
+          ) : (
+            <Image
+              fill
+              alt="profile_pic"
+              src={profile}
+              className="rounded-full relative object-cover"
+            />
+          )}
           {loading2 ? (
             <div className="w-11 h-11 rounded-full bg-primary-200 cursor-pointer border-2 border-white absolute bottom-0 right-3 flex items-center justify-center">
               <Loader height="20" width="20" />{" "}
             </div>
           ) : (
-            <div className="w-11 h-11 rounded-full bg-primary-200 cursor-pointer border-2 border-white absolute bottom-0 right-3 flex items-center justify-center">
+            <div className="w-8 h-8 xl:w-11 xl:h-11 rounded-full bg-primary-200 cursor-pointer border-2 border-white absolute bottom-0 right-3 flex items-center justify-center">
               <MdOutlineModeEditOutline
                 onClick={(e) => {
                   e.preventDefault();
@@ -186,7 +188,7 @@ const ShopBanner = () => {
         </div>
       </div>
       {/* shop name and other information */}
-      <div className="ml-[240px] mt-4">
+      <div className="xl:ml-[240px] mt-16 xl:mt-4">
         <div className="flex items-center gap-3">
           <h1 className="text-3xl text-black font-bold">
             {profileInfo?.data?.name ? profileInfo?.data?.name : "-"}
@@ -229,7 +231,7 @@ const ShopBanner = () => {
             {profileInfo?.data?.about_us ? profileInfo?.data?.about_us : "-"}
           </p>
         </div>
-        <div className="mt-3 flex items-center gap-4">
+        <div className="mt-3 flex flex-col xl:flex-row items-start xl:items-center gap-4 ">
           <div className="flex items-center gap-3">
             <PhoneSVG />
             <p className="text-black font-medium">

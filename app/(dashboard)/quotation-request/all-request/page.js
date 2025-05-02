@@ -18,40 +18,42 @@ import toast from "react-hot-toast";
 
 const AllRequestPage = () => {
   const token = localStorage.getItem("vendorToken");
-  const [triggerQuotationList, { data: supplierQuotationList, isFetching}] = useLazySupplierQuotationListQuery();
-  const [triggerQuotationCounter, { data: counterList, isFetching: counterFetching}] = useLazyGetQuotationCounterQuery();
+  const [triggerQuotationList, { data: supplierQuotationList, isFetching }] =
+    useLazySupplierQuotationListQuery();
+  const [
+    triggerQuotationCounter,
+    { data: counterList, isFetching: counterFetching },
+  ] = useLazyGetQuotationCounterQuery();
 
   const [allQuatationRq, setAllQuatationRq] = useState([]);
   const [tabVal, setTabVal] = useState("");
-  const { currentPage, setCurrentPage, setPerpageCount} = useStateContext();
+  const { currentPage, setCurrentPage, setPerpageCount } = useStateContext();
   const [options, setOptions] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [date, setDate] = useState({});
   const [quotationActionHandler, {}] = useQuotationActionMutation();
-  const [actionVal, setActionVal] = useState(null)
-  const [totalPage, setTotalPage] = useState(0)
-  
+  const [actionVal, setActionVal] = useState(null);
+  const [totalPage, setTotalPage] = useState(0);
+
   useEffect(() => {
-    triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
-    triggerQuotationCounter()
+    triggerQuotationList({ querys: `limit=${10}&&offset=${0}` });
+    triggerQuotationCounter();
   }, [token]);
 
   /// --- page data setup from pagination--- ///
   useEffect(() => {
     setCurrentPage(0);
-    setPerpageCount(10)
+    setPerpageCount(10);
     setTabVal("all-request");
   }, []);
 
   useEffect(() => {
-    
     if (supplierQuotationList?.data?.page?.length > 0) {
       setAllQuatationRq(supplierQuotationList?.data?.page);
-      setTotalPage(supplierQuotationList?.data?.paginate?.total)
-    }
-    else{
-      setAllQuatationRq([])
-      setTotalPage(0)
+      setTotalPage(supplierQuotationList?.data?.paginate?.total);
+    } else {
+      setAllQuatationRq([]);
+      setTotalPage(0);
     }
   }, [
     supplierQuotationList?.data?.page?.length,
@@ -60,62 +62,69 @@ const AllRequestPage = () => {
 
   const tabHandler = (val) => {
     setTabVal(val);
-    // if (val == "responded") {
-    //   triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${100}`})
-    //   setActionVal(100)
-    //   setCurrentPage(0)
-    //   setPerpageCount(10)
 
-    // } 
     const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
     const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
 
     if (val == "unread") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${0}&&start_date=${date?.from ? startDateFormate : null}&&end_date=${date?.from ? endDateFormate : null}`})
-      setActionVal(0)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      triggerQuotationList({
+        querys: `limit=${10}&&offset=${0}&&action_type=${0}&&start_date=${
+          date?.from ? startDateFormate : null
+        }&&end_date=${date?.from ? endDateFormate : null}`,
+      });
+      setActionVal(0);
+      setCurrentPage(0);
+      setPerpageCount(10);
     } else if (val == "spam") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${400}&&start_date=${date?.from ? startDateFormate : null}&&end_date=${date?.from ? endDateFormate : null}`})
-      setActionVal(400)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      triggerQuotationList({
+        querys: `limit=${10}&&offset=${0}&&action_type=${400}&&start_date=${
+          date?.from ? startDateFormate : null
+        }&&end_date=${date?.from ? endDateFormate : null}`,
+      });
+      setActionVal(400);
+      setCurrentPage(0);
+      setPerpageCount(10);
       // console.log('called---------->>>>>')
     } else if (val == "pinned") {
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&action_type=${200}&&start_date=${date?.from ? startDateFormate : null}&&end_date=${date?.from ? endDateFormate : null}`})
-      setActionVal(200)
-      setCurrentPage(0)
-      setPerpageCount(10)
-    } 
-    else{
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
-      setActionVal(null)
-      setCurrentPage(0)
-      setPerpageCount(10)
+      triggerQuotationList({
+        querys: `limit=${10}&&offset=${0}&&action_type=${200}&&start_date=${
+          date?.from ? startDateFormate : null
+        }&&end_date=${date?.from ? endDateFormate : null}`,
+      });
+      setActionVal(200);
+      setCurrentPage(0);
+      setPerpageCount(10);
+    } else {
+      triggerQuotationList({ querys: `limit=${10}&&offset=${0}` });
+      setActionVal(null);
+      setCurrentPage(0);
+      setPerpageCount(10);
     }
   };
 
   const onSearchHandler = (text) => {
     if (text?.length > 2) {
-
       setSearchText(text);
       setTimeout(() => {
-        triggerQuotationList({querys: `limit=${10}&&offset=${0}&&search_key=${text}`})
-      },500)
+        triggerQuotationList({
+          querys: `limit=${10}&&offset=${0}&&search_key=${text}`,
+        });
+      }, 500);
     } else {
-      tabHandler(tabVal)
+      tabHandler(tabVal);
     }
   };
-  
+
   const dateFilterHandler = () => {
     const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
-      const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
-      triggerQuotationList({querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`})
-      setPerpageCount(10)
+    const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
+    triggerQuotationList({
+      querys: `limit=${10}&&offset=${0}&&start_date=${startDateFormate}&&end_date=${endDateFormate}`,
+    });
+    setPerpageCount(10);
   };
 
   const quotationActionSubmit = async (action, id) => {
-
     const request_obj = {
       actions: [
         {
@@ -125,12 +134,12 @@ const AllRequestPage = () => {
       ],
     };
 
-  const actionRes = await quotationActionHandler(request_obj);
+    const actionRes = await quotationActionHandler(request_obj);
     // console.log("Action Response ===>", actionRes);
 
     if (actionRes?.data?.message == "Request success") {
-      triggerQuotationCounter()
-      tabHandler(tabVal)
+      triggerQuotationCounter();
+      tabHandler(tabVal);
       if (action == 200) {
         toast.success("Quotation pinned Successfully", {
           position: "top-right",
@@ -164,28 +173,27 @@ const AllRequestPage = () => {
   };
 
   const pagiNateHandler = (pageNo, perpageCount) => {
-    if(date?.from && date?.to){
+    if (date?.from && date?.to) {
       const startDateFormate = moment(date?.from).format("YYYY-MM-DD");
       const endDateFormate = moment(date?.to).format("YYYY-MM-DD");
-      triggerQuotationList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}start_date=${startDateFormate}&&end_date=${endDateFormate}`})
-    }else{
-      triggerQuotationList({querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`})
+      triggerQuotationList({
+        querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}start_date=${startDateFormate}&&end_date=${endDateFormate}`,
+      });
+    } else {
+      triggerQuotationList({
+        querys: `limit=${perpageCount}&&offset=${pageNo}&&action_type=${actionVal}`,
+      });
     }
-  }
+  };
 
   useEffect(() => {
-    if(counterList?.data){
+    if (counterList?.data) {
       const OpData = [
         {
           key: "All Request",
           value: "all-request",
-          amount: counterList?.data?.total ? counterList?.data?.total : 0 ,
+          amount: counterList?.data?.total ? counterList?.data?.total : 0,
         },
-        // {
-        //   key: "Responded",
-        //   value: "responded",
-        //   amount: counterList?.data[500] ? counterList?.data[500] : 0,
-        // },
         {
           key: "Unread",
           value: "unread",
@@ -204,16 +212,14 @@ const AllRequestPage = () => {
       ];
       setOptions(OpData);
     }
-    
-  },[counterList?.data, counterFetching])
-    
-  const dateCancelHandler = () => {
-    triggerQuotationList({querys: `limit=${10}&&offset=${0}`});
-    triggerQuotationCounter()
-    setDate({})
-  }
+  }, [counterList?.data, counterFetching]);
 
-  
+  const dateCancelHandler = () => {
+    triggerQuotationList({ querys: `limit=${10}&&offset=${0}` });
+    triggerQuotationCounter();
+    setDate({});
+  };
+
   return (
     <div className="mb-20">
       <div className="flex justify-between items-center">

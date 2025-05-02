@@ -8,10 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-
-const TopSellingItems = ({items, totalData, loadMoreHandler}) => {
+const TopSellingItems = ({ items, totalData, loadMoreHandler }) => {
   return (
-    <div className="border border-slate-300 box-border rounded-2xl shadow-custom-shadow w-1/2">
+    <div className="border border-slate-300 box-border rounded-2xl shadow-custom-shadow w-full xl:w-1/2">
       <div className="px-8 py-6 border-b-2 border-slate-200">
         <h1 className="text-lg font-bold text-black flex items-center gap-2">
           <span>
@@ -47,12 +46,11 @@ const TopSellingItems = ({items, totalData, loadMoreHandler}) => {
           </TableBody>
         </Table>
       </div>
-      {
-        totalData > 10 &&  <div className="mt-11 mb-7 text-primary-900 text-lg underline flex justify-center">
-        <button onClick={loadMoreHandler}>Load More</button>
-      </div>
-      }
-     
+      {totalData > 10 && (
+        <div className="mt-11 mb-7 text-primary-900 text-lg underline flex justify-center">
+          <button onClick={loadMoreHandler}>Load More</button>
+        </div>
+      )}
     </div>
   );
 };

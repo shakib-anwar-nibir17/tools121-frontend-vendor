@@ -8,7 +8,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { loadDashboardMenu, loadSettingsMenu } from "@/utils";
 import Link from "next/link";
 import LogoutButtonSidebar from "./LogoutButtonSidebar";
-const Sidebar = async () => {
+
+const SidebarMobile = async () => {
   const generalMenuArray = await loadDashboardMenu();
   const settingsMenuArray = await loadSettingsMenu();
 
@@ -18,9 +19,9 @@ const Sidebar = async () => {
   ];
 
   return (
-    <aside className="border-r-2 border-slate-200 hidden xl:block">
-      <Tabs defaultValue="dashboard" orientation="horizontal" className="flex ">
-        <div className="xl:min-w-[368px] pl-12 pr-4 ">
+    <div className="xl:hidden">
+      <Tabs defaultValue="dashboard" orientation="horizontal" className="flex">
+        <div className="w-[300px] overflow-hidden">
           <TabsList className="flex flex-col h-full">
             {combinedMenuArray.map((menuSection) => (
               <>
@@ -88,8 +89,8 @@ const Sidebar = async () => {
           </TabsList>
         </div>
       </Tabs>
-    </aside>
+    </div>
   );
 };
 
-export default Sidebar;
+export default SidebarMobile;

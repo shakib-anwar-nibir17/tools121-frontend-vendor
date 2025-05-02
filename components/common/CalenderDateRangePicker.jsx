@@ -16,7 +16,7 @@ export function CalendarDateRangePicker({
   date,
   setDate,
   dateFilterHandler,
-  dateCancelHandler
+  dateCancelHandler,
 }) {
   return (
     <div className={cn("grid gap-2", className)}>
@@ -26,7 +26,7 @@ export function CalendarDateRangePicker({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[260px] flex-row-reverse gap-4 justify-start text-left font-bold text-black",
+              " w-[120px] xl:w-[260px] flex-row-reverse gap-4 justify-start text-left font-bold text-black",
               !date && "text-black border-2 border-slate-300 font-bold"
             )}
           >
@@ -60,9 +60,14 @@ export function CalendarDateRangePicker({
               <p className="text-[12px]">Dhaka Time</p>
             </div>
             <PopoverClose asChild>
-            <Button className="bg-slate-200 text-black" onClick={() => dateCancelHandler()}>Cancel</Button>
+              <Button
+                className="bg-slate-200 text-black"
+                onClick={() => dateCancelHandler()}
+              >
+                Cancel
+              </Button>
             </PopoverClose>
-            
+
             <PopoverClose asChild>
               <Button onClick={() => dateFilterHandler()}>Update</Button>
             </PopoverClose>

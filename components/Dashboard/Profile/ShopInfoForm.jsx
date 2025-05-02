@@ -159,8 +159,7 @@ const ShopInfoForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-4 mb-20">
-      
-      <div className="flex justify-between gap-6">
+      <div className="flex flex-col xl:flex-row  justify-between gap-6">
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">Shop Name*</label>
           <input
@@ -186,7 +185,7 @@ const ShopInfoForm = () => {
           {catErr && <div className="text-red-500">{catErr}</div>}
         </div>
       </div>
-      <div className="flex justify-between gap-6">
+      <div className="flex flex-col xl:flex-row justify-between gap-6">
         <div className="w-full mt-6">
           <label className=" text-primary-950 font-bold">
             Business Contact Number*
