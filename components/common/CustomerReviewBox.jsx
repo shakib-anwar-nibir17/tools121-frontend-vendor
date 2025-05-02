@@ -21,28 +21,27 @@ const CustomerReviewBox = ({
   return (
     <div key={review?.id} className="mb-6">
       <div className="grid grid-cols-12 w-full gap-14">
-        <div className=" col-span-4 flex gap-3">
-          {/* {
-              selectedReviewArr?.includes(review?.id) ? <TbCircleCheckFilled size={25} onClick={() => selectHandler('single', review?.id)} color="blue"/> : <MdOutlineCircle size={25} onClick={() => selectHandler('single', review?.id)} />
-          } */}
+        <div className="col-span-12 xl:col-span-4 flex flex-col xl:flex-row gap-3">
           <Checkbox
             checked={selectedReviewArr?.includes(review?.id)}
             onClick={() => selectHandler("single", review?.id)}
             className="w-4 h-4 border border-black rounded-md"
           />
           <div className="w-12 h-12">
-            {/* <Image
-              width={48}
-              height={48}
-              alt="user_avatar"
-              src={"/item-pic2.png"}
-            /> */}
             <PiImageSquareLight size={28} />
           </div>
-          <p className={`${review?.review_action_type == 0 ? 'text-lg font-bold' : 'text-base font-normal'}`}>{review?.product_name}</p>
+          <p
+            className={`w-[200px] xl:w-full ${
+              review?.review_action_type == 0
+                ? "text-lg font-bold"
+                : "text-base font-normal"
+            }`}
+          >
+            {review?.product_name}
+          </p>
         </div>
         {/* user review and reply options */}
-        <div className=" col-span-4 pl-6">
+        <div className="col-span-12 xl:col-span-4 xl:pl-6">
           <p className="text-justify ">
             {readTrack == review?.id
               ? review?.review
@@ -57,17 +56,17 @@ const CustomerReviewBox = ({
             </p>
           ) : (
             <>
-              {
-               review.review?.length > 150 && <p
-                onClick={() => readMoreHandler(review?.id)}
-                className="text-blue-600 cursor-pointer font-bold"
-              >
-                Read More
-              </p>
-              }
+              {review.review?.length > 150 && (
+                <p
+                  onClick={() => readMoreHandler(review?.id)}
+                  className="text-blue-600 cursor-pointer font-bold"
+                >
+                  Read More
+                </p>
+              )}
             </>
           )}
-          <div className="flex gap-2 mt-4">
+          <div className="flex gap-2 mt-4 w-[250px] xl:w-full flex-wrap xl:flex-nowrap">
             <button
               className={`${
                 review?.review_action_type == 100
@@ -80,31 +79,26 @@ const CustomerReviewBox = ({
                 }
               }}
             >
-              {  review?.review_action_type == 100 ? 'Approved' : 'Approve'}
-              
+              {review?.review_action_type == 100 ? "Approved" : "Approve"}
             </button>
             <span>|</span>
-            {
-              review?.is_replied ?  <button
-              className='text-green-700'>
-              Replied
-            </button> :  <button
-              onClick={() => replyTrackHandler(review?.id)}
-              className={`${
-                review?.id == replyTrack ? "text-slate-200" : "text-primary-900"
-              }`}
-            >
-              Reply
-            </button>
-            }
+            {review?.is_replied ? (
+              <button className="text-green-700">Replied</button>
+            ) : (
+              <button
+                onClick={() => replyTrackHandler(review?.id)}
+                className={`${
+                  review?.id == replyTrack
+                    ? "text-slate-200"
+                    : "text-primary-900"
+                }`}
+              >
+                Reply
+              </button>
+            )}
             <span>|</span>
             {review?.review_action_type == 400 ? (
-              <button
-             
-              className="text-red-600"
-            >
-              Spamed
-            </button>
+              <button className="text-red-600">Spamed</button>
             ) : (
               <button
                 onClick={() => reviewActionSubmit(400, review?.id)}
@@ -115,12 +109,12 @@ const CustomerReviewBox = ({
             )}
             <span>|</span>
             {review?.review_action_type == 300 ? (
-               <button
-               onClick={() => reviewActionSubmit(300, review?.id)}
-               className="text-red-600"
-             >
-               Trashed
-             </button>
+              <button
+                onClick={() => reviewActionSubmit(300, review?.id)}
+                className="text-red-600"
+              >
+                Trashed
+              </button>
             ) : (
               <button
                 onClick={() => reviewActionSubmit(300, review?.id)}
@@ -163,7 +157,7 @@ const CustomerReviewBox = ({
           )}
         </div>
         {/* user name & email */}
-        <div className=" col-span-4">
+        <div className="col-span-12 xl:col-span-4">
           <div className="flex gap-2">
             <div className="w-10 h-10 rounded-full">
               {/* <Image
