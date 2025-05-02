@@ -18,9 +18,15 @@ import { useReactToPrint } from "react-to-print";
 import PrintPage from "./PrintPage";
 import { BASE_URL } from "@/constant/urls";
 
-const ResponseField = ({ data, token, params, triggerSingleQuotation , quotationActionSubmit}) => {
+const ResponseField = ({
+  data,
+  token,
+  params,
+  triggerSingleQuotation,
+  quotationActionSubmit,
+}) => {
   const [singleQuotationReply, {}] = useSingleQuotationReplyMutation();
-  console.log('quoutes data ===>', data);
+  console.log("quoutes data ===>", data);
   const [loading, setLoading] = useState(false);
   const [response1, setResponse1] = useState("");
 
@@ -43,7 +49,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
     if (response?.data?.message == "Request success") {
       setLoading(false);
       triggerSingleQuotation({ id: params?.id, token: token });
-      quotationActionSubmit(0)
+      quotationActionSubmit(0);
       toast.success("Reply sent Successfully", {
         position: "top-right",
         duration: 3000,
@@ -64,7 +70,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
   return (
     <>
       <div className="w-full border border-slate-300 rounded-2xl mb-20">
-        <div className="flex px-7 py-6 justify-between items-center text-black border-b border-slate-300">
+        <div className="flex  px-7 py-6 justify-between items-center text-black border-b border-slate-300">
           <div className="flex items-center gap-3">
             <OnlineOrderSVG />
             <h1 className="text-lg">Quotation Request</h1>
@@ -73,15 +79,15 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
             <FiDownload size={20} />
           </div>
         </div>
-        <div className="h-[204px] flex border-b border-slate-200 border-dashed">
-          <div className="w-1/2 border-r border-slate-300 pl-[60px] pt-10">
+        <div className="h-[204px] flex flex-col xl:flex-row border-b border-slate-200 border-dashed">
+          <div className="w-full xl:w-1/2 border-r border-slate-300 pl-4 xl:pl-[60px] pt-10">
             <h1 className="text-xl font-bold text-black">Summary</h1>
             <div className="mt-3 space-y-3">
               <p>Order number: {data?.id}</p>
               <p>Order time: {formatTimestamp(data?.created)}</p>
             </div>
           </div>
-          <div className="w-1/2  pl-[60px] pt-10">
+          <div className="w-full xl:w-1/2 pl-4 xl:pl-[60px] pt-10">
             <h1 className="text-xl font-bold text-black">Customer</h1>
             <div className="mt-3 space-y-3">
               <p>Name: {data?.visitor_name}</p>
@@ -90,7 +96,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
             </div>
           </div>
         </div>
-        <div className="pl-[60px] pr-[30px] py-8 border-b border-slate-300 border-dashed">
+        <div className="mt-40 xl:mt-0 pl-4 xl:pl-[60px] pr-[30px] py-8 border-b border-slate-300 border-dashed">
           <div className="bg-primary-50 p-4 rounded-2xl flex items-center justify-between text-black font-bold">
             <p>ITEM</p>
             <p>OTY</p>
@@ -100,7 +106,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
               <div className="rounded-xl border border-slate-300 shadow-custom-shadow h-16 w-16 relative">
                 <Image
                   fill
-                  src={`${BASE_URL}/generate-file/?file_path=${data?.product_img_ref }`}
+                  src={`${BASE_URL}/generate-file/?file_path=${data?.product_img_ref}`}
                   alt="reviewed_product_img"
                   className="rounded-xl h-full w-full"
                 />
@@ -116,7 +122,7 @@ const ResponseField = ({ data, token, params, triggerSingleQuotation , quotation
             </div>
           </div>
         </div>
-        <div className="pl-[60px] pr-[30px] border-b border-slate-300 border-dashed">
+        <div className="pl-4 xl:pl-[60px] pr-[30px] border-b border-slate-300 border-dashed">
           <div className="mt-10">
             <h1 className="text-lg text-black font-bold">Customer Review</h1>
             <h1 className="mt-10 text-[22px] text-primary-900">
