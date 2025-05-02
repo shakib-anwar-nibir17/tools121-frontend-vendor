@@ -21,7 +21,7 @@ const SidebarMobile = async () => {
   return (
     <div className="xl:hidden">
       <Tabs defaultValue="dashboard" orientation="horizontal" className="flex">
-        <div className=" w-[300px] overflow-hidden">
+        <div className="w-[300px] overflow-hidden">
           <TabsList className="flex flex-col h-full">
             {combinedMenuArray.map((menuSection) => (
               <>
