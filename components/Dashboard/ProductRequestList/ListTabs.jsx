@@ -14,19 +14,19 @@ const ListTabs = ({
   pagiNateHandler,
   isFetching,
   reqProductDeleteHandler,
-  deleteId
+  deleteId,
 }) => {
-  console.log(tabVal)
+  console.log(tabVal);
   return (
     <Tabs defaultValue="all-products">
-      <div className="flex items-center mt-10 justify-between">
+      <div className="flex flex-col xl:flex-row items-center mt-10 justify-between">
         <div>
-          <TabsList className="gap-12 font-bold text-primary-950 p-0">
+          <TabsList className="gap-2 xl:gap-12 font-bold text-primary-950 p-0">
             {options.map((option) => (
               <TabsTrigger
                 key={option.value}
                 onClick={() => tabHandler(option.value)}
-                className="text-base pb-0 data-[state=active]:bg-white data-[state=active]:text-primary-950 data-[state=active]:border-b-4 data-[state=active]:border-primary-900 hover:border-b-4 hover:border-primary-900 w-[132px]"
+                className="text-[10px] md:text-base pb-0 data-[state=active]:bg-white data-[state=active]:text-primary-950 data-[state=active]:border-b-4 data-[state=active]:border-primary-900 hover:border-b-4 hover:border-primary-900 w-[60px] md:w-[132px]"
                 value={option.value}
               >
                 <p className="py-4">{option.key}</p>
@@ -39,21 +39,28 @@ const ListTabs = ({
         </div>
         <div>
           <div className="flex items-center gap-3">
-            {
-              totalPage > 0 && <PaginationServerside pagiNateHandler={pagiNateHandler} totalPage={totalPage}/>
-            }
+            {totalPage > 0 && (
+              <PaginationServerside
+                pagiNateHandler={pagiNateHandler}
+                totalPage={totalPage}
+              />
+            )}
           </div>
         </div>
       </div>
-      {
-        isFetching ?  <div className=" w-full flex flex-row justify-center items-center h-screen">
+      {isFetching ? (
+        <div className=" w-full flex flex-row justify-center items-center h-screen">
           <Loader />
-        </div> :
+        </div>
+      ) : (
         <div className="w-full">
-          
           {requestData?.length > 0 ? (
             <TabsContent value={tabVal}>
-              <ListDataTable deleteId={deleteId} reqProductDeleteHandler={reqProductDeleteHandler} requestData={requestData} />
+              <ListDataTable
+                deleteId={deleteId}
+                reqProductDeleteHandler={reqProductDeleteHandler}
+                requestData={requestData}
+              />
             </TabsContent>
           ) : (
             <NoProducts
@@ -62,14 +69,16 @@ const ListTabs = ({
               buttonHandler={buttonHandler}
             />
           )}
-      </div>
-      }
-      
+        </div>
+      )}
+
       <div className="flex justify-end">
-        {
-          totalPage > 0 &&  <PaginationServerside pagiNateHandler={pagiNateHandler} totalPage={totalPage}/>
-        }
-      
+        {totalPage > 0 && (
+          <PaginationServerside
+            pagiNateHandler={pagiNateHandler}
+            totalPage={totalPage}
+          />
+        )}
       </div>
     </Tabs>
   );
