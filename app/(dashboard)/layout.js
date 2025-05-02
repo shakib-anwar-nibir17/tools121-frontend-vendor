@@ -16,7 +16,7 @@ export default function MainDashboardLayout({ children }) {
           <div className="mt-10 mx-6">{children}</div>
         </div>
       </main>
-      <SheetContent className="bg-white space-y-6">
+      <SheetContent className="bg-white space-y-6 w-[80%] ">
         <div>
           <DropdownMenu />
         </div>

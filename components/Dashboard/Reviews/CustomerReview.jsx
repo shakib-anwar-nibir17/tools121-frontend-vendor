@@ -311,11 +311,8 @@ const CustomerReview = () => {
     }
   };
 
-  // console.log("Supplier Review =====>", supplierReviewList);
-  // console.log("Selected data =====>", selectedReviewArr);
-
   return (
-    <div className="border border-slate-200 rounded-2xl max-w-[1387px] mt-6 pb-8 mb-20">
+    <div className="border border-slate-200 rounded-2xl max-w-[1387px] mt-6 pb-8 mb-20 overflow-hidden">
       <div className="p-4 border-b">
         <p className="flex items-center gap-2 text-lg text-primary-950 font-bold">
           <CustomerReviewSVG /> Customer Review

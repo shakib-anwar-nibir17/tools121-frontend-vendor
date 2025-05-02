@@ -19,9 +19,9 @@ const SidebarMobile = async () => {
   ];
 
   return (
-    <aside className="border-r-2 border-slate-200 xl:hidden">
-      <Tabs defaultValue="dashboard" orientation="horizontal" className="flex ">
-        <div className="xl:min-w-[368px] pl-12 pr-4 ">
+    <div className="xl:hidden">
+      <Tabs defaultValue="dashboard" orientation="horizontal" className="flex">
+        <div className=" w-[300px] overflow-hidden">
           <TabsList className="flex flex-col h-full">
             {combinedMenuArray.map((menuSection) => (
               <>
@@ -89,7 +89,7 @@ const SidebarMobile = async () => {
           </TabsList>
         </div>
       </Tabs>
-    </aside>
+    </div>
   );
 };
 
