@@ -38,7 +38,7 @@ const ListTabs = ({
           </TabsList>
         </div>
         <div>
-          <div className="flex items-center gap-3">
+          <div className="mt-10 xl:mt-0flex items-center gap-3">
             {totalPage > 0 && (
               <PaginationServerside
                 pagiNateHandler={pagiNateHandler}
