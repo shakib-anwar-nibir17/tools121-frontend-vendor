@@ -13,7 +13,7 @@ import { capitalizeFirstTwo } from "@/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+
 import { GrLogout } from "react-icons/gr";
 import { MdArrowDropDown } from "react-icons/md";
 import { PiSquaresFour } from "react-icons/pi";
@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 import { SheetTrigger } from "../ui/sheet";
 import { GiHamburgerMenu } from "react-icons/gi";
 
-const Header = () => {
+const Header = ({ setIsOpen }) => {
   const loginName = useSelector((state) => state.authStore.loginName);
   const token = localStorage.getItem("vendorToken");
   const { data: profileInfo } = useUserDataQuery(token, {
@@ -35,6 +35,10 @@ const Header = () => {
     setTimeout(() => {
       router.push("/signin");
     }, 500);
+  };
+
+  const handleClick = () => {
+    setIsOpen(true);
   };
 
   return (
@@ -127,8 +131,8 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             <div className="xl:hidden mt-2">
-              <SheetTrigger>
-                <GiHamburgerMenu size={24} />
+              <SheetTrigger asChild>
+                <GiHamburgerMenu onClick={() => handleClick()} size={24} />
               </SheetTrigger>
             </div>
           </div>

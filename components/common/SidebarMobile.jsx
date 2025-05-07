@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -8,15 +10,54 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { loadDashboardMenu, loadSettingsMenu } from "@/utils";
 import Link from "next/link";
 import LogoutButtonSidebar from "./LogoutButtonSidebar";
+import { useEffect, useState } from "react";
 
-const SidebarMobile = async () => {
-  const generalMenuArray = await loadDashboardMenu();
-  const settingsMenuArray = await loadSettingsMenu();
+const SidebarMobile = ({ setOpen }) => {
+  // Initialize state for menu items
+  const [generalMenu, setGeneralMenu] = useState([]);
+  const [settingsMenu, setSettingsMenu] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Load menu data when component mounts
+  useEffect(() => {
+    // Load dashboard menu
+    loadDashboardMenu()
+      .then((result) => {
+        setGeneralMenu(result);
+      })
+      .catch((error) => {
+        console.error("Failed to load dashboard menu:", error);
+      });
+
+    // Load settings menu
+    loadSettingsMenu()
+      .then((result) => {
+        setSettingsMenu(result);
+      })
+      .catch((error) => {
+        console.error("Failed to load settings menu:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  // Create the combined menu array from state
   const combinedMenuArray = [
-    { title: "General", items: generalMenuArray },
-    { title: "Settings", items: settingsMenuArray },
+    { title: "General", items: generalMenu },
+    { title: "Settings", items: settingsMenu },
   ];
+
+  // Show loading state or empty sidebar while data is loading
+  if (loading) {
+    return (
+      <aside className="border-r-2 border-slate-200 hidden xl:block">
+        <div className="xl:min-w-[368px] pl-12 pr-4">
+          <p className="mt-10">Loading menu...</p>
+        </div>
+      </aside>
+    );
+  }
 
   return (
     <div className="xl:hidden">
@@ -55,7 +96,10 @@ const SidebarMobile = async () => {
                                 value={submenu.value}
                                 className="ml-10 px-6 group border-none text-left font-medium text-primary-950 flex items-center gap-3 justify-start h-12 2xl:h-14 mb-3 hover:bg-primary-50 data-[state=active]:bg-primary-50 data-[state=active]:text-primary-950 rounded-lg min-w-[254px]"
                               >
-                                <span className="font-medium text-base">
+                                <span
+                                  onClick={() => setOpen(false)}
+                                  className="font-medium text-base"
+                                >
                                   {submenu.name}
                                 </span>
                               </TabsTrigger>
@@ -66,6 +110,7 @@ const SidebarMobile = async () => {
                     </Accordion>
                   ) : (
                     <Link
+                      onClick={() => setOpen(false)}
                       className="w-full"
                       key={menu.menu}
                       href={`/${menu.route}`}
