@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -8,22 +10,62 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { loadDashboardMenu, loadSettingsMenu } from "@/utils";
 import Link from "next/link";
 import LogoutButtonSidebar from "./LogoutButtonSidebar";
-const Sidebar = async () => {
-  const generalMenuArray = await loadDashboardMenu();
-  const settingsMenuArray = await loadSettingsMenu();
+import { useEffect, useState } from "react";
 
+const Sidebar = () => {
+  // Initialize state for menu items
+  const [generalMenu, setGeneralMenu] = useState([]);
+  const [settingsMenu, setSettingsMenu] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load menu data when component mounts
+  useEffect(() => {
+    // Load dashboard menu
+    loadDashboardMenu()
+      .then((result) => {
+        setGeneralMenu(result);
+      })
+      .catch((error) => {
+        console.error("Failed to load dashboard menu:", error);
+      });
+
+    // Load settings menu
+    loadSettingsMenu()
+      .then((result) => {
+        setSettingsMenu(result);
+      })
+      .catch((error) => {
+        console.error("Failed to load settings menu:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  // Create the combined menu array from state
   const combinedMenuArray = [
-    { title: "General", items: generalMenuArray },
-    { title: "Settings", items: settingsMenuArray },
+    { title: "General", items: generalMenu },
+    { title: "Settings", items: settingsMenu },
   ];
+
+  // Show loading state or empty sidebar while data is loading
+  if (loading) {
+    return (
+      <aside className="border-r-2 border-slate-200 hidden xl:block">
+        <div className="xl:min-w-[368px] pl-12 pr-4">
+          <p className="mt-10">Loading menu...</p>
+        </div>
+      </aside>
+    );
+  }
 
   return (
     <aside className="border-r-2 border-slate-200 hidden xl:block">
       <Tabs defaultValue="dashboard" orientation="horizontal" className="flex ">
         <div className="xl:min-w-[368px] pl-12 pr-4 ">
           <TabsList className="flex flex-col h-full">
-            {combinedMenuArray.map((menuSection) => (
-              <>
+            {combinedMenuArray.map((menuSection, idx) => (
+              <div key={`section-${idx}`}>
                 <h1 className="text-lg text-left font-bold text-black mb-4 w-full mt-10">
                   {menuSection.title}
                 </h1>
@@ -81,7 +123,7 @@ const Sidebar = async () => {
                     </Link>
                   )
                 )}
-              </>
+              </div>
             ))}
 
             <LogoutButtonSidebar />
