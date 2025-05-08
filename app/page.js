@@ -71,7 +71,7 @@ function PushNotificationManager() {
   }
 
   return (
-    <div>
+    <div className="hidden">
       <h3>Push Notifications</h3>
       {subscription ? (
         <>
@@ -110,7 +110,7 @@ function InstallPrompt() {
   }
 
   return (
-    <div>
+    <div className="hidden">
       <h3>Install App</h3>
       <button>Add to Home Screen</button>
       {isIOS && (
