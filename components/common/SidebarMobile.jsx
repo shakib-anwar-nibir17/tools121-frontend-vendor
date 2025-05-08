@@ -85,7 +85,7 @@ const SidebarMobile = ({ setOpen }) => {
                             <span className="font-medium">{menu.menu}</span>
                           </div>
                         </AccordionTrigger>
-                        <AccordionContent>
+                        <AccordionContent onClick={() => setOpen(false)}>
                           {menu.submenu.map((submenu) => (
                             <Link
                               className="w-full"
@@ -96,10 +96,7 @@ const SidebarMobile = ({ setOpen }) => {
                                 value={submenu.value}
                                 className="ml-10 px-6 group border-none text-left font-medium text-primary-950 flex items-center gap-3 justify-start h-12 2xl:h-14 mb-3 hover:bg-primary-50 data-[state=active]:bg-primary-50 data-[state=active]:text-primary-950 rounded-lg min-w-[254px]"
                               >
-                                <span
-                                  onClick={() => setOpen(false)}
-                                  className="font-medium text-base"
-                                >
+                                <span className="font-medium text-base">
                                   {submenu.name}
                                 </span>
                               </TabsTrigger>
