@@ -51,7 +51,7 @@ const SidebarMobile = ({ setOpen }) => {
   // Show loading state or empty sidebar while data is loading
   if (loading) {
     return (
-      <aside className="border-r-2 border-slate-200 hidden xl:block">
+      <aside className="border-r-2 border-slate-200 hidden xl:block ">
         <div className="xl:min-w-[368px] pl-12 pr-4">
           <p className="mt-10">Loading menu...</p>
         </div>
