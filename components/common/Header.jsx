@@ -45,14 +45,14 @@ const Header = ({ setIsOpen }) => {
     <nav className="xl:border-b  border-primary-200 pb-6 mt-6">
       <div className="px-2 sm:px-8 xl:px-12">
         <div className="flex justify-between items-center">
-          <Link href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}`}>
+          <Link href={`/dashboard`}>
             <Image
-              className="w-auto h-auto"
+              className="md:w-full md:h-full"
               src="/logo.png"
               alt="logo"
               priority={false}
-              width={180}
-              height={44}
+              width={219}
+              height={54}
             />
           </Link>
           {/* sign in button */}
