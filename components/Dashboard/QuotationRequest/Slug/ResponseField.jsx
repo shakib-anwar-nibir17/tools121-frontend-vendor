@@ -141,8 +141,8 @@ const ResponseField = ({
           )}
         </div>
         {!data?.is_replied ? (
-          <div className="px-[60px] py-8">
-            <div className="mt-[72px]">
+          <div className="px-4 xl:px-[60px] py-8">
+            <div className="mt-4 xl:mt-[72px]">
               <div className="bg-primary-50 h-[146px] rounded-2xl w-full">
                 <textarea
                   className="h-[70%] bg-transparent focus:outline-none w-full p-4 relative"
@@ -165,13 +165,13 @@ const ResponseField = ({
                 </p>
               )}
               <div className="flex gap-4 mt-6 mb-5 justify-end">
-                <Button className="text-xl px-8 py-2.5 bg-white text-primary-900 border border-primary-900">
+                <Button className="text-sm sm:text-xl px-2 sm:px-8 py-2.5 bg-white text-primary-900 border border-primary-900">
                   Cancel
                 </Button>
                 <Button
                   disabled={response1.length < 20}
                   onClick={handleSubmit}
-                  className="text-xl px-8 py-2.5"
+                  className="text-sm sm:text-xl px-2 sm:px-8 py-2.5"
                 >
                   {loading ? (
                     <Loader height="20" width="20" />
