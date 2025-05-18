@@ -13,7 +13,7 @@ const TopTrendingProducts = ({ items, totalData, loadMoreHandler }) => {
         </h1>
       </div>
 
-      <div className="px-4 mt-8 mb-11 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+      <div className="px-4 mt-8 mb-11 grid grid-cols-1 sm:grid-cols-2  2xl:grid-cols-3 gap-4">
         {items?.map((product) => (
           <TrendingItemCard key={product?.id} product={product} />
         ))}
